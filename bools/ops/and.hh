@@ -3,9 +3,15 @@
 #include "bools/literals.hh"
 
 template <typename... Bools>
+struct LAnd;
+
+template <typename... Bools>
+using LAnd_v = LAnd<Bools...>::result;
+
+template <typename... Bools>
 struct LAnd
 {
-    static_assert(false, "LAnd with no operand");
+    static_assert(false, "LAnd with no or wrong operand(s)");
 };
 
 template <typename LastBool>
@@ -23,5 +29,5 @@ struct LAnd<False, Bools...>
 template <typename... Bools>
 struct LAnd<True, Bools...>
 {
-    using result = LAnd<Bools...>::result;
+    using result = LAnd_v<Bools...>;
 };

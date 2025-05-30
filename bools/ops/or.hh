@@ -3,9 +3,15 @@
 #include "bools/literals.hh"
 
 template <typename... Bools>
+struct LOr;
+
+template <typename... Bools>
+using LOr_v = LOr<Bools...>::result;
+
+template <typename... Bools>
 struct LOr
 {
-    static_assert(false, "LOr with no operand");
+    static_assert(false, "LOr with no or wrong operand(s)");
 };
 
 template <typename LastBool>
