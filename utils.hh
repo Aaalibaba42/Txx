@@ -1,7 +1,15 @@
 #pragma once
 
+#include "bools/literals.hh"
+
 template <typename T, typename U>
-inline bool is_same_v = false;
+struct IsSame
+{
+    using result = False;
+};
 
 template <typename T>
-inline bool is_same_v<T, T> = true;
+struct IsSame<T, T>
+{
+    using result = True;
+};

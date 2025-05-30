@@ -3,25 +3,25 @@
 #include "bools/literals.hh"
 
 template <typename... Bools>
-struct LAnd
+struct LOr
 {
-    static_assert(false, "LAnd with no operand");
+    static_assert(false, "LOr with no operand");
 };
 
 template <typename LastBool>
-struct LAnd<LastBool>
+struct LOr<LastBool>
 {
     using result = LastBool;
 };
 
 template <typename... Bools>
-struct LAnd<False, Bools...>
+struct LOr<True, Bools...>
 {
-    using result = False;
+    using result = True;
 };
 
 template <typename... Bools>
-struct LAnd<True, Bools...>
+struct LOr<False, Bools...>
 {
-    using result = LAnd<Bools...>::result;
+    using result = LOr<Bools...>::result;
 };
