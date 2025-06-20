@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bools/literals.hh"
+#include "types/bools/literals.hh"
 
 template <typename B1, typename B2>
 struct LXor;
