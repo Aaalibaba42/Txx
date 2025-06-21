@@ -1,10 +1,11 @@
 #pragma once
 
 #include "types/numbers/numbers.hh"
-#include "types/bools/control_flow/if.hh"
+#include "control_flow/if.hh"
 #include "traits/is_same.hh"
-
-#include "fulladder.hh"
+#include "types/numbers/ops/fulladder.hh"
+#include "types/numbers/casts/fromList.hh"
+#include "types/list/ops/prepend.hh"
 
 template <typename Number, typename Carry = One>
 struct IncImpl;
@@ -20,7 +21,8 @@ struct IncImpl<Number<Bit, Rest...>, Carry>
 {
     using FA = FullAdder<Bit, Carry>;
     using Tail = IncImpl<Number<Rest...>, typename FA::Carry>::result;
-    using result = Number<typename FA::Sum, typename Tail::Bits...>;
+    using Bits = Prepend_v<typename FA::Sum, typename Tail::Bits>;
+    using result = ToNumber_v<Bits>;
 };
 
 template <typename... Bits>

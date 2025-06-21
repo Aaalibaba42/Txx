@@ -1,3 +1,4 @@
 #pragma once
 
-struct None;
+struct None
+{};
