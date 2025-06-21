@@ -1,5 +1,5 @@
-typesystem_aoc
-==============
+Txx
+===
 
 I was very much inspired my former colleague's
 [funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
