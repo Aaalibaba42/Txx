@@ -7,7 +7,7 @@ further.
 
 
 Basicly the goal is to create a functional language using only the C++
-typesystem.
+typesystem. No literals, No standard library, no constexpr, just the Typesystem.
 
 The goal would be to be able to solve a few [Advent of
 Code](https://adventofcode.com/) exercises using only this.
@@ -28,13 +28,34 @@ Features
 
 #### Numbers
 
-These are not working yet, I've got a fulladder that should work but honestly
-it's guess work at this point
+- [x] Unsigned Numbers:
+  - [x] Incrementation
+  - [ ] Addition
+  - [ ] Soustraction
+  - [ ] Multiplication
+  - [ ] Division
+- [ ] Signed Numbers
+  - [ ] Incrementation
+  - [ ] Addition
+  - [ ] Soustraction
+  - [ ] Multiplication
+  - [ ] Division
+- [ ] IEEE754
+  - [ ] Incrementation
+  - [ ] Addition
+  - [ ] Soustraction
+  - [ ] Multiplication
+  - [ ] Division
 
 #### Lists
 
-There is a typelist, it takes any type indiscreminately, has a (curr :: rest)
-architecture
+I don't aim to do these unless I need to. These are just ideas of the kind
+of things I'd be capable of doing.
+
+- [x] Prepend
+- [ ] Append
+- [ ] i-th
+- [ ] Concat
 
 ### Control Flow
 
