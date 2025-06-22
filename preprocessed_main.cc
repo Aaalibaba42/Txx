@@ -60,19 +60,19 @@ struct If<False, Success, Failure>
 };
 
 template <typename T1, typename T2>
-struct is_same;
+struct IsSame;
 
 template <typename T1, typename T2>
-using is_same_v = is_same<T1, T2>::result;
+using IsSame_v = IsSame<T1, T2>::result;
 
 template <typename T>
-struct is_same<T, T>
+struct IsSame<T, T>
 {
     using result = True;
 };
 
 template <typename T1, typename T2>
-struct is_same
+struct IsSame
 {
     using result = False;
 };
@@ -112,7 +112,7 @@ template <typename List>
 struct ToNumber;
 
 template <typename... Bits>
-using ToNumber_v = ToNumber<TypeList<Bits...>>::result;
+using ToNumber_v = ToNumber<Bits...>::result;
 
 template <typename... Bits>
 struct ToNumber<TypeList<Bits...>>
@@ -132,37 +132,48 @@ struct Prepend<Bit, TypeList<Bits...>>
     using result = TypeList<Bit, Bits...>;
 };
 
-template <typename Number, typename Carry = One>
-struct IncImpl;
+template <typename List, typename Carry>
+struct AddCarry;
 
 template <typename Carry>
-struct IncImpl<Number<>, Carry>
+struct AddCarry<TypeList<>, Carry>
 {
-    using result = If_v<is_same_v<Carry, One>, Number<One>, Number<>>;
+    using result = If_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
 };
 
-template <typename Bit, typename... Rest, typename Carry>
-struct IncImpl<Number<Bit, Rest...>, Carry>
+template <typename Curr, typename... Rest, typename Carry>
+struct AddCarry<TypeList<Curr, Rest...>, Carry>
 {
-    using FA = FullAdder<Bit, Carry>;
-    using Tail = IncImpl<Number<Rest...>, typename FA::Carry>::result;
-    using Bits = Prepend_v<typename FA::Sum, typename Tail::Bits>;
-    using result = ToNumber_v<Bits>;
+    using FA = FullAdder<Curr, Carry>;
+
+    using tail =
+        typename AddCarry<TypeList<Rest...>, typename FA::Carry>::result;
+
+    using result = Prepend_v<typename FA::Sum, tail>;
 };
+
+template <typename Num>
+struct Inc;
 
 template <typename... Bits>
-struct Inc
+struct Inc<Number<Bits...>>
 {
-    using result = IncImpl<Number<Bits...>>::result;
+    using result =
+        ToNumber_v<typename AddCarry<TypeList<Bits...>, One>::result>;
 };
+template <typename Num>
+using Inc_v = Inc<Num>::result;
 
-template <typename Number, typename Carry = One>
-using Inc_v = Inc<Number, Carry>::result;
+template <typename T1, typename T2>
+inline constexpr bool is_same = false;
+
+template <typename T>
+inline constexpr bool is_same<T, T> = true;
 
 int main(void)
 {
     using N3 = Number<One, One, Zero>;
     using N4 = Inc_v<N3>;
 
-    static_assert(is_same_v<N4, Number<Zero, Zero, One>>);
+    static_assert(is_same<N4, Number<Zero, Zero, One>>);
 }
