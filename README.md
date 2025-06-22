@@ -53,12 +53,16 @@ I don't aim to do these unless I need to. These are just ideas of the kind
 of things I'd be capable of doing.
 
 - [x] Prepend
-- [ ] Append
+- [x] Append
 - [ ] i-th
 - [ ] Concat
 
 ### Control Flow
 
-- [x] If
+- [x] Ternary
+
+Do these even make sens ? I think having side effects is gonna be hard,
+a functional language is better, and then having this kind of control structures
+seem useless
 - [ ] While
 - [ ] For

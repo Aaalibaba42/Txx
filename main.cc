@@ -1,5 +1,6 @@
-#include "types/numbers/numbers.hh"
-#include "types/numbers/ops/inc.hh"
+#include "txx/types/bits/literals.hh"
+#include "txx/types/numbers/unsigned/unsigned.hh"
+#include "txx/types/numbers/unsigned/ops/inc.hh"
 
 template <typename T1, typename T2>
 inline constexpr bool is_same = false;
@@ -9,13 +10,13 @@ inline constexpr bool is_same<T, T> = true;
 
 int main(void)
 {
-    using N3 = Number<One, One>;
-    using N4 = Inc_v<N3>;
+    using N3 = Unsigned<One, One>;
+    using N4 = UnsignedInc_v<N3>;
 
-    static_assert(is_same<N4, Number<Zero, Zero, One>>);
+    static_assert(is_same<N4, Unsigned<Zero, Zero, One>>);
 
-    using N0 = Number<>;
-    using N1 = Inc_v<N0>;
+    using N0 = Unsigned<>;
+    using N1 = UnsignedInc_v<N0>;
 
-    static_assert(is_same<N1, Number<One>>);
+    static_assert(is_same<N1, Unsigned<One>>);
 }

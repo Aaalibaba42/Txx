@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types/numbers/numbers.hh"
+#include "types/bits/literals.hh"
 
 template <typename Bit, typename Carry>
 struct FullAdder;

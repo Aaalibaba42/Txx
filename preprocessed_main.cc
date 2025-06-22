@@ -1,3 +1,9 @@
+struct Zero
+{};
+
+struct One
+{};
+
 struct None
 {};
 
@@ -18,13 +24,8 @@ struct TypeList<>
     using rest = None;
 };
 
-struct Zero
-{};
-struct One
-{};
-
 template <typename... BitPack>
-struct Number
+struct Unsigned
 {
     using Bits = TypeList<BitPack...>;
 };
@@ -35,26 +36,28 @@ struct True
 struct False
 {};
 
-template <typename Cond, typename Success, typename Failure = None>
-struct If;
-
-template <typename Cond, typename Success, typename Failure = None>
-using If_v = If<Cond, Success, Failure>::result;
+template <typename Cond, typename Success, typename Failure>
+struct Ternary;
 
 template <typename Cond, typename Success, typename Failure>
-struct If
+using Ternary_v = Ternary<Cond, Success, Failure>::result;
+
+template <typename Cond, typename Success, typename Failure>
+struct Ternary
 {
-    static_assert(false, "If could not instantiate correctly");
+    static_assert(
+        false,
+        "struct Ternary's Cond is neither struct True, nor struct False");
 };
 
 template <typename Success, typename Failure>
-struct If<True, Success, Failure>
+struct Ternary<True, Success, Failure>
 {
     using result = Success;
 };
 
 template <typename Success, typename Failure>
-struct If<False, Success, Failure>
+struct Ternary<False, Success, Failure>
 {
     using result = Failure;
 };
@@ -108,18 +111,6 @@ struct FullAdder<One, One>
     using Carry = One;
 };
 
-template <typename List>
-struct ToNumber;
-
-template <typename... Bits>
-using ToNumber_v = ToNumber<Bits...>::result;
-
-template <typename... Bits>
-struct ToNumber<TypeList<Bits...>>
-{
-    using result = Number<Bits...>;
-};
-
 template <typename Bit, typename List>
 struct Prepend;
 
@@ -132,13 +123,25 @@ struct Prepend<Bit, TypeList<Bits...>>
     using result = TypeList<Bit, Bits...>;
 };
 
+template <typename List>
+struct ToUnsigned;
+
+template <typename... Bits>
+using ToUnsigned_v = ToUnsigned<Bits...>::result;
+
+template <typename... Bits>
+struct ToUnsigned<TypeList<Bits...>>
+{
+    using result = Unsigned<Bits...>;
+};
+
 template <typename List, typename Carry>
 struct AddCarry;
 
 template <typename Carry>
 struct AddCarry<TypeList<>, Carry>
 {
-    using result = If_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
+    using result = Ternary_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
 };
 
 template <typename Curr, typename... Rest, typename Carry>
@@ -153,16 +156,16 @@ struct AddCarry<TypeList<Curr, Rest...>, Carry>
 };
 
 template <typename Num>
-struct Inc;
+struct UnsignedInc;
 
 template <typename... Bits>
-struct Inc<Number<Bits...>>
+struct UnsignedInc<Unsigned<Bits...>>
 {
     using result =
-        ToNumber_v<typename AddCarry<TypeList<Bits...>, One>::result>;
+        ToUnsigned_v<typename AddCarry<TypeList<Bits...>, One>::result>;
 };
 template <typename Num>
-using Inc_v = Inc<Num>::result;
+using UnsignedInc_v = UnsignedInc<Num>::result;
 
 template <typename T1, typename T2>
 inline constexpr bool is_same = false;
@@ -172,8 +175,13 @@ inline constexpr bool is_same<T, T> = true;
 
 int main(void)
 {
-    using N3 = Number<One, One, Zero>;
-    using N4 = Inc_v<N3>;
+    using N3 = Unsigned<One, One>;
+    using N4 = UnsignedInc_v<N3>;
 
-    static_assert(is_same<N4, Number<Zero, Zero, One>>);
+    static_assert(is_same<N4, Unsigned<Zero, Zero, One>>);
+
+    using N0 = Unsigned<>;
+    using N1 = UnsignedInc_v<N0>;
+
+    static_assert(is_same<N1, Unsigned<One>>);
 }

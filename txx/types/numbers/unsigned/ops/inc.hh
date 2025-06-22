@@ -1,11 +1,11 @@
 #pragma once
 
-#include "types/numbers/numbers.hh"
-#include "control_flow/if.hh"
+#include "control_flow/ternary.hh"
 #include "traits/is_same.hh"
-#include "types/numbers/ops/fulladder.hh"
-#include "types/numbers/casts/fromList.hh"
+#include "types/bits/ops/fulladder.hh"
 #include "types/list/ops/prepend.hh"
+#include "types/numbers/unsigned/casts/fromList.hh"
+#include "types/numbers/unsigned/unsigned.hh"
 
 template <typename List, typename Carry>
 struct AddCarry;
@@ -13,7 +13,7 @@ struct AddCarry;
 template <typename Carry>
 struct AddCarry<TypeList<>, Carry>
 {
-    using result = If_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
+    using result = Ternary_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
 };
 
 template <typename Curr, typename... Rest, typename Carry>
@@ -28,13 +28,13 @@ struct AddCarry<TypeList<Curr, Rest...>, Carry>
 };
 
 template <typename Num>
-struct Inc;
+struct UnsignedInc;
 
 template <typename... Bits>
-struct Inc<Number<Bits...>>
+struct UnsignedInc<Unsigned<Bits...>>
 {
     using result =
-        ToNumber_v<typename AddCarry<TypeList<Bits...>, One>::result>;
+        ToUnsigned_v<typename AddCarry<TypeList<Bits...>, One>::result>;
 };
 template <typename Num>
-using Inc_v = Inc<Num>::result;
+using UnsignedInc_v = UnsignedInc<Num>::result;
