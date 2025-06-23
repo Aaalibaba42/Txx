@@ -1,19 +1,27 @@
 #pragma once
 
-#include "types/none.hh"
+#include "types/meta/any.hh"
+#include "types/meta/none.hh"
 
-template <typename... Types>
-struct TypeList;
+template <Any_t... Elems>
+struct List;
 
-template <typename Curr, typename... Rest>
-struct TypeList<Curr, Rest...>
+template <Any_t Curr, Any_t... Rest>
+struct List<Curr, Rest...>
 {
     using curr = Curr;
-    using rest = TypeList<Rest...>;
+    using rest = List<Rest...>;
+};
+
+template <Any_t Curr>
+struct List<Curr>
+{
+    using curr = Curr;
+    using rest = None;
 };
 
 template <>
-struct TypeList<>
+struct List<>
 {
     using curr = None;
     using rest = None;

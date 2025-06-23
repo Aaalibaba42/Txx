@@ -54,6 +54,12 @@ of things I'd be capable of doing.
 
 - [x] Prepend
 - [x] Append
+- [ ] AllOf
+- [ ] NoneOf
+- [ ] Map
+- [ ] Reduce
+- [ ] FoldL
+- [ ] FoldR
 - [ ] i-th
 - [ ] Concat
 

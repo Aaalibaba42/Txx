@@ -1,20 +1,21 @@
 #pragma once
 
+#include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
 
-template <typename B1, typename B2>
+template <Bool_t B1, Bool_t B2>
 struct LXor;
 
-template <typename B1, typename B2>
+template <Bool_t B1, Bool_t B2>
 using LXor_v = LXor<B1, B2>::result;
 
-template <typename B1, typename B2>
+template <Bool_t B1, Bool_t B2>
 struct LXor
 {
     using result = True;
 };
 
-template <typename T>
+template <Bool_t T>
 struct LXor<T, T>
 {
     using result = False;

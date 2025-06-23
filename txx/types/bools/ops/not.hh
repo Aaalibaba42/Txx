@@ -1,18 +1,13 @@
 #pragma once
 
+#include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
 
-template <typename Bool>
+template <Bool_t Bool>
 struct LNot;
 
-template <typename Bool>
+template <Bool_t Bool>
 using LNot_v = LNot<Bool>::result;
-
-template <typename Bool>
-struct LNot
-{
-    static_assert(false, "LNot with no or wrong operand");
-};
 
 template <>
 struct LNot<True>

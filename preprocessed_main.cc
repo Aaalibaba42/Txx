@@ -4,30 +4,48 @@ struct Zero
 struct One
 {};
 
+void bit_t_stub(Zero);
+void bit_t_stub(One);
+
+template <typename T>
+concept Bit_t = requires(T b) {
+    { bit_t_stub(b) };
+};
+
+template <typename T>
+concept Any_t = true;
+
 struct None
 {};
 
-template <typename... Types>
-struct TypeList;
+template <Any_t... Elems>
+struct List;
 
-template <typename Curr, typename... Rest>
-struct TypeList<Curr, Rest...>
+template <Any_t Curr, Any_t... Rest>
+struct List<Curr, Rest...>
 {
     using curr = Curr;
-    using rest = TypeList<Rest...>;
+    using rest = List<Rest...>;
+};
+
+template <Any_t Curr>
+struct List<Curr>
+{
+    using curr = Curr;
+    using rest = None;
 };
 
 template <>
-struct TypeList<>
+struct List<>
 {
     using curr = None;
     using rest = None;
 };
 
-template <typename... BitPack>
+template <Bit_t... BitPack>
 struct Unsigned
 {
-    using Bits = TypeList<BitPack...>;
+    using Bits = List<BitPack...>;
 };
 
 struct True
@@ -36,51 +54,51 @@ struct True
 struct False
 {};
 
-template <typename Cond, typename Success, typename Failure>
-struct Ternary;
+void bool_t_stub(True);
+void bool_t_stub(False);
 
-template <typename Cond, typename Success, typename Failure>
-using Ternary_v = Ternary<Cond, Success, Failure>::result;
-
-template <typename Cond, typename Success, typename Failure>
-struct Ternary
-{
-    static_assert(
-        false,
-        "struct Ternary's Cond is neither struct True, nor struct False");
+template <typename T>
+concept Bool_t = requires(T b) {
+    { bool_t_stub(b) };
 };
 
-template <typename Success, typename Failure>
+template <Bool_t Cond, Any_t Success, Any_t Failure>
+struct Ternary;
+
+template <Bool_t Cond, Any_t Success, Any_t Failure>
+using Ternary_v = Ternary<Cond, Success, Failure>::result;
+
+template <Any_t Success, Any_t Failure>
 struct Ternary<True, Success, Failure>
 {
     using result = Success;
 };
 
-template <typename Success, typename Failure>
+template <Any_t Success, Any_t Failure>
 struct Ternary<False, Success, Failure>
 {
     using result = Failure;
 };
 
-template <typename T1, typename T2>
+template <Any_t T1, Any_t T2>
 struct IsSame;
 
-template <typename T1, typename T2>
+template <Any_t T1, Any_t T2>
 using IsSame_v = IsSame<T1, T2>::result;
 
-template <typename T>
+template <Any_t T>
 struct IsSame<T, T>
 {
     using result = True;
 };
 
-template <typename T1, typename T2>
+template <Any_t T1, Any_t T2>
 struct IsSame
 {
     using result = False;
 };
 
-template <typename Bit, typename Carry>
+template <Bit_t Bit, Bit_t Carry>
 struct FullAdder;
 
 template <>
@@ -111,61 +129,79 @@ struct FullAdder<One, One>
     using Carry = One;
 };
 
-template <typename Bit, typename List>
-struct Prepend;
+template <typename... Elems>
+void list_t_stub(List<Elems...>);
 
-template <typename Bit, typename List>
-using Prepend_v = Prepend<Bit, List>::result;
-
-template <typename Bit, typename... Bits>
-struct Prepend<Bit, TypeList<Bits...>>
-{
-    using result = TypeList<Bit, Bits...>;
+template <typename T>
+concept List_t = requires(T list) {
+    { list_t_stub(list) };
 };
 
-template <typename List>
+template <Any_t Elem, List_t List>
+struct Prepend;
+
+template <Any_t Elem, List_t List>
+using Prepend_v = Prepend<Elem, List>::result;
+
+template <Any_t Elem, Any_t... Rest>
+struct Prepend<Elem, List<Rest...>>
+{
+    using result = List<Elem, Rest...>;
+};
+
+template <List_t List>
 struct ToUnsigned;
 
-template <typename... Bits>
-using ToUnsigned_v = ToUnsigned<Bits...>::result;
+template <List_t List>
+using ToUnsigned_v = ToUnsigned<List>::result;
 
-template <typename... Bits>
-struct ToUnsigned<TypeList<Bits...>>
+template <Bit_t... Bits>
+struct ToUnsigned<List<Bits...>>
 {
     using result = Unsigned<Bits...>;
 };
 
-template <typename List, typename Carry>
-struct AddCarry;
+template <Bit_t... bits>
+void unsigned_t_stub(Unsigned<bits...>);
 
-template <typename Carry>
-struct AddCarry<TypeList<>, Carry>
-{
-    using result = Ternary_v<IsSame_v<Carry, One>, TypeList<One>, TypeList<>>;
+template <typename T>
+concept Unsigned_t = requires(T us) {
+    { unsigned_t_stub(us) };
 };
 
-template <typename Curr, typename... Rest, typename Carry>
-struct AddCarry<TypeList<Curr, Rest...>, Carry>
+template <List_t List, Bit_t Carry>
+struct AddCarry;
+
+template <List_t List, Bit_t Carry>
+using AddCarry_v = AddCarry<List, Carry>::result;
+
+template <Bit_t Carry>
+struct AddCarry<List<>, Carry>
+{
+    using result = Ternary_v<IsSame_v<Carry, One>, List<One>, List<>>;
+};
+
+template <Bit_t Curr, Bit_t... Rest, Bit_t Carry>
+struct AddCarry<List<Curr, Rest...>, Carry>
 {
     using FA = FullAdder<Curr, Carry>;
 
-    using tail =
-        typename AddCarry<TypeList<Rest...>, typename FA::Carry>::result;
+    using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
 
     using result = Prepend_v<typename FA::Sum, tail>;
 };
 
-template <typename Num>
+template <Unsigned_t Num>
 struct UnsignedInc;
 
-template <typename... Bits>
+template <Unsigned_t Num>
+using UnsignedInc_v = UnsignedInc<Num>::result;
+
+template <Bit_t... Bits>
 struct UnsignedInc<Unsigned<Bits...>>
 {
-    using result =
-        ToUnsigned_v<typename AddCarry<TypeList<Bits...>, One>::result>;
+    using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
 };
-template <typename Num>
-using UnsignedInc_v = UnsignedInc<Num>::result;
 
 template <typename T1, typename T2>
 inline constexpr bool is_same = false;

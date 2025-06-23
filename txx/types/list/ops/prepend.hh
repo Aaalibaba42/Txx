@@ -1,15 +1,17 @@
 #pragma once
 
+#include "types/list/concept.hh"
 #include "types/list/list.hh"
+#include "types/meta/any.hh"
 
-template <typename Bit, typename List>
+template <Any_t Elem, List_t List>
 struct Prepend;
 
-template <typename Bit, typename List>
-using Prepend_v = Prepend<Bit, List>::result;
+template <Any_t Elem, List_t List>
+using Prepend_v = Prepend<Elem, List>::result;
 
-template <typename Bit, typename... Bits>
-struct Prepend<Bit, TypeList<Bits...>>
+template <Any_t Elem, Any_t... Rest>
+struct Prepend<Elem, List<Rest...>>
 {
-    using result = TypeList<Bit, Bits...>;
+    using result = List<Elem, Rest...>;
 };

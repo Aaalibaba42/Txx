@@ -1,16 +1,18 @@
 #pragma once
 
+#include "types/bits/concept.hh"
+#include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/numbers/unsigned/unsigned.hh"
 
-template <typename List>
+template <List_t List>
 struct ToUnsigned;
 
-template <typename... Bits>
-using ToUnsigned_v = ToUnsigned<Bits...>::result;
+template <List_t List>
+using ToUnsigned_v = ToUnsigned<List>::result;
 
-template <typename... Bits>
-struct ToUnsigned<TypeList<Bits...>>
+template <Bit_t... Bits>
+struct ToUnsigned<List<Bits...>>
 {
     using result = Unsigned<Bits...>;
 };

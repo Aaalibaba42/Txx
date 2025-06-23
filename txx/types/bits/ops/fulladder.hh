@@ -1,8 +1,9 @@
 #pragma once
 
+#include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 
-template <typename Bit, typename Carry>
+template <Bit_t Bit, Bit_t Carry>
 struct FullAdder;
 
 template <>
