@@ -34,18 +34,21 @@ Features
   - [ ] Soustraction
   - [ ] Multiplication
   - [ ] Division
+  - [ ] Comparison
 - [ ] Signed Numbers
   - [ ] Incrementation
   - [ ] Addition
   - [ ] Soustraction
   - [ ] Multiplication
   - [ ] Division
+  - [ ] Comparison
 - [ ] IEEE754
   - [ ] Incrementation
   - [ ] Addition
   - [ ] Soustraction
   - [ ] Multiplication
   - [ ] Division
+  - [ ] Comparison
 
 #### Lists
 
@@ -62,6 +65,13 @@ of things I'd be capable of doing.
 - [ ] FoldR
 - [ ] i-th
 - [ ] Concat
+
+#### Others
+
+Structures that would be nice to have natively:
+- [ ] Sets
+- [ ] Maps
+- [ ] Graphs
 
 ### Control Flow
 
