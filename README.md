@@ -30,7 +30,7 @@ Features
 
 - [x] Unsigned Numbers:
   - [x] Incrementation
-  - [ ] Addition
+  - [x] Addition
   - [ ] Soustraction
   - [ ] Multiplication
   - [ ] Division
