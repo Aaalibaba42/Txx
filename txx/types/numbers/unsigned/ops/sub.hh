@@ -11,11 +11,11 @@
 #include "types/numbers/unsigned/utils/canonicalize.hh"
 #include "types/numbers/unsigned/utils/fromList.hh"
 
-template <List_t A, List_t B, Bit_t Borrow>
+template <List_t LHS, List_t RHS, Bit_t Borrow>
 struct SubUnsignedCarry;
 
-template <List_t A, List_t B, Bit_t Borrow>
-using SubUnsignedCarry_v = SubUnsignedCarry<A, B, Borrow>::result;
+template <List_t LHS, List_t RHS, Bit_t Borrow>
+using SubUnsignedCarry_v = SubUnsignedCarry<LHS, RHS, Borrow>::result;
 
 template <Bit_t Borrow>
 struct SubUnsignedCarry<List<>, List<>, Borrow>
@@ -49,15 +49,15 @@ struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
     using result = Prepend_v<typename FS::Diff, tail>;
 };
 
-template <Unsigned_t A, Unsigned_t B>
+template <Unsigned_t LHS, Unsigned_t RHS>
 struct UnsignedSub;
 
-template <Unsigned_t A, Unsigned_t B>
-using UnsignedSub_v = UnsignedSub<A, B>::result;
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedSub_v = UnsignedSub<LHS, RHS>::result;
 
-template <Bit_t... A, Bit_t... B>
-struct UnsignedSub<Unsigned<A...>, Unsigned<B...>>
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedSub<Unsigned<LHS...>, Unsigned<RHS...>>
 {
     using result = Canonicalize_v<
-        ToUnsigned_v<SubUnsignedCarry_v<List<A...>, List<B...>, Zero>>>;
+        ToUnsigned_v<SubUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
 };

@@ -56,15 +56,15 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     using result = Prepend_v<result_sum, tail>;
 };
 
-template <Unsigned_t A, Unsigned_t B>
+template <Unsigned_t LHS, Unsigned_t RHS>
 struct UnsignedAdd;
 
-template <Unsigned_t A, Unsigned_t B>
-using UnsignedAdd_v = UnsignedAdd<A, B>::result;
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedAdd_v = UnsignedAdd<LHS, RHS>::result;
 
-template <Bit_t... A, Bit_t... B>
-struct UnsignedAdd<Unsigned<A...>, Unsigned<B...>>
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedAdd<Unsigned<LHS...>, Unsigned<RHS...>>
 {
     using result =
-        ToUnsigned_v<AddUnsignedCarry_v<List<A...>, List<B...>, Zero>>;
+        ToUnsigned_v<AddUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
 };
