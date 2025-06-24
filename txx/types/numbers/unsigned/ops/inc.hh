@@ -4,9 +4,9 @@
 #include "traits/is_same.hh"
 #include "types/bits/ops/fulladder.hh"
 #include "types/list/ops/prepend.hh"
-#include "types/numbers/unsigned/casts/fromList.hh"
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/unsigned.hh"
+#include "types/numbers/unsigned/utils/fromList.hh"
 
 template <List_t List, Bit_t Carry>
 struct AddCarry;

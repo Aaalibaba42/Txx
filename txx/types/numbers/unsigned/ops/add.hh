@@ -6,9 +6,9 @@
 #include "types/bits/ops/fulladder.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
-#include "types/numbers/unsigned/casts/fromList.hh"
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/unsigned.hh"
+#include "types/numbers/unsigned/utils/fromList.hh"
 
 template <List_t LHS, List_t RHS, Bit_t Carry>
 struct AddUnsignedCarry;

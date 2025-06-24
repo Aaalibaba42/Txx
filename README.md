@@ -31,21 +31,21 @@ Features
 - [x] Unsigned Numbers:
   - [x] Incrementation
   - [x] Addition
-  - [ ] Soustraction
+  - [x] Subtraction
   - [ ] Multiplication
   - [ ] Division
   - [ ] Comparison
 - [ ] Signed Numbers
   - [ ] Incrementation
   - [ ] Addition
-  - [ ] Soustraction
+  - [ ] Subtraction
   - [ ] Multiplication
   - [ ] Division
   - [ ] Comparison
 - [ ] IEEE754
   - [ ] Incrementation
   - [ ] Addition
-  - [ ] Soustraction
+  - [ ] Subtraction
   - [ ] Multiplication
   - [ ] Division
   - [ ] Comparison
@@ -57,6 +57,7 @@ of things I'd be capable of doing.
 
 - [x] Prepend
 - [x] Append
+- [x] Reverse
 - [ ] AllOf
 - [ ] NoneOf
 - [ ] Map
@@ -76,9 +77,3 @@ Structures that would be nice to have natively:
 ### Control Flow
 
 - [x] Ternary
-
-Do these even make sens ? I think having side effects is gonna be hard,
-a functional language is better, and then having this kind of control structures
-seem useless
-- [ ] While
-- [ ] For
