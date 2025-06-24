@@ -145,9 +145,7 @@ struct Prepend<Elem, List<Rest...>>
 
 template <Bit_t... BitPack>
 struct Unsigned
-{
-    using Bits = List<BitPack...>;
-};
+{};
 
 template <Bit_t... bits>
 void unsigned_t_stub(Unsigned<bits...>);
