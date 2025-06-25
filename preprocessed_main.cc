@@ -209,17 +209,17 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     using result = Prepend_v<result_sum, tail>;
 };
 
-template <Unsigned_t A, Unsigned_t B>
+template <Unsigned_t LHS, Unsigned_t RHS>
 struct UnsignedAdd;
 
-template <Unsigned_t A, Unsigned_t B>
-using UnsignedAdd_v = UnsignedAdd<A, B>::result;
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedAdd_v = UnsignedAdd<LHS, RHS>::result;
 
-template <Bit_t... A, Bit_t... B>
-struct UnsignedAdd<Unsigned<A...>, Unsigned<B...>>
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedAdd<Unsigned<LHS...>, Unsigned<RHS...>>
 {
     using result =
-        ToUnsigned_v<AddUnsignedCarry_v<List<A...>, List<B...>, Zero>>;
+        ToUnsigned_v<AddUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
 };
 
 template <List_t List, Bit_t Carry>
@@ -374,11 +374,11 @@ struct Canonicalize<Unsigned<Bits...>>
     using result = ToUnsigned_v<result_list>;
 };
 
-template <List_t A, List_t B, Bit_t Borrow>
+template <List_t LHS, List_t RHS, Bit_t Borrow>
 struct SubUnsignedCarry;
 
-template <List_t A, List_t B, Bit_t Borrow>
-using SubUnsignedCarry_v = SubUnsignedCarry<A, B, Borrow>::result;
+template <List_t LHS, List_t RHS, Bit_t Borrow>
+using SubUnsignedCarry_v = SubUnsignedCarry<LHS, RHS, Borrow>::result;
 
 template <Bit_t Borrow>
 struct SubUnsignedCarry<List<>, List<>, Borrow>
@@ -412,17 +412,51 @@ struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
     using result = Prepend_v<typename FS::Diff, tail>;
 };
 
-template <Unsigned_t A, Unsigned_t B>
+template <Unsigned_t LHS, Unsigned_t RHS>
 struct UnsignedSub;
 
-template <Unsigned_t A, Unsigned_t B>
-using UnsignedSub_v = UnsignedSub<A, B>::result;
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedSub_v = UnsignedSub<LHS, RHS>::result;
 
-template <Bit_t... A, Bit_t... B>
-struct UnsignedSub<Unsigned<A...>, Unsigned<B...>>
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedSub<Unsigned<LHS...>, Unsigned<RHS...>>
 {
     using result = Canonicalize_v<
-        ToUnsigned_v<SubUnsignedCarry_v<List<A...>, List<B...>, Zero>>>;
+        ToUnsigned_v<SubUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
+};
+
+template <Unsigned_t T>
+struct ToList;
+
+template <Unsigned_t T>
+using ToList_v = ToList<T>::result;
+
+template <Bit_t... Bits>
+struct ToList<Unsigned<Bits...>>
+{
+    using result = List<Bits...>;
+};
+
+template <Unsigned_t Value, Unsigned_t Amount>
+struct UnsignedLShift;
+
+template <Unsigned_t Value, Unsigned_t Amount>
+using UnsignedLShift_v = UnsignedLShift<Value, Amount>::result;
+
+template <Unsigned_t Value>
+struct UnsignedLShift<Value, Unsigned<>>
+{
+    using result = Value;
+};
+
+template <Unsigned_t Value, Bit_t... AmountBits>
+struct UnsignedLShift<Value, Unsigned<AmountBits...>>
+{
+    using NewBits = Prepend_v<Zero, ToList_v<Value>>;
+    using ShiftedOnce = ToUnsigned_v<NewBits>;
+
+    using Decrement = UnsignedSub_v<Unsigned<AmountBits...>, Unsigned<One>>;
+    using result = Canonicalize_v<UnsignedLShift_v<ShiftedOnce, Decrement>>;
 };
 
 template <typename T1, typename T2>
@@ -431,74 +465,74 @@ inline constexpr bool is_same = false;
 template <typename T>
 inline constexpr bool is_same<T, T> = true;
 
+using n0 = Unsigned<>;
+using n1 = Unsigned<One>;
+using n2 = Unsigned<Zero, One>;
+using n3 = Unsigned<One, One>;
+using n4 = Unsigned<Zero, Zero, One>;
+using n5 = Unsigned<One, Zero, One>;
+using n6 = Unsigned<Zero, One, One>;
+using n7 = Unsigned<One, One, One>;
+using n8 = Unsigned<Zero, Zero, Zero, One>;
+using n9 = Unsigned<One, Zero, Zero, One>;
+using n10 = Unsigned<Zero, One, Zero, One>;
+using n11 = Unsigned<One, One, Zero, One>;
+using n12 = Unsigned<Zero, Zero, One, One>;
+using n13 = Unsigned<One, Zero, One, One>;
+using n14 = Unsigned<Zero, One, One, One>;
+using n15 = Unsigned<One, One, One, One>;
+using n16 = Unsigned<Zero, Zero, Zero, Zero, One>;
+using n17 = Unsigned<One, Zero, Zero, Zero, One>;
+using n18 = Unsigned<Zero, One, Zero, Zero, One>;
+using n19 = Unsigned<One, One, Zero, Zero, One>;
+using n20 = Unsigned<Zero, Zero, One, Zero, One>;
+using n21 = Unsigned<One, Zero, One, Zero, One>;
+using n22 = Unsigned<Zero, One, One, Zero, One>;
+using n23 = Unsigned<One, One, One, Zero, One>;
+using n24 = Unsigned<Zero, Zero, Zero, One, One>;
+using n25 = Unsigned<One, Zero, Zero, One, One>;
+using n26 = Unsigned<Zero, One, Zero, One, One>;
+using n27 = Unsigned<One, One, Zero, One, One>;
+using n28 = Unsigned<Zero, Zero, One, One, One>;
+using n29 = Unsigned<One, Zero, One, One, One>;
+using n30 = Unsigned<Zero, One, One, One, One>;
+using n31 = Unsigned<One, One, One, One, One>;
+using n32 = Unsigned<Zero, Zero, Zero, Zero, Zero, One>;
+using n33 = Unsigned<One, Zero, Zero, Zero, Zero, One>;
+using n34 = Unsigned<Zero, One, Zero, Zero, Zero, One>;
+using n35 = Unsigned<One, One, Zero, Zero, Zero, One>;
+using n36 = Unsigned<Zero, Zero, One, Zero, Zero, One>;
+using n37 = Unsigned<One, Zero, One, Zero, Zero, One>;
+using n38 = Unsigned<Zero, One, One, Zero, Zero, One>;
+using n39 = Unsigned<One, One, One, Zero, Zero, One>;
+using n40 = Unsigned<Zero, Zero, Zero, One, Zero, One>;
+using n41 = Unsigned<One, Zero, Zero, One, Zero, One>;
+using n42 = Unsigned<Zero, One, Zero, One, Zero, One>;
+using n43 = Unsigned<One, One, Zero, One, Zero, One>;
+using n44 = Unsigned<Zero, Zero, One, One, Zero, One>;
+using n45 = Unsigned<One, Zero, One, One, Zero, One>;
+using n46 = Unsigned<Zero, One, One, One, Zero, One>;
+using n47 = Unsigned<One, One, One, One, Zero, One>;
+using n48 = Unsigned<Zero, Zero, Zero, Zero, One, One>;
+using n49 = Unsigned<One, Zero, Zero, Zero, One, One>;
+using n50 = Unsigned<Zero, One, Zero, Zero, One, One>;
+using n51 = Unsigned<One, One, Zero, Zero, One, One>;
+using n52 = Unsigned<Zero, Zero, One, Zero, One, One>;
+using n53 = Unsigned<One, Zero, One, Zero, One, One>;
+using n54 = Unsigned<Zero, One, One, Zero, One, One>;
+using n55 = Unsigned<One, One, One, Zero, One, One>;
+using n56 = Unsigned<Zero, Zero, Zero, One, One, One>;
+using n57 = Unsigned<One, Zero, Zero, One, One, One>;
+using n58 = Unsigned<Zero, One, Zero, One, One, One>;
+using n59 = Unsigned<One, One, Zero, One, One, One>;
+using n60 = Unsigned<Zero, Zero, One, One, One, One>;
+using n61 = Unsigned<One, Zero, One, One, One, One>;
+using n62 = Unsigned<Zero, One, One, One, One, One>;
+using n63 = Unsigned<One, One, One, One, One, One>;
+using n64 = Unsigned<Zero, Zero, Zero, Zero, Zero, Zero, One>;
+
 int main(void)
 {
-    using n0 = Unsigned<>;
-    using n1 = Unsigned<One>;
-    using n2 = Unsigned<Zero, One>;
-    using n3 = Unsigned<One, One>;
-    using n4 = Unsigned<Zero, Zero, One>;
-    using n5 = Unsigned<One, Zero, One>;
-    using n6 = Unsigned<Zero, One, One>;
-    using n7 = Unsigned<One, One, One>;
-    using n8 = Unsigned<Zero, Zero, Zero, One>;
-    using n9 = Unsigned<One, Zero, Zero, One>;
-    using n10 = Unsigned<Zero, One, Zero, One>;
-    using n11 = Unsigned<One, One, Zero, One>;
-    using n12 = Unsigned<Zero, Zero, One, One>;
-    using n13 = Unsigned<One, Zero, One, One>;
-    using n14 = Unsigned<Zero, One, One, One>;
-    using n15 = Unsigned<One, One, One, One>;
-    using n16 = Unsigned<Zero, Zero, Zero, Zero, One>;
-    using n17 = Unsigned<One, Zero, Zero, Zero, One>;
-    using n18 = Unsigned<Zero, One, Zero, Zero, One>;
-    using n19 = Unsigned<One, One, Zero, Zero, One>;
-    using n20 = Unsigned<Zero, Zero, One, Zero, One>;
-    using n21 = Unsigned<One, Zero, One, Zero, One>;
-    using n22 = Unsigned<Zero, One, One, Zero, One>;
-    using n23 = Unsigned<One, One, One, Zero, One>;
-    using n24 = Unsigned<Zero, Zero, Zero, One, One>;
-    using n25 = Unsigned<One, Zero, Zero, One, One>;
-    using n26 = Unsigned<Zero, One, Zero, One, One>;
-    using n27 = Unsigned<One, One, Zero, One, One>;
-    using n28 = Unsigned<Zero, Zero, One, One, One>;
-    using n29 = Unsigned<One, Zero, One, One, One>;
-    using n30 = Unsigned<Zero, One, One, One, One>;
-    using n31 = Unsigned<One, One, One, One, One>;
-    using n32 = Unsigned<Zero, Zero, Zero, Zero, Zero, One>;
-    using n33 = Unsigned<One, Zero, Zero, Zero, Zero, One>;
-    using n34 = Unsigned<Zero, One, Zero, Zero, Zero, One>;
-    using n35 = Unsigned<One, One, Zero, Zero, Zero, One>;
-    using n36 = Unsigned<Zero, Zero, One, Zero, Zero, One>;
-    using n37 = Unsigned<One, Zero, One, Zero, Zero, One>;
-    using n38 = Unsigned<Zero, One, One, Zero, Zero, One>;
-    using n39 = Unsigned<One, One, One, Zero, Zero, One>;
-    using n40 = Unsigned<Zero, Zero, Zero, One, Zero, One>;
-    using n41 = Unsigned<One, Zero, Zero, One, Zero, One>;
-    using n42 = Unsigned<Zero, One, Zero, One, Zero, One>;
-    using n43 = Unsigned<One, One, Zero, One, Zero, One>;
-    using n44 = Unsigned<Zero, Zero, One, One, Zero, One>;
-    using n45 = Unsigned<One, Zero, One, One, Zero, One>;
-    using n46 = Unsigned<Zero, One, One, One, Zero, One>;
-    using n47 = Unsigned<One, One, One, One, Zero, One>;
-    using n48 = Unsigned<Zero, Zero, Zero, Zero, One, One>;
-    using n49 = Unsigned<One, Zero, Zero, Zero, One, One>;
-    using n50 = Unsigned<Zero, One, Zero, Zero, One, One>;
-    using n51 = Unsigned<One, One, Zero, Zero, One, One>;
-    using n52 = Unsigned<Zero, Zero, One, Zero, One, One>;
-    using n53 = Unsigned<One, Zero, One, Zero, One, One>;
-    using n54 = Unsigned<Zero, One, One, Zero, One, One>;
-    using n55 = Unsigned<One, One, One, Zero, One, One>;
-    using n56 = Unsigned<Zero, Zero, Zero, One, One, One>;
-    using n57 = Unsigned<One, Zero, Zero, One, One, One>;
-    using n58 = Unsigned<Zero, One, Zero, One, One, One>;
-    using n59 = Unsigned<One, One, Zero, One, One, One>;
-    using n60 = Unsigned<Zero, Zero, One, One, One, One>;
-    using n61 = Unsigned<One, Zero, One, One, One, One>;
-    using n62 = Unsigned<Zero, One, One, One, One, One>;
-    using n63 = Unsigned<One, One, One, One, One, One>;
-    using n64 = Unsigned<Zero, Zero, Zero, Zero, Zero, Zero, One>;
-
     using N0 = Unsigned<>;
     using N1 = UnsignedInc_v<N0>;
     using N2 = UnsignedInc_v<N1>;
@@ -693,6 +727,7 @@ int main(void)
     static_assert(is_same<A16_1, n16>);
     static_assert(is_same<A16_2, n16>);
 
+    using S0_1 = UnsignedSub_v<n1, n1>;
     using S1 = UnsignedSub_v<n3, n2>;
     using S0 = UnsignedSub_v<n8, n8>;
     using S6 = UnsignedSub_v<n7, n1>;
@@ -717,7 +752,7 @@ int main(void)
     using S22 = UnsignedSub_v<n24, n2>;
     using S23 = UnsignedSub_v<n25, n2>;
     using S24 = UnsignedSub_v<n26, n2>;
-    using S25 = UnsignedSub_v<n27, n2>;
+    using S12 = UnsignedSub_v<n27, n15>;
     using S26 = UnsignedSub_v<n28, n2>;
     using S27 = UnsignedSub_v<n29, n2>;
     using S28 = UnsignedSub_v<n30, n2>;
@@ -736,6 +771,7 @@ int main(void)
 
     static_assert(is_same<S1, n1>);
     static_assert(is_same<S0, n0>);
+    static_assert(is_same<S0_1, n0>);
     static_assert(is_same<S6, n6>);
     static_assert(is_same<S7, n7>);
     static_assert(is_same<S15, n15>);
@@ -758,7 +794,7 @@ int main(void)
     static_assert(is_same<S22, n22>);
     static_assert(is_same<S23, n23>);
     static_assert(is_same<S24, n24>);
-    static_assert(is_same<S25, n25>);
+    static_assert(is_same<S12, n12>);
     static_assert(is_same<S26, n26>);
     static_assert(is_same<S27, n27>);
     static_assert(is_same<S28, n28>);
@@ -774,4 +810,26 @@ int main(void)
     static_assert(is_same<S38, n38>);
     static_assert(is_same<S39, n39>);
     static_assert(is_same<S40, n40>);
+
+    static_assert(is_same<UnsignedLShift_v<n1, n0>, n1>);
+    static_assert(is_same<UnsignedLShift_v<n1, n1>, n2>);
+    static_assert(is_same<UnsignedLShift_v<n2, n2>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n3, n3>, n24>);
+    static_assert(is_same<UnsignedLShift_v<n4, n1>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n5, n2>, n20>);
+    static_assert(is_same<UnsignedLShift_v<n6, n1>, n12>);
+    static_assert(is_same<UnsignedLShift_v<n7, n2>, n28>);
+    static_assert(is_same<UnsignedLShift_v<n8, n1>, n16>);
+    static_assert(is_same<UnsignedLShift_v<n9, n2>, n36>);
+    static_assert(is_same<UnsignedLShift_v<n10, n1>, n20>);
+    static_assert(is_same<UnsignedLShift_v<n0, n5>, n0>);
+    static_assert(is_same<UnsignedLShift_v<n1, n3>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n2, n1>, n4>);
+    static_assert(is_same<UnsignedLShift_v<n3, n2>, n12>);
+    static_assert(is_same<UnsignedLShift_v<n4, n3>, n32>);
+    static_assert(is_same<UnsignedLShift_v<n5, n1>, n10>);
+    static_assert(is_same<UnsignedLShift_v<n6, n2>, n24>);
+    static_assert(is_same<UnsignedLShift_v<n7, n1>, n14>);
+    static_assert(is_same<UnsignedLShift_v<n8, n2>, n32>);
+    static_assert(is_same<UnsignedLShift_v<n1, n4>, n16>);
 }

@@ -1,6 +1,7 @@
 #include "txx/types/bits/literals.hh"
 #include "txx/types/numbers/unsigned/ops/add.hh"
 #include "txx/types/numbers/unsigned/ops/inc.hh"
+#include "txx/types/numbers/unsigned/ops/left_shift.hh"
 #include "txx/types/numbers/unsigned/ops/sub.hh"
 #include "txx/types/numbers/unsigned/ops/mul.hh"
 #include "txx/types/numbers/unsigned/unsigned.hh"
@@ -277,6 +278,7 @@ int main(void)
     static_assert(is_same<A16_2, n16>);
 
     // Subtractions
+    using S0_1 = UnsignedSub_v<n1, n1>;
     using S1 = UnsignedSub_v<n3, n2>;
     using S0 = UnsignedSub_v<n8, n8>;
     using S6 = UnsignedSub_v<n7, n1>;
@@ -301,7 +303,7 @@ int main(void)
     using S22 = UnsignedSub_v<n24, n2>;
     using S23 = UnsignedSub_v<n25, n2>;
     using S24 = UnsignedSub_v<n26, n2>;
-    using S25 = UnsignedSub_v<n27, n2>;
+    using S12 = UnsignedSub_v<n27, n15>;
     using S26 = UnsignedSub_v<n28, n2>;
     using S27 = UnsignedSub_v<n29, n2>;
     using S28 = UnsignedSub_v<n30, n2>;
@@ -320,6 +322,7 @@ int main(void)
 
     static_assert(is_same<S1, n1>);
     static_assert(is_same<S0, n0>);
+    static_assert(is_same<S0_1, n0>);
     static_assert(is_same<S6, n6>);
     static_assert(is_same<S7, n7>);
     static_assert(is_same<S15, n15>);
@@ -342,7 +345,7 @@ int main(void)
     static_assert(is_same<S22, n22>);
     static_assert(is_same<S23, n23>);
     static_assert(is_same<S24, n24>);
-    static_assert(is_same<S25, n25>);
+    static_assert(is_same<S12, n12>);
     static_assert(is_same<S26, n26>);
     static_assert(is_same<S27, n27>);
     static_assert(is_same<S28, n28>);
@@ -358,6 +361,29 @@ int main(void)
     static_assert(is_same<S38, n38>);
     static_assert(is_same<S39, n39>);
     static_assert(is_same<S40, n40>);
+
+    // Left Shifts
+    static_assert(is_same<UnsignedLShift_v<n1, n0>, n1>);
+    static_assert(is_same<UnsignedLShift_v<n1, n1>, n2>);
+    static_assert(is_same<UnsignedLShift_v<n2, n2>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n3, n3>, n24>);
+    static_assert(is_same<UnsignedLShift_v<n4, n1>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n5, n2>, n20>);
+    static_assert(is_same<UnsignedLShift_v<n6, n1>, n12>);
+    static_assert(is_same<UnsignedLShift_v<n7, n2>, n28>);
+    static_assert(is_same<UnsignedLShift_v<n8, n1>, n16>);
+    static_assert(is_same<UnsignedLShift_v<n9, n2>, n36>);
+    static_assert(is_same<UnsignedLShift_v<n10, n1>, n20>);
+    static_assert(is_same<UnsignedLShift_v<n0, n5>, n0>);
+    static_assert(is_same<UnsignedLShift_v<n1, n3>, n8>);
+    static_assert(is_same<UnsignedLShift_v<n2, n1>, n4>);
+    static_assert(is_same<UnsignedLShift_v<n3, n2>, n12>);
+    static_assert(is_same<UnsignedLShift_v<n4, n3>, n32>);
+    static_assert(is_same<UnsignedLShift_v<n5, n1>, n10>);
+    static_assert(is_same<UnsignedLShift_v<n6, n2>, n24>);
+    static_assert(is_same<UnsignedLShift_v<n7, n1>, n14>);
+    static_assert(is_same<UnsignedLShift_v<n8, n2>, n32>);
+    static_assert(is_same<UnsignedLShift_v<n1, n4>, n16>);
 
     /* Stay tuned, this almost works
     using M0 = UnsignedMul_v<n0, n1>;
