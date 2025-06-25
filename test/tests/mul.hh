@@ -5,7 +5,6 @@
 #include "../utils/is_same.hh"
 #include "../utils/numbers.hh"
 
-/* Stay tuned, this almost works
 using M0 = UnsignedMul_v<n0, n1>;
 using M1 = UnsignedMul_v<n1, n1>;
 using M0_1 = UnsignedMul_v<n0, n0>;
@@ -69,4 +68,3 @@ static_assert(is_same<M54, n54>);
 static_assert(is_same<M56, n56>);
 static_assert(is_same<M63, n63>);
 static_assert(is_same<M64, n64>);
-*/

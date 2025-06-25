@@ -33,7 +33,7 @@ Features
   - [x] Addition
   - [x] Subtraction
   - [x] LeftShift
-  - [ ] Multiplication
+  - [x] Multiplication
   - [ ] Division
   - [ ] Comparison
 - [ ] Signed Numbers
