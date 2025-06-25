@@ -2,7 +2,7 @@
 
 #include "types/bits/concept.hh"
 
-// lsb is first Bit (Big-endian)
+// lsb is first Bit (Little-endian)
 //
 // Range of definition is [0; +inf[
 //
