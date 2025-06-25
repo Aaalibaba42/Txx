@@ -2,12 +2,14 @@
 
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
+#include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/ops/add.hh"
 #include "types/numbers/unsigned/ops/inc.hh"
 #include "types/numbers/unsigned/ops/left_shift.hh"
 #include "types/numbers/unsigned/unsigned.hh"
+#include "types/numbers/unsigned/utils/canonicalize.hh"
 
 template <Unsigned_t LHS, Bit_t RHS, Unsigned_t Shift>
 struct MulByBit;

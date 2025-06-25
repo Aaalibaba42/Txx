@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types/numbers/unsigned/concept.hh"
+#include "types/numbers/unsigned/unsigned.hh"
 #include "types/bits/concept.hh"
 #include "types/list/list.hh"
 

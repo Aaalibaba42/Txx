@@ -2,7 +2,11 @@
 
 #include "control_flow/ternary.hh"
 #include "traits/is_same.hh"
+#include "types/bits/concept.hh"
+#include "types/bits/literals.hh"
 #include "types/bits/ops/fulladder.hh"
+#include "types/list/concept.hh"
+#include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/unsigned.hh"

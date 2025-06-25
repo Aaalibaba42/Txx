@@ -1,13 +1,14 @@
 #pragma once
 
+#include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/list/ops/prepend.hh"
+#include "types/list/utils/fromUnsigned.hh"
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/ops/sub.hh"
 #include "types/numbers/unsigned/unsigned.hh"
-#include "types/numbers/unsigned/utils/fromList.hh"
-#include "types/list/utils/fromUnsigned.hh"
 #include "types/numbers/unsigned/utils/canonicalize.hh"
+#include "types/numbers/unsigned/utils/fromList.hh"
 
 template <Unsigned_t Value, Unsigned_t Amount>
 struct UnsignedLShift;
