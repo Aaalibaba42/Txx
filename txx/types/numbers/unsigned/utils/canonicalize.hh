@@ -10,6 +10,11 @@
 #include "types/numbers/unsigned/unsigned.hh"
 #include "types/numbers/unsigned/utils/fromList.hh"
 
+// The technique here is to reverse the bitpack of the number, dropping leading
+// Zeros and reversing it back. Without the Reverse would lead to fewer template
+// instantiation depth, but is quite harder to do, so I don't know if it would
+// even be worth it in the end.
+
 template <List_t List>
 struct DropLeadingZeros;
 

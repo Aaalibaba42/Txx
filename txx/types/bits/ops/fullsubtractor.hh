@@ -5,7 +5,7 @@
 
 // Some of these could be factorized, but it would be less explicit.
 // This is more readable, doesn't hide the logic, and *shouldn't* lose much on
-// compilation time
+// compilation time nor template instantiation depth.
 
 template <Bit_t LHS, Bit_t RHS, Bit_t Borrow>
 struct FullSubtractor;

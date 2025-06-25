@@ -4,19 +4,19 @@
 #include "types/bools/literals.hh"
 
 template <Bool_t B1, Bool_t B2>
-struct LXor;
+struct BoolXor;
 
 template <Bool_t B1, Bool_t B2>
-using LXor_v = LXor<B1, B2>::result;
+using BoolXor_v = BoolXor<B1, B2>::result;
 
 template <Bool_t B1, Bool_t B2>
-struct LXor
+struct BoolXor
 {
     using result = True;
 };
 
 template <Bool_t T>
-struct LXor<T, T>
+struct BoolXor<T, T>
 {
     using result = False;
 };

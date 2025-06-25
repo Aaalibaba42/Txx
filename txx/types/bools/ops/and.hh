@@ -4,25 +4,25 @@
 #include "types/bools/literals.hh"
 
 template <Bool_t... Bools>
-struct LAnd;
+struct BoolAnd;
 
 template <Bool_t... Bools>
-using LAnd_v = LAnd<Bools...>::result;
+using BoolAnd_v = BoolAnd<Bools...>::result;
 
 template <Bool_t LastBool>
-struct LAnd<LastBool>
+struct BoolAnd<LastBool>
 {
     using result = LastBool;
 };
 
 template <Bool_t... Bools>
-struct LAnd<False, Bools...>
+struct BoolAnd<False, Bools...>
 {
     using result = False;
 };
 
 template <Bool_t... Bools>
-struct LAnd<True, Bools...>
+struct BoolAnd<True, Bools...>
 {
-    using result = LAnd_v<Bools...>;
+    using result = BoolAnd_v<Bools...>;
 };

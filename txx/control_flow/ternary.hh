@@ -4,6 +4,12 @@
 #include "types/bools/literals.hh"
 #include "types/meta/any.hh"
 
+/* WARNING:
+    The ternary is **not** lazy. Boths sides will always be evaluated.
+
+    Meaning you **cannot** stop a recursion using this structure.
+*/
+
 template <Bool_t Cond, Any_t Success, Any_t Failure>
 struct Ternary;
 

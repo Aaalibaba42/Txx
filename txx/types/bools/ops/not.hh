@@ -4,19 +4,19 @@
 #include "types/bools/literals.hh"
 
 template <Bool_t Bool>
-struct LNot;
+struct BoolNot;
 
 template <Bool_t Bool>
-using LNot_v = LNot<Bool>::result;
+using BoolNot_v = BoolNot<Bool>::result;
 
 template <>
-struct LNot<True>
+struct BoolNot<True>
 {
     using result = False;
 };
 
 template <>
-struct LNot<False>
+struct BoolNot<False>
 {
     using result = True;
 };

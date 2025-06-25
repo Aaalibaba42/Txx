@@ -2,6 +2,7 @@
 
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
+#include "types/meta/any.hh"
 
 template <List_t In, List_t Acc = List<>>
 struct Reverse;
@@ -15,8 +16,8 @@ struct Reverse<List<>, Acc>
     using result = Acc;
 };
 
-template <typename Head, typename... Tail, List_t Acc>
+template <Any_t Head, Any_t... Tail, List_t Acc>
 struct Reverse<List<Head, Tail...>, Acc>
 {
-    using result = Reverse<List<Tail...>, Prepend_v<Head, Acc>>::result;
+    using result = Reverse_v<List<Tail...>, Prepend_v<Head, Acc>>;
 };
