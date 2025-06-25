@@ -32,6 +32,7 @@ Features
   - [x] Incrementation
   - [x] Addition
   - [x] Subtraction
+  - [x] LeftShift
   - [ ] Multiplication
   - [ ] Division
   - [ ] Comparison
