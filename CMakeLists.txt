@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(typesystem_aoc VERSION 0.1.0 LANGUAGES CXX)
+project(txx VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 

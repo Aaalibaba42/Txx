@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
 #include "types/meta/any.hh"
