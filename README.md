@@ -1,23 +1,20 @@
 Txx
 ===
 
-I was very much inspired my former colleague's
-[funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
-further.
-
-
-Basicly the goal is to create a functional language using only the C++
-typesystem. No literals, No standard library, no constexpr, just the Typesystem.
+Basicly the goal is to create a functional language using only the C++ Type
+System. No literals, No standard library, no constexpr, just the Typesystem.
 
 The goal would be to be able to solve a few [Advent of
 Code](https://adventofcode.com/) exercises using only this.
 
+I was very much inspired my former colleague's
+[funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
+further.
+
 Features
 --------
 
-### Types
-
-#### Booleans:
+### Booleans:
 
 - [x] Literals
 - [x] And
@@ -26,7 +23,7 @@ Features
 - [x] Xor
 
 
-#### Numbers
+### Numbers
 
 - [x] Unsigned Numbers:
   - [x] Incrementation
@@ -74,7 +71,9 @@ Features
   - [ ] GE
   - [ ] EQ
 
-#### Lists
+Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
+
+### Lists
 
 I don't aim to do these unless I need to. These are just ideas of the kind
 of things I'd be capable of doing.
@@ -92,12 +91,12 @@ of things I'd be capable of doing.
 - [ ] i-th
 - [ ] Concat
 
-#### Functions
+### Functions
 
 Functions ought to be first class objects. I guess a function is "just" a
 structure which takes template parameters and has a Result of a certain type.
 
-#### Others
+### Others
 
 Structures that would be nice to have natively:
 - [ ] Sets
@@ -107,3 +106,6 @@ Structures that would be nice to have natively:
 ### Control Flow
 
 - [x] Ternary
+
+This is a function really, it takes an input and returns an output, it will be
+moved and formalized as a function once 1st order functions are implemented.
