@@ -25,7 +25,7 @@ struct UnsignedLShift<Value, Unsigned<>>
 template <Unsigned_t Value, Bit_t... AmountBits>
 struct UnsignedLShift<Value, Unsigned<AmountBits...>>
 {
-    using NewBits = Prepend_v<Zero, ToList_v<Value>>;
+    using NewBits = ListPrepend_v<Zero, ToList_v<Value>>;
     using ShiftedOnce = ToUnsigned_v<NewBits>;
     // TODO Do an optimized decrement operator you lazy fuck, you already have
     // the full subtractor

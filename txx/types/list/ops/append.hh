@@ -5,13 +5,13 @@
 #include "types/meta/any.hh"
 
 template <Any_t Elem, List_t List>
-struct Append;
+struct ListAppend;
 
 template <Any_t Elem, List_t List>
-using Append_v = Append<Elem, List>::result;
+using ListAppend_v = ListAppend<Elem, List>::result;
 
 template <Any_t Elem, Any_t... Rest>
-struct Append<Elem, List<Rest...>>
+struct ListAppend<Elem, List<Rest...>>
 {
     using result = List<Rest..., Elem>;
 };

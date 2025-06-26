@@ -8,38 +8,38 @@
 
 namespace list_append_tests
 {
-    static_assert(is_same<Append_v<n1, List<>>, List<n1>>);
-    static_assert(is_same<Append_v<n2, List<n1>>, List<n1, n2>>);
+    static_assert(is_same<ListAppend_v<n1, List<>>, List<n1>>);
+    static_assert(is_same<ListAppend_v<n2, List<n1>>, List<n1, n2>>);
     static_assert(
-        is_same<Append_v<n4, List<n1, n2, n3>>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Append_v<n5, List<n2, n4>>, List<n2, n4, n5>>);
-    static_assert(is_same<Append_v<n3, List<n1>>, List<n1, n3>>);
+        is_same<ListAppend_v<n4, List<n1, n2, n3>>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListAppend_v<n5, List<n2, n4>>, List<n2, n4, n5>>);
+    static_assert(is_same<ListAppend_v<n3, List<n1>>, List<n1, n3>>);
     static_assert(is_same<List<n1>, List<n1>>);
-    using L6 = Append_v<n3, List<n1, n2>>;
+    using L6 = ListAppend_v<n3, List<n1, n2>>;
     static_assert(is_same<L6, List<n1, n2, n3>>);
-    static_assert(is_same<Append_v<n4, L6>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n4, L6>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2, n3, n4, n5>>,
                           List<n1, n2, n3, n4, n5, n6>>);
     static_assert(
-        is_same<Append_v<n2, List<n2, n3, n2>>, List<n2, n3, n2, n2>>);
-    static_assert(is_same<Append_v<n4, List<n5>>, List<n5, n4>>);
+        is_same<ListAppend_v<n2, List<n2, n3, n2>>, List<n2, n3, n2, n2>>);
+    static_assert(is_same<ListAppend_v<n4, List<n5>>, List<n5, n4>>);
     static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2>>, List<n1, n2, n6>>);
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2>>, List<n1, n2, n6>>);
     static_assert(is_same<List<n1, n2>, List<n1, n2>>);
     static_assert(
-        is_same<Append_v<n3, List<n4, n5, n6>>, List<n4, n5, n6, n3>>);
+        is_same<ListAppend_v<n3, List<n4, n5, n6>>, List<n4, n5, n6, n3>>);
     static_assert(is_same<List<n4, n5, n6>, List<n4, n5, n6>>);
-    static_assert(
-        is_same<Append_v<n1, List<n2, n3, n4, n5>>, List<n2, n3, n4, n5, n1>>);
+    static_assert(is_same<ListAppend_v<n1, List<n2, n3, n4, n5>>,
+                          List<n2, n3, n4, n5, n1>>);
     static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2, n3, n4, n5>>,
                           List<n1, n2, n3, n4, n5, n6>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<Append_v<n2, List<n3, n4, n5, n6, n1, n2>>,
+    static_assert(is_same<ListAppend_v<n2, List<n3, n4, n5, n6, n1, n2>>,
                           List<n3, n4, n5, n6, n1, n2, n2>>);
     static_assert(
         is_same<List<n3, n4, n5, n6, n1, n2>, List<n3, n4, n5, n6, n1, n2>>);
-    static_assert(is_same<Append_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
                           List<n5, n6, n1, n2, n3, n4, n5, n4>>);
     static_assert(is_same<List<n5, n6, n1, n2, n3, n4, n5>,
                           List<n5, n6, n1, n2, n3, n4, n5>>);

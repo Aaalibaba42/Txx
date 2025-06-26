@@ -51,8 +51,8 @@ struct Canonicalize;
 template <Bit_t... Bits>
 struct Canonicalize<Unsigned<Bits...>>
 {
-    using rev = Reverse_v<List<Bits...>>;
+    using rev = ListReverse_v<List<Bits...>>;
     using stripped = DropLeadingZeros_v<rev>;
-    using result_list = Reverse_v<stripped>;
+    using result_list = ListReverse_v<stripped>;
     using result = ToUnsigned_v<result_list>;
 };

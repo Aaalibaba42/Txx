@@ -31,7 +31,7 @@ struct AddCarry<List<Curr, Rest...>, Carry>
 
     using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
 
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 template <Unsigned_t Num>

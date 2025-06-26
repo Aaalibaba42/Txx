@@ -31,7 +31,7 @@ struct SubUnsignedCarry<List<L0, LRest...>, List<>, Borrow>
     using FS = FullSubtractor<L0, Zero, Borrow>;
     using tail =
         SubUnsignedCarry_v<List<LRest...>, List<>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
 };
 
 template <Bit_t R0, Bit_t... RRest, Bit_t Borrow>
@@ -40,7 +40,7 @@ struct SubUnsignedCarry<List<>, List<R0, RRest...>, Borrow>
     using FS = FullSubtractor<Zero, R0, Borrow>;
     using tail =
         SubUnsignedCarry_v<List<>, List<RRest...>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
 };
 template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Borrow>
 struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
@@ -48,7 +48,7 @@ struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
     using FS = FullSubtractor<L0, R0, Borrow>;
     using tail =
         SubUnsignedCarry_v<List<LRest...>, List<RRest...>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
 };
 
 template <Unsigned_t LHS, Unsigned_t RHS>

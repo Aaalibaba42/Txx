@@ -31,7 +31,7 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<>, Carry>
 {
     using FA = FullAdder<L0, Carry>;
     using tail = AddUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 // LHS is empty, propagate on RHS
@@ -40,7 +40,7 @@ struct AddUnsignedCarry<List<>, List<R0, RRest...>, Carry>
 {
     using FA = FullAdder<R0, Carry>;
     using tail = AddUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 // Base case
@@ -55,7 +55,7 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     using next_carry = FullAdder<typename FA1::Carry, typename FA2::Carry>::Sum;
 
     using tail = AddUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
-    using result = Prepend_v<result_sum, tail>;
+    using result = ListPrepend_v<result_sum, tail>;
 };
 
 template <Unsigned_t LHS, Unsigned_t RHS>
