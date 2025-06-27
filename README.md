@@ -37,7 +37,7 @@ Features
   - [ ] LE
   - [ ] GT
   - [ ] GE
-  - [ ] EQ
+  - [x] EQ
 - [ ] Signed Numbers
   - [ ] Incrementation
   - [ ] Addition
