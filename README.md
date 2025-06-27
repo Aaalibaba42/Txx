@@ -3,11 +3,12 @@ Txx
 
 Basicly the goal is to create a functional language using only the C++ Type
 System. No literals, No standard library, no constexpr, just the Typesystem.
+In other words, there are 0 (zero) *values* in the code, just Types.
 
 The goal would be to be able to solve a few [Advent of
 Code](https://adventofcode.com/) exercises using only this.
 
-I was very much inspired my former colleague's
+I was very much inspired by my former colleague's
 [funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
 further.
 
@@ -33,10 +34,10 @@ Features
   - [ ] RightShift
   - [x] Multiplication
   - [ ] Division
-  - [ ] LT
-  - [ ] LE
-  - [ ] GT
-  - [ ] GE
+  - [x] LT
+  - [x] LE
+  - [x] GT
+  - [x] GE
   - [x] EQ
 - [ ] Signed Numbers
   - [ ] Incrementation

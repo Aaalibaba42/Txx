@@ -5,11 +5,11 @@
 #include "types/numbers/unsigned/concept.hh"
 #include "types/numbers/unsigned/ops/sub.hh"
 
-template <List_t List, Any_t Elem, Unsigned_t Position>
+template <List_t L, Any_t Elem, Unsigned_t Position>
 struct ListSet;
 
-template <List_t List, Any_t Elem, Unsigned_t Position>
-using ListSet_v = typename ListSet<List, Elem, Position>::result;
+template <List_t L, Any_t Elem, Unsigned_t Position>
+using ListSet_v = typename ListSet<L, Elem, Position>::result;
 
 // List is empty
 template <Any_t Elem, Unsigned_t Position>
