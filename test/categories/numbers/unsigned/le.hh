@@ -2,8 +2,8 @@
 
 #include "types/numbers/unsigned/ops/le.hh"
 
-#include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../../../utils/is_same.hh"
+#include "../../../utils/numbers.hh"
 
 namespace unsigned_le_tests
 {

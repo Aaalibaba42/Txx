@@ -2,8 +2,8 @@
 
 #include "types/numbers/unsigned/ops/add.hh"
 
-#include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../../../utils/is_same.hh"
+#include "../../../utils/numbers.hh"
 
 namespace unsigned_add_tests
 {

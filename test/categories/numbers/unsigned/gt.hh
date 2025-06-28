@@ -2,8 +2,8 @@
 
 #include "types/numbers/unsigned/ops/gt.hh"
 
-#include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../../../utils/is_same.hh"
+#include "../../../utils/numbers.hh"
 
 namespace unsigned_gt_tests
 {
