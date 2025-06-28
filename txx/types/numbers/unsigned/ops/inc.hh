@@ -12,36 +12,41 @@
 #include "types/numbers/unsigned/unsigned.hh"
 #include "types/numbers/unsigned/utils/fromList.hh"
 
-template <List_t List, Bit_t Carry>
-struct AddCarry;
-
-template <List_t List, Bit_t Carry>
-using AddCarry_v = AddCarry<List, Carry>::result;
-
-template <Bit_t Carry>
-struct AddCarry<List<>, Carry>
+namespace UnsignedIncImpl
 {
-    using result = Ternary_v<IsSame_v<Carry, One>, List<One>, List<>>;
-};
+    template <List_t List, Bit_t Carry>
+    struct AddCarry;
 
-template <Bit_t Curr, Bit_t... Rest, Bit_t Carry>
-struct AddCarry<List<Curr, Rest...>, Carry>
-{
-    using FA = FullAdder<Curr, Carry>;
+    template <List_t List, Bit_t Carry>
+    using AddCarry_v = AddCarry<List, Carry>::result;
 
-    using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
+    template <Bit_t Carry>
+    struct AddCarry<List<>, Carry>
+    {
+        using result = Ternary_v<IsSame_v<Carry, One>, List<One>, List<>>;
+    };
 
-    using result = ListPrepend_v<typename FA::Sum, tail>;
-};
+    template <Bit_t Curr, Bit_t... Rest, Bit_t Carry>
+    struct AddCarry<List<Curr, Rest...>, Carry>
+    {
+        using FA = FullAdder<Curr, Carry>;
 
-template <Unsigned_t Num>
-struct UnsignedInc;
+        using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
 
-template <Unsigned_t Num>
-using UnsignedInc_v = UnsignedInc<Num>::result;
+        using result = ListPrepend_v<typename FA::Sum, tail>;
+    };
 
-template <Bit_t... Bits>
-struct UnsignedInc<Unsigned<Bits...>>
-{
-    using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
-};
+    template <Unsigned_t Num>
+    struct UnsignedInc;
+
+    template <Unsigned_t Num>
+    using UnsignedInc_v = UnsignedInc<Num>::result;
+
+    template <Bit_t... Bits>
+    struct UnsignedInc<Unsigned<Bits...>>
+    {
+        using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
+    };
+} // namespace UnsignedIncImpl
+
+using UnsignedIncImpl::UnsignedInc_v;

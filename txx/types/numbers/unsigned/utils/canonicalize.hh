@@ -16,43 +16,48 @@
 // instantiation depth, but is quite harder to do, so I don't know if it would
 // even be worth it in the end.
 
-template <List_t List>
-struct DropLeadingZeros;
-
-template <List_t List>
-using DropLeadingZeros_v = DropLeadingZeros<List>::result;
-
-template <>
-struct DropLeadingZeros<List<>>
+namespace CanonicalizeImpl
 {
-    using result = List<>;
-};
+    template <List_t List>
+    struct DropLeadingZeros;
 
-template <Bit_t Head, Bit_t... Tail>
-struct DropLeadingZeros<List<Head, Tail...>>
-{
-private:
-    using TailResult = DropLeadingZeros_v<List<Tail...>>;
+    template <List_t List>
+    using DropLeadingZeros_v = DropLeadingZeros<List>::result;
 
-public:
-    using result =
-        Ternary_v<IsSame_v<Head, Zero>, TailResult, List<Head, Tail...>>;
-};
+    template <>
+    struct DropLeadingZeros<List<>>
+    {
+        using result = List<>;
+    };
 
-template <Unsigned_t Number>
-struct Canonicalize;
+    template <Bit_t Head, Bit_t... Tail>
+    struct DropLeadingZeros<List<Head, Tail...>>
+    {
+    private:
+        using TailResult = DropLeadingZeros_v<List<Tail...>>;
 
-template <Unsigned_t Number>
-using Canonicalize_v = Canonicalize<Number>::result;
+    public:
+        using result =
+            Ternary_v<IsSame_v<Head, Zero>, TailResult, List<Head, Tail...>>;
+    };
 
-template <Unsigned_t Number>
-struct Canonicalize;
+    template <Unsigned_t Number>
+    struct Canonicalize;
 
-template <Bit_t... Bits>
-struct Canonicalize<Unsigned<Bits...>>
-{
-    using rev = ListReverse_v<List<Bits...>>;
-    using stripped = DropLeadingZeros_v<rev>;
-    using result_list = ListReverse_v<stripped>;
-    using result = ToUnsigned_v<result_list>;
-};
+    template <Unsigned_t Number>
+    using Canonicalize_v = Canonicalize<Number>::result;
+
+    template <Unsigned_t Number>
+    struct Canonicalize;
+
+    template <Bit_t... Bits>
+    struct Canonicalize<Unsigned<Bits...>>
+    {
+        using rev = ListReverse_v<List<Bits...>>;
+        using stripped = DropLeadingZeros_v<rev>;
+        using result_list = ListReverse_v<stripped>;
+        using result = ToUnsigned_v<result_list>;
+    };
+} // namespace CanonicalizeImpl
+
+using CanonicalizeImpl::Canonicalize_v;

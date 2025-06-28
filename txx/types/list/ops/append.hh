@@ -4,14 +4,19 @@
 #include "types/list/list.hh"
 #include "types/meta/any.hh"
 
-template <Any_t Elem, List_t List>
-struct ListAppend;
-
-template <Any_t Elem, List_t List>
-using ListAppend_v = ListAppend<Elem, List>::result;
-
-template <Any_t Elem, Any_t... Rest>
-struct ListAppend<Elem, List<Rest...>>
+namespace ListAppendImpl
 {
-    using result = List<Rest..., Elem>;
-};
+    template <Any_t Elem, List_t List>
+    struct ListAppend;
+
+    template <Any_t Elem, List_t List>
+    using ListAppend_v = ListAppend<Elem, List>::result;
+
+    template <Any_t Elem, Any_t... Rest>
+    struct ListAppend<Elem, List<Rest...>>
+    {
+        using result = List<Rest..., Elem>;
+    };
+} // namespace ListAppendImpl
+
+using ListAppendImpl::ListAppend_v;

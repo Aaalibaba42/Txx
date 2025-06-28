@@ -5,14 +5,19 @@
 #include "types/list/list.hh"
 #include "types/numbers/unsigned/unsigned.hh"
 
-template <List_t List>
-struct ToUnsigned;
-
-template <List_t List>
-using ToUnsigned_v = ToUnsigned<List>::result;
-
-template <Bit_t... Bits>
-struct ToUnsigned<List<Bits...>>
+namespace ToUnsignedImpl
 {
-    using result = Unsigned<Bits...>;
-};
+    template <List_t List>
+    struct ToUnsigned;
+
+    template <List_t List>
+    using ToUnsigned_v = ToUnsigned<List>::result;
+
+    template <Bit_t... Bits>
+    struct ToUnsigned<List<Bits...>>
+    {
+        using result = Unsigned<Bits...>;
+    };
+} // namespace ToUnsignedImpl
+
+using ToUnsignedImpl::ToUnsigned_v;

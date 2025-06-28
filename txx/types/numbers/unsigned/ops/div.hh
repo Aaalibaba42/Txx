@@ -13,73 +13,79 @@
 #include "types/numbers/unsigned/utils/canonicalize.hh"
 #include "types/numbers/unsigned/utils/fromList.hh"
 
-template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
-          List_t QuotientMSB>
-struct UnsignedDivStep;
-
-template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
-          List_t QuotientMSB>
-using UnsignedDivStep_quot =
-    UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
-
-template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
-          List_t QuotientMSB>
-using UnsignedDivStep_rem =
-    UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
-
-// No more bits
-template <Unsigned_t Divisor, Unsigned_t Remainder, List_t QuotientMSB>
-struct UnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
+namespace UnsignedDivImpl
 {
-    using quotient = QuotientMSB;
-    using remainder = Remainder;
-};
+    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+              List_t QuotientMSB>
+    struct UnsignedDivStep;
 
-template <Bit_t B0, Bit_t... BRest, Unsigned_t Divisor, Unsigned_t Remainder,
-          List_t QuotientMSB>
-struct UnsignedDivStep<List<B0, BRest...>, Divisor, Remainder, QuotientMSB>
-{
-    using Shifted = UnsignedLShift_v<Remainder, Unsigned<One>>;
-    using NewRem = UnsignedAdd_v<Shifted, Unsigned<B0>>;
+    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+              List_t QuotientMSB>
+    using UnsignedDivStep_quot =
+        UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
 
-    using UpdatedRem = Ternary_v<UnsignedGE_v<NewRem, Divisor>,
-                                 UnsignedSub_v<NewRem, Divisor>, NewRem>;
+    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+              List_t QuotientMSB>
+    using UnsignedDivStep_rem =
+        UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
 
-    using NewQuot =
-        ListAppend_v<Ternary_v<UnsignedGE_v<NewRem, Divisor>, One, Zero>,
-                     QuotientMSB>;
+    // No more bits
+    template <Unsigned_t Divisor, Unsigned_t Remainder, List_t QuotientMSB>
+    struct UnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
+    {
+        using quotient = QuotientMSB;
+        using remainder = Remainder;
+    };
 
-    using Rec = UnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
+    template <Bit_t B0, Bit_t... BRest, Unsigned_t Divisor,
+              Unsigned_t Remainder, List_t QuotientMSB>
+    struct UnsignedDivStep<List<B0, BRest...>, Divisor, Remainder, QuotientMSB>
+    {
+        using Shifted = UnsignedLShift_v<Remainder, Unsigned<One>>;
+        using NewRem = UnsignedAdd_v<Shifted, Unsigned<B0>>;
 
-    using quotient = Rec::quotient;
-    using remainder = Rec::remainder;
-};
+        using UpdatedRem = Ternary_v<UnsignedGE_v<NewRem, Divisor>,
+                                     UnsignedSub_v<NewRem, Divisor>, NewRem>;
 
-template <Unsigned_t LHS, Unsigned_t RHS>
-struct UnsignedDivModCommon;
+        using NewQuot =
+            ListAppend_v<Ternary_v<UnsignedGE_v<NewRem, Divisor>, One, Zero>,
+                         QuotientMSB>;
 
-template <Bit_t... LHSBits>
-struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<>>
-{
-    static_assert(false, "UnsignedModDivCommon: Division by 0");
-};
+        using Rec =
+            UnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
 
-template <Bit_t... LHSBits, Bit_t... RHSBits>
-struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<RHSBits...>>
-{
-    using LHSList = List<LHSBits...>;
-    using RHSNum = Unsigned<RHSBits...>;
-    using LHSBitsMSB = ListReverse_v<LHSList>;
+        using quotient = Rec::quotient;
+        using remainder = Rec::remainder;
+    };
 
-    using Quotient = ListReverse_v<
-        UnsignedDivStep_quot<LHSBitsMSB, RHSNum, Unsigned<>, List<>>>;
+    template <Unsigned_t LHS, Unsigned_t RHS>
+    struct UnsignedDivModCommon;
 
-    using DivStep = UnsignedDivStep<LHSBitsMSB, RHSNum, Unsigned<>, List<>>;
+    template <Bit_t... LHSBits>
+    struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<>>
+    {
+        static_assert(false, "UnsignedModDivCommon: Division by 0");
+    };
 
-    using remainder = Canonicalize_v<typename DivStep::remainder>;
-    using quotient =
-        Canonicalize_v<ToUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
-};
+    template <Bit_t... LHSBits, Bit_t... RHSBits>
+    struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<RHSBits...>>
+    {
+        using LHSList = List<LHSBits...>;
+        using RHSNum = Unsigned<RHSBits...>;
+        using LHSBitsMSB = ListReverse_v<LHSList>;
 
-template <Unsigned_t LHS, Unsigned_t RHS>
-using UnsignedDiv_v = UnsignedDivModCommon<LHS, RHS>::quotient;
+        using Quotient = ListReverse_v<
+            UnsignedDivStep_quot<LHSBitsMSB, RHSNum, Unsigned<>, List<>>>;
+
+        using DivStep = UnsignedDivStep<LHSBitsMSB, RHSNum, Unsigned<>, List<>>;
+
+        using remainder = Canonicalize_v<typename DivStep::remainder>;
+        using quotient = Canonicalize_v<
+            ToUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
+    };
+
+    template <Unsigned_t LHS, Unsigned_t RHS>
+    using UnsignedDiv_v = UnsignedDivModCommon<LHS, RHS>::quotient;
+} // namespace UnsignedDivImpl
+
+using UnsignedDivImpl::UnsignedDiv_v;

@@ -5,14 +5,19 @@
 #include "types/bits/concept.hh"
 #include "types/list/list.hh"
 
-template <Unsigned_t T>
-struct ToList;
-
-template <Unsigned_t T>
-using ToList_v = ToList<T>::result;
-
-template <Bit_t... Bits>
-struct ToList<Unsigned<Bits...>>
+namespace ToListImpl
 {
-    using result = List<Bits...>;
-};
+    template <Unsigned_t T>
+    struct ToList;
+
+    template <Unsigned_t T>
+    using ToList_v = ToList<T>::result;
+
+    template <Bit_t... Bits>
+    struct ToList<Unsigned<Bits...>>
+    {
+        using result = List<Bits...>;
+    };
+} // namespace ToListImpl
+
+using ToListImpl::ToList_v;
