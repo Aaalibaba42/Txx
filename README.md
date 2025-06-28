@@ -33,7 +33,8 @@ Features
   - [x] LeftShift
   - [ ] RightShift
   - [x] Multiplication
-  - [ ] Division
+  - [x] Division
+  - [x] Mod
   - [x] LT
   - [x] LE
   - [x] GT

@@ -99,18 +99,7 @@ struct FullAdder<One, One>
 };
 
 template <Any_t... Elems>
-struct List;
-
-template <Any_t Curr, Any_t... Rest>
-struct List<Curr, Rest...>
-{};
-
-template <Any_t Curr>
-struct List<Curr>
-{};
-
-template <>
-struct List<>
+struct List
 {};
 
 template <Any_t... Elems>
@@ -122,13 +111,13 @@ concept List_t = requires(T list) {
 };
 
 template <Any_t Elem, List_t List>
-struct Prepend;
+struct ListPrepend;
 
 template <Any_t Elem, List_t List>
-using Prepend_v = Prepend<Elem, List>::result;
+using ListPrepend_v = ListPrepend<Elem, List>::result;
 
 template <Any_t Elem, Any_t... Rest>
-struct Prepend<Elem, List<Rest...>>
+struct ListPrepend<Elem, List<Rest...>>
 {
     using result = List<Elem, Rest...>;
 };
@@ -174,7 +163,7 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<>, Carry>
 {
     using FA = FullAdder<L0, Carry>;
     using tail = AddUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 template <Bit_t R0, Bit_t... RRest, Bit_t Carry>
@@ -182,7 +171,7 @@ struct AddUnsignedCarry<List<>, List<R0, RRest...>, Carry>
 {
     using FA = FullAdder<R0, Carry>;
     using tail = AddUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Carry>
@@ -196,7 +185,7 @@ struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     using next_carry = FullAdder<typename FA1::Carry, typename FA2::Carry>::Sum;
 
     using tail = AddUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
-    using result = Prepend_v<result_sum, tail>;
+    using result = ListPrepend_v<result_sum, tail>;
 };
 
 template <Unsigned_t LHS, Unsigned_t RHS>
@@ -349,6 +338,36 @@ namespace unsigned_add_tests
     static_assert(is_same<A16_2, n16>);
 } // namespace unsigned_add_tests
 
+template <Any_t Elem, List_t List>
+struct ListAppend;
+
+template <Any_t Elem, List_t List>
+using ListAppend_v = ListAppend<Elem, List>::result;
+
+template <Any_t Elem, Any_t... Rest>
+struct ListAppend<Elem, List<Rest...>>
+{
+    using result = List<Rest..., Elem>;
+};
+
+template <List_t In, List_t Acc = List<>>
+struct ListReverse;
+
+template <List_t In, List_t Acc = List<>>
+using ListReverse_v = ListReverse<In, Acc>::result;
+
+template <List_t Acc>
+struct ListReverse<List<>, Acc>
+{
+    using result = Acc;
+};
+
+template <Any_t Head, Any_t... Tail, List_t Acc>
+struct ListReverse<List<Head, Tail...>, Acc>
+{
+    using result = ListReverse_v<List<Tail...>, ListPrepend_v<Head, Acc>>;
+};
+
 template <List_t List, Bit_t Carry>
 struct AddCarry;
 
@@ -368,7 +387,7 @@ struct AddCarry<List<Curr, Rest...>, Carry>
 
     using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
 
-    using result = Prepend_v<typename FA::Sum, tail>;
+    using result = ListPrepend_v<typename FA::Sum, tail>;
 };
 
 template <Unsigned_t Num>
@@ -382,6 +401,548 @@ struct UnsignedInc<Unsigned<Bits...>>
 {
     using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
 };
+
+template <List_t L>
+struct ListLength;
+
+template <List_t L>
+using ListLength_v = typename ListLength<L>::result;
+
+template <>
+struct ListLength<List<>>
+{
+    using result = Unsigned<>;
+};
+
+template <Any_t Head, Any_t... Tail>
+struct ListLength<List<Head, Tail...>>
+{
+    using result = UnsignedInc_v<ListLength_v<List<Tail...>>>;
+};
+
+template <List_t LHS, List_t RHS>
+struct UnsignedGreaterEqImpl;
+
+template <List_t LHS, List_t RHS>
+using UnsignedGreaterEqImpl_v = UnsignedGreaterEqImpl<LHS, RHS>::result;
+
+template <>
+struct UnsignedGreaterEqImpl<List<>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t... RRest>
+struct UnsignedGreaterEqImpl<List<>, List<RRest...>>
+{
+    using result = False;
+};
+
+template <Bit_t... LRest>
+struct UnsignedGreaterEqImpl<List<LRest...>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
+struct UnsignedGreaterEqImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
+{
+    using result = UnsignedGreaterEqImpl_v<List<LRest...>, List<RRest...>>;
+};
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct UnsignedGreaterEqImpl<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = IsSame_v<L0, One>;
+};
+
+template <List_t LHS, List_t RHS>
+struct GEImplIsRHSLongest;
+
+template <List_t LHS, List_t RHS>
+using GEImplIsLHSLongest_v = GEImplIsRHSLongest<LHS, RHS>::result;
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct GEImplIsRHSLongest<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = GEImplIsLHSLongest_v<List<LRest...>, List<RRest...>>;
+};
+
+template <>
+struct GEImplIsRHSLongest<List<>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t... LRest>
+struct GEImplIsRHSLongest<List<LRest...>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t... RRest>
+struct GEImplIsRHSLongest<List<>, List<RRest...>>
+{
+    using result = False;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedGE;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedGE_v = UnsignedGE<LHS, RHS>::result;
+
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedGE<Unsigned<LHS...>, Unsigned<RHS...>>
+{
+    using LList = List<LHS...>;
+    using RList = List<RHS...>;
+    using result = Ternary_v<
+
+        IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+
+        UnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
+                                ListReverse_v<List<RHS...>>>,
+
+        GEImplIsLHSLongest_v<LList, RList>>;
+};
+
+template <Unsigned_t T>
+struct ToList;
+
+template <Unsigned_t T>
+using ToList_v = ToList<T>::result;
+
+template <Bit_t... Bits>
+struct ToList<Unsigned<Bits...>>
+{
+    using result = List<Bits...>;
+};
+
+template <Bit_t LHS, Bit_t RHS, Bit_t Borrow>
+struct FullSubtractor;
+
+template <>
+struct FullSubtractor<Zero, Zero, Zero>
+{
+    using Diff = Zero;
+    using Borrow = Zero;
+};
+
+template <>
+struct FullSubtractor<Zero, Zero, One>
+{
+    using Diff = One;
+    using Borrow = One;
+};
+
+template <>
+struct FullSubtractor<Zero, One, Zero>
+{
+    using Diff = One;
+    using Borrow = One;
+};
+
+template <>
+struct FullSubtractor<Zero, One, One>
+{
+    using Diff = Zero;
+    using Borrow = One;
+};
+
+template <>
+struct FullSubtractor<One, Zero, Zero>
+{
+    using Diff = One;
+    using Borrow = Zero;
+};
+
+template <>
+struct FullSubtractor<One, Zero, One>
+{
+    using Diff = Zero;
+    using Borrow = Zero;
+};
+
+template <>
+struct FullSubtractor<One, One, Zero>
+{
+    using Diff = Zero;
+    using Borrow = Zero;
+};
+
+template <>
+struct FullSubtractor<One, One, One>
+{
+    using Diff = One;
+    using Borrow = One;
+};
+
+template <List_t List>
+struct DropLeadingZeros;
+
+template <List_t List>
+using DropLeadingZeros_v = DropLeadingZeros<List>::result;
+
+template <>
+struct DropLeadingZeros<List<>>
+{
+    using result = List<>;
+};
+
+template <Bit_t Head, Bit_t... Tail>
+struct DropLeadingZeros<List<Head, Tail...>>
+{
+private:
+    using TailResult = DropLeadingZeros_v<List<Tail...>>;
+
+public:
+    using result =
+        Ternary_v<IsSame_v<Head, Zero>, TailResult, List<Head, Tail...>>;
+};
+
+template <Unsigned_t Number>
+struct Canonicalize;
+
+template <Unsigned_t Number>
+using Canonicalize_v = Canonicalize<Number>::result;
+
+template <Unsigned_t Number>
+struct Canonicalize;
+
+template <Bit_t... Bits>
+struct Canonicalize<Unsigned<Bits...>>
+{
+    using rev = ListReverse_v<List<Bits...>>;
+    using stripped = DropLeadingZeros_v<rev>;
+    using result_list = ListReverse_v<stripped>;
+    using result = ToUnsigned_v<result_list>;
+};
+
+template <List_t LHS, List_t RHS, Bit_t Borrow>
+struct SubUnsignedCarry;
+
+template <List_t LHS, List_t RHS, Bit_t Borrow>
+using SubUnsignedCarry_v = SubUnsignedCarry<LHS, RHS, Borrow>::result;
+
+template <Bit_t Borrow>
+struct SubUnsignedCarry<List<>, List<>, Borrow>
+{
+    using result = Ternary_v<IsSame_v<Borrow, One>, List<>, List<>>;
+};
+
+template <Bit_t L0, Bit_t... LRest, Bit_t Borrow>
+struct SubUnsignedCarry<List<L0, LRest...>, List<>, Borrow>
+{
+    using FS = FullSubtractor<L0, Zero, Borrow>;
+    using tail =
+        SubUnsignedCarry_v<List<LRest...>, List<>, typename FS::Borrow>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
+};
+
+template <Bit_t R0, Bit_t... RRest, Bit_t Borrow>
+struct SubUnsignedCarry<List<>, List<R0, RRest...>, Borrow>
+{
+    using FS = FullSubtractor<Zero, R0, Borrow>;
+    using tail =
+        SubUnsignedCarry_v<List<>, List<RRest...>, typename FS::Borrow>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
+};
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Borrow>
+struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
+{
+    using FS = FullSubtractor<L0, R0, Borrow>;
+    using tail =
+        SubUnsignedCarry_v<List<LRest...>, List<RRest...>, typename FS::Borrow>;
+    using result = ListPrepend_v<typename FS::Diff, tail>;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedSub;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedSub_v = UnsignedSub<LHS, RHS>::result;
+
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedSub<Unsigned<LHS...>, Unsigned<RHS...>>
+{
+    using result = Canonicalize_v<
+        ToUnsigned_v<SubUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
+};
+
+template <Unsigned_t Value, Unsigned_t Amount>
+struct UnsignedLShift;
+
+template <Unsigned_t Value, Unsigned_t Amount>
+using UnsignedLShift_v = UnsignedLShift<Value, Amount>::result;
+
+template <Unsigned_t Value>
+struct UnsignedLShift<Value, Unsigned<>>
+{
+    using result = Value;
+};
+
+template <Unsigned_t Value, Bit_t... AmountBits>
+struct UnsignedLShift<Value, Unsigned<AmountBits...>>
+{
+    using NewBits = ListPrepend_v<Zero, ToList_v<Value>>;
+    using ShiftedOnce = ToUnsigned_v<NewBits>;
+
+    using Decrement = UnsignedSub_v<Unsigned<AmountBits...>, Unsigned<One>>;
+    using result = Canonicalize_v<UnsignedLShift_v<ShiftedOnce, Decrement>>;
+};
+
+template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+          List_t QuotientMSB>
+struct UnsignedDivStep;
+
+template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+          List_t QuotientMSB>
+using UnsignedDivStep_quot =
+    UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
+
+template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+          List_t QuotientMSB>
+using UnsignedDivStep_rem =
+    UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
+
+template <Unsigned_t Divisor, Unsigned_t Remainder, List_t QuotientMSB>
+struct UnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
+{
+    using quotient = QuotientMSB;
+    using remainder = Remainder;
+};
+
+template <Bit_t B0, Bit_t... BRest, Unsigned_t Divisor, Unsigned_t Remainder,
+          List_t QuotientMSB>
+struct UnsignedDivStep<List<B0, BRest...>, Divisor, Remainder, QuotientMSB>
+{
+    using Shifted = UnsignedLShift_v<Remainder, Unsigned<One>>;
+    using NewRem = UnsignedAdd_v<Shifted, Unsigned<B0>>;
+
+    using UpdatedRem = Ternary_v<UnsignedGE_v<NewRem, Divisor>,
+                                 UnsignedSub_v<NewRem, Divisor>, NewRem>;
+
+    using NewQuot =
+        ListAppend_v<Ternary_v<UnsignedGE_v<NewRem, Divisor>, One, Zero>,
+                     QuotientMSB>;
+
+    using Rec = UnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
+
+    using quotient = Rec::quotient;
+    using remainder = Rec::remainder;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedDivModCommon;
+
+template <Bit_t... LHSBits>
+struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<>>
+{
+    static_assert(false, "UnsignedModDivCommon: Division by 0");
+};
+
+template <Bit_t... LHSBits, Bit_t... RHSBits>
+struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<RHSBits...>>
+{
+    using LHSList = List<LHSBits...>;
+    using RHSNum = Unsigned<RHSBits...>;
+    using LHSBitsMSB = ListReverse_v<LHSList>;
+
+    using Quotient = ListReverse_v<
+        UnsignedDivStep_quot<LHSBitsMSB, RHSNum, Unsigned<>, List<>>>;
+
+    using DivStep = UnsignedDivStep<LHSBitsMSB, RHSNum, Unsigned<>, List<>>;
+
+    using remainder = Canonicalize_v<typename DivStep::remainder>;
+    using quotient =
+        Canonicalize_v<ToUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedDiv_v = UnsignedDivModCommon<LHS, RHS>::quotient;
+static_assert(is_same<UnsignedDiv_v<n1, n2>, n0>);
+static_assert(is_same<UnsignedDiv_v<n5, n5>, n1>);
+static_assert(is_same<UnsignedDiv_v<n10, n2>, n5>);
+static_assert(is_same<UnsignedDiv_v<n10, n1>, n10>);
+static_assert(is_same<UnsignedDiv_v<n0, n5>, n0>);
+static_assert(is_same<UnsignedDiv_v<n20, n4>, n5>);
+static_assert(is_same<UnsignedDiv_v<n50, n10>, n5>);
+static_assert(is_same<UnsignedDiv_v<n64, n2>, n32>);
+static_assert(is_same<UnsignedDiv_v<n25, n3>, n8>);
+static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
+static_assert(is_same<UnsignedDiv_v<n50, n25>, n2>);
+static_assert(is_same<UnsignedDiv_v<n64, n63>, n1>);
+static_assert(is_same<UnsignedDiv_v<n64, n16>, n4>);
+static_assert(is_same<UnsignedDiv_v<n15, n1>, n15>);
+static_assert(is_same<UnsignedDiv_v<n10, n3>, n3>);
+static_assert(is_same<UnsignedDiv_v<n64, n64>, n1>);
+static_assert(is_same<UnsignedDiv_v<n30, n7>, n4>);
+static_assert(is_same<UnsignedDiv_v<n17, n5>, n3>);
+static_assert(is_same<UnsignedDiv_v<n50, n26>, n1>);
+static_assert(is_same<UnsignedDiv_v<n50, n24>, n2>);
+static_assert(is_same<UnsignedDiv_v<n1, n64>, n0>);
+static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
+static_assert(is_same<UnsignedDiv_v<n10, n20>, n0>);
+static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedEq;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedEq_v = UnsignedEq<LHS, RHS>::result;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedEq
+{
+    using result = IsSame_v<LHS, RHS>;
+};
+
+static_assert(is_same<UnsignedEq_v<n1, n1>, True>);
+static_assert(is_same<UnsignedEq_v<n1, n2>, False>);
+static_assert(is_same<UnsignedEq_v<n5, n5>, True>);
+static_assert(is_same<UnsignedEq_v<n5, n6>, False>);
+static_assert(is_same<UnsignedEq_v<n10, n10>, True>);
+static_assert(is_same<UnsignedEq_v<n10, n11>, False>);
+static_assert(is_same<UnsignedEq_v<n0, n0>, True>);
+static_assert(is_same<UnsignedEq_v<n1, n0>, False>);
+static_assert(is_same<UnsignedEq_v<n64, n64>, True>);
+static_assert(is_same<UnsignedEq_v<n64, n63>, False>);
+static_assert(is_same<UnsignedEq_v<n32, n32>, True>);
+static_assert(is_same<UnsignedEq_v<n32, n33>, False>);
+static_assert(is_same<UnsignedEq_v<n1, n1>, True>);
+static_assert(is_same<UnsignedEq_v<n1, n2>, False>);
+static_assert(is_same<UnsignedEq_v<n10, n10>, True>);
+static_assert(is_same<UnsignedEq_v<n10, n20>, False>);
+
+static_assert(is_same<UnsignedGE_v<n1, n2>, False>);
+static_assert(is_same<UnsignedGE_v<n1, n1>, True>);
+static_assert(is_same<UnsignedGE_v<n2, n1>, True>);
+static_assert(is_same<UnsignedGE_v<n10, n20>, False>);
+static_assert(is_same<UnsignedGE_v<n10, n10>, True>);
+static_assert(is_same<UnsignedGE_v<n20, n10>, True>);
+static_assert(is_same<UnsignedGE_v<n63, n64>, False>);
+static_assert(is_same<UnsignedGE_v<n64, n63>, True>);
+static_assert(is_same<UnsignedGE_v<n50, n60>, False>);
+static_assert(is_same<UnsignedGE_v<n50, n50>, True>);
+static_assert(is_same<UnsignedGE_v<n60, n50>, True>);
+static_assert(is_same<UnsignedGE_v<n0, n1>, False>);
+static_assert(is_same<UnsignedGE_v<n0, n0>, True>);
+static_assert(is_same<UnsignedGE_v<n1, n0>, True>);
+static_assert(is_same<UnsignedGE_v<n64, n64>, True>);
+static_assert(is_same<UnsignedGE_v<n10, n30>, False>);
+static_assert(is_same<UnsignedGE_v<n30, n10>, True>);
+static_assert(is_same<UnsignedGE_v<n32, n33>, False>);
+static_assert(is_same<UnsignedGE_v<n33, n33>, True>);
+static_assert(is_same<UnsignedGE_v<n33, n32>, True>);
+
+template <List_t LHS, List_t RHS>
+struct UnsignedGreaterThanImpl;
+
+template <List_t LHS, List_t RHS>
+using UnsignedGreaterThanImpl_v = UnsignedGreaterThanImpl<LHS, RHS>::result;
+
+template <>
+struct UnsignedGreaterThanImpl<List<>, List<>>
+{
+    using result = False;
+};
+
+template <Bit_t... RRest>
+struct UnsignedGreaterThanImpl<List<>, List<RRest...>>
+{
+    using result = False;
+};
+
+template <Bit_t... LRest>
+struct UnsignedGreaterThanImpl<List<LRest...>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
+struct UnsignedGreaterThanImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
+{
+    using result = UnsignedGreaterThanImpl_v<List<LRest...>, List<RRest...>>;
+};
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct UnsignedGreaterThanImpl<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = IsSame_v<L0, One>;
+};
+
+template <List_t LHS, List_t RHS>
+struct GTImplIsRHSLongest;
+
+template <List_t LHS, List_t RHS>
+using GTImplIsLHSLongest_v = GTImplIsRHSLongest<LHS, RHS>::result;
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct GTImplIsRHSLongest<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = GTImplIsLHSLongest_v<List<LRest...>, List<RRest...>>;
+};
+
+template <>
+struct GTImplIsRHSLongest<List<>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t... LRest>
+struct GTImplIsRHSLongest<List<LRest...>, List<>>
+{
+    using result = True;
+};
+
+template <Bit_t... RRest>
+struct GTImplIsRHSLongest<List<>, List<RRest...>>
+{
+    using result = False;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedGT;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedGT_v = UnsignedGT<LHS, RHS>::result;
+
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedGT<Unsigned<LHS...>, Unsigned<RHS...>>
+{
+    using LList = List<LHS...>;
+    using RList = List<RHS...>;
+    using result = Ternary_v<
+
+        IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+
+        UnsignedGreaterThanImpl_v<ListReverse_v<List<LHS...>>,
+                                  ListReverse_v<List<RHS...>>>,
+
+        GTImplIsLHSLongest_v<LList, RList>>;
+};
+
+static_assert(is_same<UnsignedGT_v<n1, n2>, False>);
+static_assert(is_same<UnsignedGT_v<n1, n1>, False>);
+static_assert(is_same<UnsignedGT_v<n2, n1>, True>);
+static_assert(is_same<UnsignedGT_v<n10, n20>, False>);
+static_assert(is_same<UnsignedGT_v<n10, n10>, False>);
+static_assert(is_same<UnsignedGT_v<n20, n10>, True>);
+static_assert(is_same<UnsignedGT_v<n63, n64>, False>);
+static_assert(is_same<UnsignedGT_v<n64, n63>, True>);
+static_assert(is_same<UnsignedGT_v<n50, n60>, False>);
+static_assert(is_same<UnsignedGT_v<n50, n50>, False>);
+static_assert(is_same<UnsignedGT_v<n60, n50>, True>);
+static_assert(is_same<UnsignedGT_v<n0, n1>, False>);
+static_assert(is_same<UnsignedGT_v<n0, n0>, False>);
+static_assert(is_same<UnsignedGT_v<n1, n0>, True>);
+static_assert(is_same<UnsignedGT_v<n64, n64>, False>);
+static_assert(is_same<UnsignedGT_v<n10, n30>, False>);
+static_assert(is_same<UnsignedGT_v<n30, n10>, True>);
+static_assert(is_same<UnsignedGT_v<n32, n33>, False>);
+static_assert(is_same<UnsignedGT_v<n33, n33>, False>);
+static_assert(is_same<UnsignedGT_v<n33, n32>, True>);
 
 namespace unsigned_increment_tests
 {
@@ -518,207 +1079,113 @@ namespace unsigned_increment_tests
     static_assert(is_same<n64, N64>);
 } // namespace unsigned_increment_tests
 
-template <Unsigned_t T>
-struct ToList;
+template <List_t LHS, List_t RHS>
+struct UnsignedLowerEqImpl;
 
-template <Unsigned_t T>
-using ToList_v = ToList<T>::result;
-
-template <Bit_t... Bits>
-struct ToList<Unsigned<Bits...>>
-{
-    using result = List<Bits...>;
-};
-
-template <Bit_t LHS, Bit_t RHS, Bit_t Borrow>
-struct FullSubtractor;
+template <List_t LHS, List_t RHS>
+using UnsignedLowerEqImpl_v = UnsignedLowerEqImpl<LHS, RHS>::result;
 
 template <>
-struct FullSubtractor<Zero, Zero, Zero>
+struct UnsignedLowerEqImpl<List<>, List<>>
 {
-    using Diff = Zero;
-    using Borrow = Zero;
+    using result = True;
 };
 
-template <>
-struct FullSubtractor<Zero, Zero, One>
+template <Bit_t... RRest>
+struct UnsignedLowerEqImpl<List<>, List<RRest...>>
 {
-    using Diff = One;
-    using Borrow = One;
+    using result = True;
 };
 
-template <>
-struct FullSubtractor<Zero, One, Zero>
+template <Bit_t... LRest>
+struct UnsignedLowerEqImpl<List<LRest...>, List<>>
 {
-    using Diff = One;
-    using Borrow = One;
+    using result = False;
 };
 
-template <>
-struct FullSubtractor<Zero, One, One>
+template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
+struct UnsignedLowerEqImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
 {
-    using Diff = Zero;
-    using Borrow = One;
+    using result = UnsignedLowerEqImpl_v<List<LRest...>, List<RRest...>>;
 };
 
-template <>
-struct FullSubtractor<One, Zero, Zero>
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct UnsignedLowerEqImpl<List<L0, LRest...>, List<R0, RRest...>>
 {
-    using Diff = One;
-    using Borrow = Zero;
+    using result = IsSame_v<L0, Zero>;
+};
+
+template <List_t LHS, List_t RHS>
+struct LEImplIsLHSLongest;
+
+template <List_t LHS, List_t RHS>
+using LEImplIsLHSLongest_v = LEImplIsLHSLongest<LHS, RHS>::result;
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct LEImplIsLHSLongest<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = LEImplIsLHSLongest_v<List<LRest...>, List<RRest...>>;
 };
 
 template <>
-struct FullSubtractor<One, Zero, One>
+struct LEImplIsLHSLongest<List<>, List<>>
 {
-    using Diff = Zero;
-    using Borrow = Zero;
+    using result = False;
 };
 
-template <>
-struct FullSubtractor<One, One, Zero>
+template <Bit_t... LRest>
+struct LEImplIsLHSLongest<List<LRest...>, List<>>
 {
-    using Diff = Zero;
-    using Borrow = Zero;
+    using result = False;
 };
 
-template <>
-struct FullSubtractor<One, One, One>
+template <Bit_t... RRest>
+struct LEImplIsLHSLongest<List<>, List<RRest...>>
 {
-    using Diff = One;
-    using Borrow = One;
-};
-
-template <List_t In, List_t Acc = List<>>
-struct Reverse;
-
-template <List_t In, List_t Acc = List<>>
-using Reverse_v = Reverse<In, Acc>::result;
-
-template <List_t Acc>
-struct Reverse<List<>, Acc>
-{
-    using result = Acc;
-};
-
-template <Any_t Head, Any_t... Tail, List_t Acc>
-struct Reverse<List<Head, Tail...>, Acc>
-{
-    using result = Reverse_v<List<Tail...>, Prepend_v<Head, Acc>>;
-};
-template <List_t List>
-struct DropLeadingZeros;
-
-template <List_t List>
-using DropLeadingZeros_v = DropLeadingZeros<List>::result;
-
-template <>
-struct DropLeadingZeros<List<>>
-{
-    using result = List<>;
-};
-
-template <Bit_t Head, Bit_t... Tail>
-struct DropLeadingZeros<List<Head, Tail...>>
-{
-private:
-    using TailResult = DropLeadingZeros_v<List<Tail...>>;
-
-public:
-    using result =
-        Ternary_v<IsSame_v<Head, Zero>, TailResult, List<Head, Tail...>>;
-};
-
-template <Unsigned_t Number>
-struct Canonicalize;
-
-template <Unsigned_t Number>
-using Canonicalize_v = Canonicalize<Number>::result;
-
-template <Unsigned_t Number>
-struct Canonicalize;
-
-template <Bit_t... Bits>
-struct Canonicalize<Unsigned<Bits...>>
-{
-    using rev = Reverse_v<List<Bits...>>;
-    using stripped = DropLeadingZeros_v<rev>;
-    using result_list = Reverse_v<stripped>;
-    using result = ToUnsigned_v<result_list>;
-};
-
-template <List_t LHS, List_t RHS, Bit_t Borrow>
-struct SubUnsignedCarry;
-
-template <List_t LHS, List_t RHS, Bit_t Borrow>
-using SubUnsignedCarry_v = SubUnsignedCarry<LHS, RHS, Borrow>::result;
-
-template <Bit_t Borrow>
-struct SubUnsignedCarry<List<>, List<>, Borrow>
-{
-    using result = Ternary_v<IsSame_v<Borrow, One>, List<>, List<>>;
-};
-
-template <Bit_t L0, Bit_t... LRest, Bit_t Borrow>
-struct SubUnsignedCarry<List<L0, LRest...>, List<>, Borrow>
-{
-    using FS = FullSubtractor<L0, Zero, Borrow>;
-    using tail =
-        SubUnsignedCarry_v<List<LRest...>, List<>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
-};
-
-template <Bit_t R0, Bit_t... RRest, Bit_t Borrow>
-struct SubUnsignedCarry<List<>, List<R0, RRest...>, Borrow>
-{
-    using FS = FullSubtractor<Zero, R0, Borrow>;
-    using tail =
-        SubUnsignedCarry_v<List<>, List<RRest...>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
-};
-template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Borrow>
-struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
-{
-    using FS = FullSubtractor<L0, R0, Borrow>;
-    using tail =
-        SubUnsignedCarry_v<List<LRest...>, List<RRest...>, typename FS::Borrow>;
-    using result = Prepend_v<typename FS::Diff, tail>;
+    using result = True;
 };
 
 template <Unsigned_t LHS, Unsigned_t RHS>
-struct UnsignedSub;
+struct UnsignedLE;
 
 template <Unsigned_t LHS, Unsigned_t RHS>
-using UnsignedSub_v = UnsignedSub<LHS, RHS>::result;
+using UnsignedLE_v = UnsignedLE<LHS, RHS>::result;
 
 template <Bit_t... LHS, Bit_t... RHS>
-struct UnsignedSub<Unsigned<LHS...>, Unsigned<RHS...>>
+struct UnsignedLE<Unsigned<LHS...>, Unsigned<RHS...>>
 {
-    using result = Canonicalize_v<
-        ToUnsigned_v<SubUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
+    using LList = List<LHS...>;
+    using RList = List<RHS...>;
+    using result = Ternary_v<
+
+        IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+
+        UnsignedLowerEqImpl_v<ListReverse_v<List<LHS...>>,
+                              ListReverse_v<List<RHS...>>>,
+
+        LEImplIsLHSLongest_v<LList, RList>>;
 };
 
-template <Unsigned_t Value, Unsigned_t Amount>
-struct UnsignedLShift;
-
-template <Unsigned_t Value, Unsigned_t Amount>
-using UnsignedLShift_v = UnsignedLShift<Value, Amount>::result;
-
-template <Unsigned_t Value>
-struct UnsignedLShift<Value, Unsigned<>>
-{
-    using result = Value;
-};
-
-template <Unsigned_t Value, Bit_t... AmountBits>
-struct UnsignedLShift<Value, Unsigned<AmountBits...>>
-{
-    using NewBits = Prepend_v<Zero, ToList_v<Value>>;
-    using ShiftedOnce = ToUnsigned_v<NewBits>;
-
-    using Decrement = UnsignedSub_v<Unsigned<AmountBits...>, Unsigned<One>>;
-    using result = Canonicalize_v<UnsignedLShift_v<ShiftedOnce, Decrement>>;
-};
+static_assert(is_same<UnsignedLE_v<n1, n2>, True>);
+static_assert(is_same<UnsignedLE_v<n1, n1>, True>);
+static_assert(is_same<UnsignedLE_v<n2, n1>, False>);
+static_assert(is_same<UnsignedLE_v<n10, n20>, True>);
+static_assert(is_same<UnsignedLE_v<n10, n10>, True>);
+static_assert(is_same<UnsignedLE_v<n20, n10>, False>);
+static_assert(is_same<UnsignedLE_v<n63, n64>, True>);
+static_assert(is_same<UnsignedLE_v<n64, n63>, False>);
+static_assert(is_same<UnsignedLE_v<n50, n60>, True>);
+static_assert(is_same<UnsignedLE_v<n50, n50>, True>);
+static_assert(is_same<UnsignedLE_v<n60, n50>, False>);
+static_assert(is_same<UnsignedLE_v<n0, n1>, True>);
+static_assert(is_same<UnsignedLE_v<n0, n0>, True>);
+static_assert(is_same<UnsignedLE_v<n1, n0>, False>);
+static_assert(is_same<UnsignedLE_v<n64, n64>, True>);
+static_assert(is_same<UnsignedLE_v<n10, n30>, True>);
+static_assert(is_same<UnsignedLE_v<n30, n10>, False>);
+static_assert(is_same<UnsignedLE_v<n32, n33>, True>);
+static_assert(is_same<UnsignedLE_v<n33, n33>, True>);
+static_assert(is_same<UnsignedLE_v<n33, n32>, False>);
 
 namespace unsigned_lshift_tests
 {
@@ -744,6 +1211,141 @@ namespace unsigned_lshift_tests
     static_assert(is_same<UnsignedLShift_v<n8, n2>, n32>);
     static_assert(is_same<UnsignedLShift_v<n1, n4>, n16>);
 } // namespace unsigned_lshift_tests
+
+template <List_t LHS, List_t RHS>
+struct UnsignedLowerThanImpl;
+
+template <List_t LHS, List_t RHS>
+using UnsignedLowerThanImpl_v = UnsignedLowerThanImpl<LHS, RHS>::result;
+
+template <>
+struct UnsignedLowerThanImpl<List<>, List<>>
+{
+    using result = False;
+};
+
+template <Bit_t... RRest>
+struct UnsignedLowerThanImpl<List<>, List<RRest...>>
+{
+    using result = True;
+};
+
+template <Bit_t... LRest>
+struct UnsignedLowerThanImpl<List<LRest...>, List<>>
+{
+    using result = False;
+};
+
+template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
+struct UnsignedLowerThanImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
+{
+    using result = UnsignedLowerThanImpl_v<List<LRest...>, List<RRest...>>;
+};
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct UnsignedLowerThanImpl<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = IsSame_v<L0, Zero>;
+};
+
+template <List_t LHS, List_t RHS>
+struct LTImplIsLHSLongest;
+
+template <List_t LHS, List_t RHS>
+using LTImplIsLHSLongest_v = LTImplIsLHSLongest<LHS, RHS>::result;
+
+template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
+struct LTImplIsLHSLongest<List<L0, LRest...>, List<R0, RRest...>>
+{
+    using result = LTImplIsLHSLongest_v<List<LRest...>, List<RRest...>>;
+};
+
+template <>
+struct LTImplIsLHSLongest<List<>, List<>>
+{
+    using result = False;
+};
+
+template <Bit_t... LRest>
+struct LTImplIsLHSLongest<List<LRest...>, List<>>
+{
+    using result = False;
+};
+
+template <Bit_t... RRest>
+struct LTImplIsLHSLongest<List<>, List<RRest...>>
+{
+    using result = True;
+};
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+struct UnsignedLT;
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedLT_v = UnsignedLT<LHS, RHS>::result;
+
+template <Bit_t... LHS, Bit_t... RHS>
+struct UnsignedLT<Unsigned<LHS...>, Unsigned<RHS...>>
+{
+    using LList = List<LHS...>;
+    using RList = List<RHS...>;
+    using result = Ternary_v<
+
+        IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+
+        UnsignedLowerThanImpl_v<ListReverse_v<List<LHS...>>,
+                                ListReverse_v<List<RHS...>>>,
+
+        LTImplIsLHSLongest_v<LList, RList>>;
+};
+
+static_assert(is_same<UnsignedLT_v<n1, n2>, True>);
+static_assert(is_same<UnsignedLT_v<n1, n1>, False>);
+static_assert(is_same<UnsignedLT_v<n2, n1>, False>);
+static_assert(is_same<UnsignedLT_v<n10, n20>, True>);
+static_assert(is_same<UnsignedLT_v<n10, n10>, False>);
+static_assert(is_same<UnsignedLT_v<n20, n10>, False>);
+static_assert(is_same<UnsignedLT_v<n63, n64>, True>);
+static_assert(is_same<UnsignedLT_v<n64, n63>, False>);
+static_assert(is_same<UnsignedLT_v<n50, n60>, True>);
+static_assert(is_same<UnsignedLT_v<n50, n50>, False>);
+static_assert(is_same<UnsignedLT_v<n60, n50>, False>);
+static_assert(is_same<UnsignedLT_v<n0, n1>, True>);
+static_assert(is_same<UnsignedLT_v<n0, n0>, False>);
+static_assert(is_same<UnsignedLT_v<n1, n0>, False>);
+static_assert(is_same<UnsignedLT_v<n64, n64>, False>);
+static_assert(is_same<UnsignedLT_v<n10, n30>, True>);
+static_assert(is_same<UnsignedLT_v<n30, n10>, False>);
+static_assert(is_same<UnsignedLT_v<n32, n33>, True>);
+static_assert(is_same<UnsignedLT_v<n33, n33>, False>);
+static_assert(is_same<UnsignedLT_v<n33, n32>, False>);
+
+template <Unsigned_t LHS, Unsigned_t RHS>
+using UnsignedMod_v = UnsignedDivModCommon<LHS, RHS>::remainder;
+static_assert(is_same<UnsignedMod_v<n1, n2>, n1>);
+static_assert(is_same<UnsignedMod_v<n5, n5>, n0>);
+static_assert(is_same<UnsignedMod_v<n10, n2>, n0>);
+static_assert(is_same<UnsignedMod_v<n10, n1>, n0>);
+static_assert(is_same<UnsignedMod_v<n0, n5>, n0>);
+static_assert(is_same<UnsignedMod_v<n20, n4>, n0>);
+static_assert(is_same<UnsignedMod_v<n50, n10>, n0>);
+static_assert(is_same<UnsignedMod_v<n64, n2>, n0>);
+static_assert(is_same<UnsignedMod_v<n25, n3>, n1>);
+static_assert(is_same<UnsignedMod_v<n64, n1>, n0>);
+static_assert(is_same<UnsignedMod_v<n50, n25>, n0>);
+static_assert(is_same<UnsignedMod_v<n64, n63>, n1>);
+static_assert(is_same<UnsignedMod_v<n64, n16>, n0>);
+static_assert(is_same<UnsignedMod_v<n15, n16>, n15>);
+static_assert(is_same<UnsignedMod_v<n10, n3>, n1>);
+static_assert(is_same<UnsignedMod_v<n64, n64>, n0>);
+static_assert(is_same<UnsignedMod_v<n30, n7>, n2>);
+static_assert(is_same<UnsignedMod_v<n17, n5>, n2>);
+static_assert(is_same<UnsignedMod_v<n50, n26>, n24>);
+static_assert(is_same<UnsignedMod_v<n50, n24>, n2>);
+static_assert(is_same<UnsignedMod_v<n1, n64>, n1>);
+static_assert(is_same<UnsignedMod_v<n33, n32>, n1>);
+static_assert(is_same<UnsignedMod_v<n10, n9>, n1>);
+static_assert(is_same<UnsignedMod_v<n64, n1>, n0>);
 
 template <Unsigned_t LHS, Bit_t RHS, Unsigned_t Shift>
 struct MulByBit;
@@ -950,91 +1552,96 @@ namespace unsigned_sub_tests
     static_assert(is_same<S40, n40>);
 } // namespace unsigned_sub_tests
 
-template <Any_t Elem, List_t List>
-struct Append;
-
-template <Any_t Elem, List_t List>
-using Append_v = Append<Elem, List>::result;
-
-template <Any_t Elem, Any_t... Rest>
-struct Append<Elem, List<Rest...>>
-{
-    using result = List<Rest..., Elem>;
-};
-
 namespace list_append_tests
 {
-    static_assert(is_same<Append_v<n1, List<>>, List<n1>>);
-    static_assert(is_same<Append_v<n2, List<n1>>, List<n1, n2>>);
+    static_assert(is_same<ListAppend_v<n1, List<>>, List<n1>>);
+    static_assert(is_same<ListAppend_v<n2, List<n1>>, List<n1, n2>>);
     static_assert(
-        is_same<Append_v<n4, List<n1, n2, n3>>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Append_v<n5, List<n2, n4>>, List<n2, n4, n5>>);
-    static_assert(is_same<Append_v<n3, List<n1>>, List<n1, n3>>);
+        is_same<ListAppend_v<n4, List<n1, n2, n3>>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListAppend_v<n5, List<n2, n4>>, List<n2, n4, n5>>);
+    static_assert(is_same<ListAppend_v<n3, List<n1>>, List<n1, n3>>);
     static_assert(is_same<List<n1>, List<n1>>);
-    using L6 = Append_v<n3, List<n1, n2>>;
+    using L6 = ListAppend_v<n3, List<n1, n2>>;
     static_assert(is_same<L6, List<n1, n2, n3>>);
-    static_assert(is_same<Append_v<n4, L6>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n4, L6>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2, n3, n4, n5>>,
                           List<n1, n2, n3, n4, n5, n6>>);
     static_assert(
-        is_same<Append_v<n2, List<n2, n3, n2>>, List<n2, n3, n2, n2>>);
-    static_assert(is_same<Append_v<n4, List<n5>>, List<n5, n4>>);
+        is_same<ListAppend_v<n2, List<n2, n3, n2>>, List<n2, n3, n2, n2>>);
+    static_assert(is_same<ListAppend_v<n4, List<n5>>, List<n5, n4>>);
     static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2>>, List<n1, n2, n6>>);
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2>>, List<n1, n2, n6>>);
     static_assert(is_same<List<n1, n2>, List<n1, n2>>);
     static_assert(
-        is_same<Append_v<n3, List<n4, n5, n6>>, List<n4, n5, n6, n3>>);
+        is_same<ListAppend_v<n3, List<n4, n5, n6>>, List<n4, n5, n6, n3>>);
     static_assert(is_same<List<n4, n5, n6>, List<n4, n5, n6>>);
-    static_assert(
-        is_same<Append_v<n1, List<n2, n3, n4, n5>>, List<n2, n3, n4, n5, n1>>);
+    static_assert(is_same<ListAppend_v<n1, List<n2, n3, n4, n5>>,
+                          List<n2, n3, n4, n5, n1>>);
     static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(is_same<Append_v<n6, List<n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n6, List<n1, n2, n3, n4, n5>>,
                           List<n1, n2, n3, n4, n5, n6>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<Append_v<n2, List<n3, n4, n5, n6, n1, n2>>,
+    static_assert(is_same<ListAppend_v<n2, List<n3, n4, n5, n6, n1, n2>>,
                           List<n3, n4, n5, n6, n1, n2, n2>>);
     static_assert(
         is_same<List<n3, n4, n5, n6, n1, n2>, List<n3, n4, n5, n6, n1, n2>>);
-    static_assert(is_same<Append_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListAppend_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
                           List<n5, n6, n1, n2, n3, n4, n5, n4>>);
     static_assert(is_same<List<n5, n6, n1, n2, n3, n4, n5>,
                           List<n5, n6, n1, n2, n3, n4, n5>>);
 } // namespace list_append_tests
 
+static_assert(is_same<ListLength_v<List<>>, n0>);
+static_assert(is_same<ListLength_v<List<n1>>, n1>);
+static_assert(is_same<ListLength_v<List<n1, n2>>, n2>);
+static_assert(is_same<ListLength_v<List<n1, n2, n3, n4>>, n4>);
+static_assert(is_same<ListLength_v<List<n2, n3, n2>>, n3>);
+static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6>>, n6>);
+static_assert(is_same<ListLength_v<List<n5>>, n1>);
+static_assert(is_same<ListLength_v<List<n1, n2>>, n2>);
+static_assert(is_same<ListLength_v<List<n3, n4, n5>>, n3>);
+static_assert(is_same<ListLength_v<List<n2, n3, n4, n5>>, n4>);
+static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5>>, n5>);
+static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6>>, n6>);
+static_assert(is_same<ListLength_v<List<n5, n4, n3, n2, n1, n6, n7>>, n7>);
+static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6, n7, n8>>, n8>);
+static_assert(
+    is_same<ListLength_v<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>, n9>);
+
 namespace list_prepend_tests
 {
-    static_assert(is_same<Prepend_v<n1, List<>>, List<n1>>);
-    static_assert(is_same<Prepend_v<n1, List<n2>>, List<n1, n2>>);
+    static_assert(is_same<ListPrepend_v<n1, List<>>, List<n1>>);
+    static_assert(is_same<ListPrepend_v<n1, List<n2>>, List<n1, n2>>);
     static_assert(
-        is_same<Prepend_v<n1, List<n2, n3, n4>>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Prepend_v<n5, List<n2, n4>>, List<n5, n2, n4>>);
-    static_assert(is_same<Prepend_v<n3, List<n1>>, List<n3, n1>>);
+        is_same<ListPrepend_v<n1, List<n2, n3, n4>>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListPrepend_v<n5, List<n2, n4>>, List<n5, n2, n4>>);
+    static_assert(is_same<ListPrepend_v<n3, List<n1>>, List<n3, n1>>);
     static_assert(is_same<List<n1>, List<n1>>);
-    using L6 = Prepend_v<n2, List<n3, n4>>;
+    using L6 = ListPrepend_v<n2, List<n3, n4>>;
     static_assert(is_same<L6, List<n2, n3, n4>>);
-    static_assert(is_same<Prepend_v<n1, L6>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Prepend_v<n1, List<n2, n3, n4, n5, n6>>,
+    static_assert(is_same<ListPrepend_v<n1, L6>, List<n1, n2, n3, n4>>);
+    static_assert(is_same<ListPrepend_v<n1, List<n2, n3, n4, n5, n6>>,
                           List<n1, n2, n3, n4, n5, n6>>);
     static_assert(
-        is_same<Prepend_v<n2, List<n2, n3, n2>>, List<n2, n2, n3, n2>>);
-    static_assert(is_same<Prepend_v<n4, List<n5>>, List<n4, n5>>);
+        is_same<ListPrepend_v<n2, List<n2, n3, n2>>, List<n2, n2, n3, n2>>);
+    static_assert(is_same<ListPrepend_v<n4, List<n5>>, List<n4, n5>>);
     static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<Prepend_v<n6, List<n1, n2>>, List<n6, n1, n2>>);
+    static_assert(is_same<ListPrepend_v<n6, List<n1, n2>>, List<n6, n1, n2>>);
     static_assert(is_same<List<n1, n2>, List<n1, n2>>);
     static_assert(
-        is_same<Prepend_v<n3, List<n4, n5, n6>>, List<n3, n4, n5, n6>>);
+        is_same<ListPrepend_v<n3, List<n4, n5, n6>>, List<n3, n4, n5, n6>>);
     static_assert(is_same<List<n4, n5, n6>, List<n4, n5, n6>>);
-    static_assert(
-        is_same<Prepend_v<n1, List<n2, n3, n4, n5>>, List<n1, n2, n3, n4, n5>>);
+    static_assert(is_same<ListPrepend_v<n1, List<n2, n3, n4, n5>>,
+                          List<n1, n2, n3, n4, n5>>);
     static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(is_same<Prepend_v<n6, List<n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListPrepend_v<n6, List<n1, n2, n3, n4, n5>>,
                           List<n6, n1, n2, n3, n4, n5>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<Prepend_v<n2, List<n3, n4, n5, n6, n1, n2>>,
+    static_assert(is_same<ListPrepend_v<n2, List<n3, n4, n5, n6, n1, n2>>,
                           List<n2, n3, n4, n5, n6, n1, n2>>);
     static_assert(
         is_same<List<n3, n4, n5, n6, n1, n2>, List<n3, n4, n5, n6, n1, n2>>);
-    static_assert(is_same<Prepend_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
+    static_assert(is_same<ListPrepend_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
                           List<n4, n5, n6, n1, n2, n3, n4, n5>>);
     static_assert(is_same<List<n5, n6, n1, n2, n3, n4, n5>,
                           List<n5, n6, n1, n2, n3, n4, n5>>);
@@ -1042,92 +1649,101 @@ namespace list_prepend_tests
 
 namespace list_reverse_tests
 {
-    static_assert(is_same<Reverse_v<List<>>, List<>>);
-    static_assert(is_same<Reverse_v<List<n1>>, List<n1>>);
-    static_assert(is_same<Reverse_v<List<n1, n2>>, List<n2, n1>>);
+    static_assert(is_same<ListReverse_v<List<>>, List<>>);
+    static_assert(is_same<ListReverse_v<List<n1>>, List<n1>>);
+    static_assert(is_same<ListReverse_v<List<n1, n2>>, List<n2, n1>>);
     static_assert(
-        is_same<Reverse_v<List<n1, n2, n3, n4>>, List<n4, n3, n2, n1>>);
-    static_assert(is_same<Reverse_v<List<n2, n3, n2>>, List<n2, n3, n2>>);
-    static_assert(is_same<Reverse_v<List<n1, n2, n3, n4, n5, n6>>,
+        is_same<ListReverse_v<List<n1, n2, n3, n4>>, List<n4, n3, n2, n1>>);
+    static_assert(is_same<ListReverse_v<List<n2, n3, n2>>, List<n2, n3, n2>>);
+    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6>>,
                           List<n6, n5, n4, n3, n2, n1>>);
-    static_assert(is_same<Reverse_v<List<n5>>, List<n5>>);
+    static_assert(is_same<ListReverse_v<List<n5>>, List<n5>>);
     static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<Reverse_v<List<n1, n2>>, List<n2, n1>>);
+    static_assert(is_same<ListReverse_v<List<n1, n2>>, List<n2, n1>>);
     static_assert(is_same<List<n1, n2>, List<n1, n2>>);
-    static_assert(is_same<Reverse_v<List<n3, n4, n5>>, List<n5, n4, n3>>);
+    static_assert(is_same<ListReverse_v<List<n3, n4, n5>>, List<n5, n4, n3>>);
     static_assert(is_same<List<n3, n4, n5>, List<n3, n4, n5>>);
     static_assert(
-        is_same<Reverse_v<List<n2, n3, n4, n5>>, List<n5, n4, n3, n2>>);
+        is_same<ListReverse_v<List<n2, n3, n4, n5>>, List<n5, n4, n3, n2>>);
     static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(
-        is_same<Reverse_v<List<n1, n2, n3, n4, n5>>, List<n5, n4, n3, n2, n1>>);
+    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5>>,
+                          List<n5, n4, n3, n2, n1>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<Reverse_v<List<n1, n2, n3, n4, n5, n6>>,
+    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6>>,
                           List<n6, n5, n4, n3, n2, n1>>);
     static_assert(
         is_same<List<n1, n2, n3, n4, n5, n6>, List<n1, n2, n3, n4, n5, n6>>);
-    static_assert(is_same<Reverse_v<List<n5, n4, n3, n2, n1, n6, n7>>,
+    static_assert(is_same<ListReverse_v<List<n5, n4, n3, n2, n1, n6, n7>>,
                           List<n7, n6, n1, n2, n3, n4, n5>>);
     static_assert(is_same<List<n5, n4, n3, n2, n1, n6, n7>,
                           List<n5, n4, n3, n2, n1, n6, n7>>);
-    static_assert(is_same<Reverse_v<List<n1, n2, n3, n4, n5, n6, n7, n8>>,
+    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6, n7, n8>>,
                           List<n8, n7, n6, n5, n4, n3, n2, n1>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5, n6, n7, n8>,
                           List<n1, n2, n3, n4, n5, n6, n7, n8>>);
-    static_assert(is_same<Reverse_v<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>,
-                          List<n1, n2, n3, n4, n5, n6, n7, n8, n9>>);
+    static_assert(
+        is_same<ListReverse_v<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>,
+                List<n1, n2, n3, n4, n5, n6, n7, n8, n9>>);
     static_assert(is_same<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>,
                           List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>);
 } // namespace list_reverse_tests
 
-template <List_t List, Any_t Elem, Unsigned_t Position>
-struct Set;
+template <List_t L, Any_t Elem, Unsigned_t Position>
+struct ListSet;
 
-template <List_t List, Any_t Elem, Unsigned_t Position>
-using Set_v = typename Set<List, Elem, Position>::result;
+template <List_t L, Any_t Elem, Unsigned_t Position>
+using ListSet_v = typename ListSet<L, Elem, Position>::result;
 
 template <Any_t Elem, Unsigned_t Position>
-struct Set<List<>, Elem, Position>
+struct ListSet<List<>, Elem, Position>
 {
     static_assert(false, "ListSet: index out of bounds");
 };
+
 template <Any_t Head, Any_t... Tail, Any_t Elem>
-struct Set<List<Head, Tail...>, Elem, Unsigned<>>
+struct ListSet<List<Head, Tail...>, Elem, Unsigned<>>
 {
     using result = List<Elem, Tail...>;
 };
 
 template <Any_t Head, Any_t... Tail, Any_t Elem, Unsigned_t Position>
-struct Set<List<Head, Tail...>, Elem, Position>
+struct ListSet<List<Head, Tail...>, Elem, Position>
 {
-    using result = Prepend_v<
+    using result = ListPrepend_v<
         Head,
-        Set_v<List<Tail...>, Elem, UnsignedSub_v<Position, Unsigned<One>>>>;
+        ListSet_v<List<Tail...>, Elem, UnsignedSub_v<Position, Unsigned<One>>>>;
 };
 
 namespace list_set_tests
 {
 
-    static_assert(is_same<Set_v<List<n1, n2, n3>, n4, n0>, List<n4, n2, n3>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3>, n4, n2>, List<n1, n2, n4>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3, n4, n5>, n6, n2>,
+    static_assert(
+        is_same<ListSet_v<List<n1, n2, n3>, n4, n0>, List<n4, n2, n3>>);
+    static_assert(
+        is_same<ListSet_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
+    static_assert(
+        is_same<ListSet_v<List<n1, n2, n3>, n4, n2>, List<n1, n2, n4>>);
+    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
                           List<n1, n2, n6, n4, n5>>);
-    static_assert(is_same<Set_v<List<n2, n3, n2>, n4, n0>, List<n4, n3, n2>>);
-    static_assert(is_same<Set_v<List<n2, n3, n2>, n4, n1>, List<n2, n4, n2>>);
-    static_assert(is_same<Set_v<List<n2, n3, n2>, n4, n2>, List<n2, n3, n4>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
+    static_assert(
+        is_same<ListSet_v<List<n2, n3, n2>, n4, n0>, List<n4, n3, n2>>);
+    static_assert(
+        is_same<ListSet_v<List<n2, n3, n2>, n4, n1>, List<n2, n4, n2>>);
+    static_assert(
+        is_same<ListSet_v<List<n2, n3, n2>, n4, n2>, List<n2, n3, n4>>);
+    static_assert(
+        is_same<ListSet_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
     static_assert(is_same<List<n1, n2, n3>, List<n1, n2, n3>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3, n4, n5>, n6, n2>,
+    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
                           List<n1, n2, n6, n4, n5>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
     static_assert(
-        is_same<Set_v<List<n2, n3, n4, n5>, n6, n0>, List<n6, n3, n4, n5>>);
+        is_same<ListSet_v<List<n2, n3, n4, n5>, n6, n0>, List<n6, n3, n4, n5>>);
     static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
     static_assert(
-        is_same<Set_v<List<n1, n2, n3, n4>, n5, n3>, List<n1, n2, n3, n5>>);
+        is_same<ListSet_v<List<n1, n2, n3, n4>, n5, n3>, List<n1, n2, n3, n5>>);
     static_assert(is_same<List<n1, n2, n3, n4>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<Set_v<List<n1, n2, n3, n4, n5>, n6, n2>,
+    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
                           List<n1, n2, n6, n4, n5>>);
     static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
 } // namespace list_set_tests
