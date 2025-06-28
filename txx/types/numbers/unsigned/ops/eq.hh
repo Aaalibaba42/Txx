@@ -9,13 +9,13 @@
 // IsSame here, but it would be less readable
 
 template <Unsigned_t LHS, Unsigned_t RHS>
-struct UnsignedEq;
+struct UnsignedEQ;
 
 template <Unsigned_t LHS, Unsigned_t RHS>
-using UnsignedEq_v = UnsignedEq<LHS, RHS>::result;
+using UnsignedEQ_v = UnsignedEQ<LHS, RHS>::result;
 
 template <Unsigned_t LHS, Unsigned_t RHS>
-struct UnsignedEq
+struct UnsignedEQ
 {
     using result = IsSame_v<LHS, RHS>;
 };

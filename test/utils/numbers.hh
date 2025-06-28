@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types/numbers/unsigned/unsigned.hh"
+#include "types/bits/literals.hh"
 
 using n0 = Unsigned<>;
 using n1 = Unsigned<One>;
