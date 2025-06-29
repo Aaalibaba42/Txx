@@ -3,24 +3,24 @@
 #include "types/numbers/unsigned/bigunsigned/ops/eq.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "../../../../utils/numbers.hh"
+#include "literals.hh"
 
 namespace bigunsigned_eq_tests
 {
-    static_assert(is_same<BigUnsignedEQ_v<n1, n1>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n1, n2>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n5, n5>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n5, n6>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n10, n10>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n10, n11>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n0, n0>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n1, n0>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n64, n64>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n64, n63>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n32, n32>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n32, n33>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n1, n1>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n1, n2>, False>);
-    static_assert(is_same<BigUnsignedEQ_v<n10, n10>, True>);
-    static_assert(is_same<BigUnsignedEQ_v<n10, n20>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu1, bu1>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu1, bu2>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu5, bu5>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu5, bu6>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu10, bu10>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu10, bu11>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu0, bu0>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu1, bu0>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu64, bu64>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu64, bu63>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu32, bu32>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu32, bu33>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu1, bu1>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu1, bu2>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<bu10, bu10>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<bu10, bu20>, False>);
 } // namespace bigunsigned_eq_tests

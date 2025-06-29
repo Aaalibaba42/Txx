@@ -3,36 +3,36 @@
 #include "types/numbers/unsigned/bigunsigned/ops/mod.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "../../../../utils/numbers.hh"
+#include "literals.hh"
 
 namespace bigunsigned_mod_tests
 {
     // Fails (as expected)
-    // static_assert(is_same<UnsignedMod_v<n10, n0>, n0>);
-    // static_assert(is_same<UnsignedMod_v<n0, n0>, n0>);
+    // static_assert(is_same<UnsignedMod_v<bu10, bu0>, bu0>);
+    // static_assert(is_same<UnsignedMod_v<bu0, bu0>, bu0>);
 
-    static_assert(is_same<BigUnsignedMod_v<n1, n2>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n5, n5>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n10, n2>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n10, n1>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n0, n5>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n20, n4>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n50, n10>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n2>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n25, n3>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n1>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n50, n25>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n63>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n16>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n15, n16>, n15>);
-    static_assert(is_same<BigUnsignedMod_v<n10, n3>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n64>, n0>);
-    static_assert(is_same<BigUnsignedMod_v<n30, n7>, n2>);
-    static_assert(is_same<BigUnsignedMod_v<n17, n5>, n2>);
-    static_assert(is_same<BigUnsignedMod_v<n50, n26>, n24>);
-    static_assert(is_same<BigUnsignedMod_v<n50, n24>, n2>);
-    static_assert(is_same<BigUnsignedMod_v<n1, n64>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n33, n32>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n10, n9>, n1>);
-    static_assert(is_same<BigUnsignedMod_v<n64, n1>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<bu1, bu2>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu5, bu5>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu10, bu2>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu10, bu1>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu0, bu5>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu20, bu4>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu50, bu10>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu2>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu25, bu3>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu1>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu50, bu25>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu63>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu16>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu15, bu16>, bu15>);
+    static_assert(is_same<BigUnsignedMod_v<bu10, bu3>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu64>, bu0>);
+    static_assert(is_same<BigUnsignedMod_v<bu30, bu7>, bu2>);
+    static_assert(is_same<BigUnsignedMod_v<bu17, bu5>, bu2>);
+    static_assert(is_same<BigUnsignedMod_v<bu50, bu26>, bu24>);
+    static_assert(is_same<BigUnsignedMod_v<bu50, bu24>, bu2>);
+    static_assert(is_same<BigUnsignedMod_v<bu1, bu64>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu33, bu32>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu10, bu9>, bu1>);
+    static_assert(is_same<BigUnsignedMod_v<bu64, bu1>, bu0>);
 } // namespace bigunsigned_mod_tests

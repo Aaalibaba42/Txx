@@ -4,25 +4,30 @@
 #include "types/list/list.hh"
 
 #include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../numbers/unsigned/bigunsigned/literals.hh"
 
 namespace list_legth_tests
 {
-    static_assert(is_same<ListLength_v<List<>>, n0>);
-    static_assert(is_same<ListLength_v<List<n1>>, n1>);
-    static_assert(is_same<ListLength_v<List<n1, n2>>, n2>);
-    static_assert(is_same<ListLength_v<List<n1, n2, n3, n4>>, n4>);
-    static_assert(is_same<ListLength_v<List<n2, n3, n2>>, n3>);
-    static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6>>, n6>);
-    static_assert(is_same<ListLength_v<List<n5>>, n1>);
-    static_assert(is_same<ListLength_v<List<n1, n2>>, n2>);
-    static_assert(is_same<ListLength_v<List<n3, n4, n5>>, n3>);
-    static_assert(is_same<ListLength_v<List<n2, n3, n4, n5>>, n4>);
-    static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5>>, n5>);
-    static_assert(is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6>>, n6>);
-    static_assert(is_same<ListLength_v<List<n5, n4, n3, n2, n1, n6, n7>>, n7>);
+    static_assert(is_same<ListLength_v<List<>>, bu0>);
+    static_assert(is_same<ListLength_v<List<bu1>>, bu1>);
+    static_assert(is_same<ListLength_v<List<bu1, bu2>>, bu2>);
+    static_assert(is_same<ListLength_v<List<bu1, bu2, bu3, bu4>>, bu4>);
+    static_assert(is_same<ListLength_v<List<bu2, bu3, bu2>>, bu3>);
     static_assert(
-        is_same<ListLength_v<List<n1, n2, n3, n4, n5, n6, n7, n8>>, n8>);
+        is_same<ListLength_v<List<bu1, bu2, bu3, bu4, bu5, bu6>>, bu6>);
+    static_assert(is_same<ListLength_v<List<bu5>>, bu1>);
+    static_assert(is_same<ListLength_v<List<bu1, bu2>>, bu2>);
+    static_assert(is_same<ListLength_v<List<bu3, bu4, bu5>>, bu3>);
+    static_assert(is_same<ListLength_v<List<bu2, bu3, bu4, bu5>>, bu4>);
+    static_assert(is_same<ListLength_v<List<bu1, bu2, bu3, bu4, bu5>>, bu5>);
     static_assert(
-        is_same<ListLength_v<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>, n9>);
+        is_same<ListLength_v<List<bu1, bu2, bu3, bu4, bu5, bu6>>, bu6>);
+    static_assert(
+        is_same<ListLength_v<List<bu5, bu4, bu3, bu2, bu1, bu6, bu7>>, bu7>);
+    static_assert(
+        is_same<ListLength_v<List<bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8>>,
+                bu8>);
+    static_assert(
+        is_same<ListLength_v<List<bu9, bu8, bu7, bu6, bu5, bu4, bu3, bu2, bu1>>,
+                bu9>);
 } // namespace list_legth_tests

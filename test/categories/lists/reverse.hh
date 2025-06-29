@@ -4,45 +4,51 @@
 #include "types/list/list.hh"
 
 #include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../numbers/unsigned/bigunsigned/literals.hh"
 
 namespace list_reverse_tests
 {
     static_assert(is_same<ListReverse_v<List<>>, List<>>);
-    static_assert(is_same<ListReverse_v<List<n1>>, List<n1>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2>>, List<n2, n1>>);
+    static_assert(is_same<ListReverse_v<List<bu1>>, List<bu1>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2>>, List<bu2, bu1>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2, bu3, bu4>>,
+                          List<bu4, bu3, bu2, bu1>>);
     static_assert(
-        is_same<ListReverse_v<List<n1, n2, n3, n4>>, List<n4, n3, n2, n1>>);
-    static_assert(is_same<ListReverse_v<List<n2, n3, n2>>, List<n2, n3, n2>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6>>,
-                          List<n6, n5, n4, n3, n2, n1>>);
-    static_assert(is_same<ListReverse_v<List<n5>>, List<n5>>);
-    static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2>>, List<n2, n1>>);
-    static_assert(is_same<List<n1, n2>, List<n1, n2>>);
-    static_assert(is_same<ListReverse_v<List<n3, n4, n5>>, List<n5, n4, n3>>);
-    static_assert(is_same<List<n3, n4, n5>, List<n3, n4, n5>>);
+        is_same<ListReverse_v<List<bu2, bu3, bu2>>, List<bu2, bu3, bu2>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2, bu3, bu4, bu5, bu6>>,
+                          List<bu6, bu5, bu4, bu3, bu2, bu1>>);
+    static_assert(is_same<ListReverse_v<List<bu5>>, List<bu5>>);
+    static_assert(is_same<List<bu5>, List<bu5>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2>>, List<bu2, bu1>>);
+    static_assert(is_same<List<bu1, bu2>, List<bu1, bu2>>);
     static_assert(
-        is_same<ListReverse_v<List<n2, n3, n4, n5>>, List<n5, n4, n3, n2>>);
-    static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5>>,
-                          List<n5, n4, n3, n2, n1>>);
-    static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6>>,
-                          List<n6, n5, n4, n3, n2, n1>>);
+        is_same<ListReverse_v<List<bu3, bu4, bu5>>, List<bu5, bu4, bu3>>);
+    static_assert(is_same<List<bu3, bu4, bu5>, List<bu3, bu4, bu5>>);
+    static_assert(is_same<ListReverse_v<List<bu2, bu3, bu4, bu5>>,
+                          List<bu5, bu4, bu3, bu2>>);
+    static_assert(is_same<List<bu2, bu3, bu4, bu5>, List<bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2, bu3, bu4, bu5>>,
+                          List<bu5, bu4, bu3, bu2, bu1>>);
     static_assert(
-        is_same<List<n1, n2, n3, n4, n5, n6>, List<n1, n2, n3, n4, n5, n6>>);
-    static_assert(is_same<ListReverse_v<List<n5, n4, n3, n2, n1, n6, n7>>,
-                          List<n7, n6, n1, n2, n3, n4, n5>>);
-    static_assert(is_same<List<n5, n4, n3, n2, n1, n6, n7>,
-                          List<n5, n4, n3, n2, n1, n6, n7>>);
-    static_assert(is_same<ListReverse_v<List<n1, n2, n3, n4, n5, n6, n7, n8>>,
-                          List<n8, n7, n6, n5, n4, n3, n2, n1>>);
-    static_assert(is_same<List<n1, n2, n3, n4, n5, n6, n7, n8>,
-                          List<n1, n2, n3, n4, n5, n6, n7, n8>>);
+        is_same<List<bu1, bu2, bu3, bu4, bu5>, List<bu1, bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<ListReverse_v<List<bu1, bu2, bu3, bu4, bu5, bu6>>,
+                          List<bu6, bu5, bu4, bu3, bu2, bu1>>);
+    static_assert(is_same<List<bu1, bu2, bu3, bu4, bu5, bu6>,
+                          List<bu1, bu2, bu3, bu4, bu5, bu6>>);
     static_assert(
-        is_same<ListReverse_v<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>,
-                List<n1, n2, n3, n4, n5, n6, n7, n8, n9>>);
-    static_assert(is_same<List<n9, n8, n7, n6, n5, n4, n3, n2, n1>,
-                          List<n9, n8, n7, n6, n5, n4, n3, n2, n1>>);
+        is_same<ListReverse_v<List<bu5, bu4, bu3, bu2, bu1, bu6, bu7>>,
+                List<bu7, bu6, bu1, bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<List<bu5, bu4, bu3, bu2, bu1, bu6, bu7>,
+                          List<bu5, bu4, bu3, bu2, bu1, bu6, bu7>>);
+    static_assert(
+        is_same<ListReverse_v<List<bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8>>,
+                List<bu8, bu7, bu6, bu5, bu4, bu3, bu2, bu1>>);
+    static_assert(is_same<List<bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8>,
+                          List<bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8>>);
+    static_assert(
+        is_same<
+            ListReverse_v<List<bu9, bu8, bu7, bu6, bu5, bu4, bu3, bu2, bu1>>,
+            List<bu1, bu2, bu3, bu4, bu5, bu6, bu7, bu8, bu9>>);
+    static_assert(is_same<List<bu9, bu8, bu7, bu6, bu5, bu4, bu3, bu2, bu1>,
+                          List<bu9, bu8, bu7, bu6, bu5, bu4, bu3, bu2, bu1>>);
 } // namespace list_reverse_tests

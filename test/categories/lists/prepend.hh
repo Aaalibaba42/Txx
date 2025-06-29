@@ -4,43 +4,48 @@
 #include "types/list/list.hh"
 
 #include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../numbers/unsigned/bigunsigned/literals.hh"
 
 namespace list_prepend_tests
 {
-    static_assert(is_same<ListPrepend_v<n1, List<>>, List<n1>>);
-    static_assert(is_same<ListPrepend_v<n1, List<n2>>, List<n1, n2>>);
+    static_assert(is_same<ListPrepend_v<bu1, List<>>, List<bu1>>);
+    static_assert(is_same<ListPrepend_v<bu1, List<bu2>>, List<bu1, bu2>>);
+    static_assert(is_same<ListPrepend_v<bu1, List<bu2, bu3, bu4>>,
+                          List<bu1, bu2, bu3, bu4>>);
     static_assert(
-        is_same<ListPrepend_v<n1, List<n2, n3, n4>>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<ListPrepend_v<n5, List<n2, n4>>, List<n5, n2, n4>>);
-    static_assert(is_same<ListPrepend_v<n3, List<n1>>, List<n3, n1>>);
-    static_assert(is_same<List<n1>, List<n1>>);
-    using L6 = ListPrepend_v<n2, List<n3, n4>>;
-    static_assert(is_same<L6, List<n2, n3, n4>>);
-    static_assert(is_same<ListPrepend_v<n1, L6>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<ListPrepend_v<n1, List<n2, n3, n4, n5, n6>>,
-                          List<n1, n2, n3, n4, n5, n6>>);
+        is_same<ListPrepend_v<bu5, List<bu2, bu4>>, List<bu5, bu2, bu4>>);
+    static_assert(is_same<ListPrepend_v<bu3, List<bu1>>, List<bu3, bu1>>);
+    static_assert(is_same<List<bu1>, List<bu1>>);
+    using L6 = ListPrepend_v<bu2, List<bu3, bu4>>;
+    static_assert(is_same<L6, List<bu2, bu3, bu4>>);
+    static_assert(is_same<ListPrepend_v<bu1, L6>, List<bu1, bu2, bu3, bu4>>);
+    static_assert(is_same<ListPrepend_v<bu1, List<bu2, bu3, bu4, bu5, bu6>>,
+                          List<bu1, bu2, bu3, bu4, bu5, bu6>>);
+    static_assert(is_same<ListPrepend_v<bu2, List<bu2, bu3, bu2>>,
+                          List<bu2, bu2, bu3, bu2>>);
+    static_assert(is_same<ListPrepend_v<bu4, List<bu5>>, List<bu4, bu5>>);
+    static_assert(is_same<List<bu5>, List<bu5>>);
     static_assert(
-        is_same<ListPrepend_v<n2, List<n2, n3, n2>>, List<n2, n2, n3, n2>>);
-    static_assert(is_same<ListPrepend_v<n4, List<n5>>, List<n4, n5>>);
-    static_assert(is_same<List<n5>, List<n5>>);
-    static_assert(is_same<ListPrepend_v<n6, List<n1, n2>>, List<n6, n1, n2>>);
-    static_assert(is_same<List<n1, n2>, List<n1, n2>>);
+        is_same<ListPrepend_v<bu6, List<bu1, bu2>>, List<bu6, bu1, bu2>>);
+    static_assert(is_same<List<bu1, bu2>, List<bu1, bu2>>);
+    static_assert(is_same<ListPrepend_v<bu3, List<bu4, bu5, bu6>>,
+                          List<bu3, bu4, bu5, bu6>>);
+    static_assert(is_same<List<bu4, bu5, bu6>, List<bu4, bu5, bu6>>);
+    static_assert(is_same<ListPrepend_v<bu1, List<bu2, bu3, bu4, bu5>>,
+                          List<bu1, bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<List<bu2, bu3, bu4, bu5>, List<bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<ListPrepend_v<bu6, List<bu1, bu2, bu3, bu4, bu5>>,
+                          List<bu6, bu1, bu2, bu3, bu4, bu5>>);
     static_assert(
-        is_same<ListPrepend_v<n3, List<n4, n5, n6>>, List<n3, n4, n5, n6>>);
-    static_assert(is_same<List<n4, n5, n6>, List<n4, n5, n6>>);
-    static_assert(is_same<ListPrepend_v<n1, List<n2, n3, n4, n5>>,
-                          List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
-    static_assert(is_same<ListPrepend_v<n6, List<n1, n2, n3, n4, n5>>,
-                          List<n6, n1, n2, n3, n4, n5>>);
-    static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
-    static_assert(is_same<ListPrepend_v<n2, List<n3, n4, n5, n6, n1, n2>>,
-                          List<n2, n3, n4, n5, n6, n1, n2>>);
+        is_same<List<bu1, bu2, bu3, bu4, bu5>, List<bu1, bu2, bu3, bu4, bu5>>);
     static_assert(
-        is_same<List<n3, n4, n5, n6, n1, n2>, List<n3, n4, n5, n6, n1, n2>>);
-    static_assert(is_same<ListPrepend_v<n4, List<n5, n6, n1, n2, n3, n4, n5>>,
-                          List<n4, n5, n6, n1, n2, n3, n4, n5>>);
-    static_assert(is_same<List<n5, n6, n1, n2, n3, n4, n5>,
-                          List<n5, n6, n1, n2, n3, n4, n5>>);
+        is_same<ListPrepend_v<bu2, List<bu3, bu4, bu5, bu6, bu1, bu2>>,
+                List<bu2, bu3, bu4, bu5, bu6, bu1, bu2>>);
+    static_assert(is_same<List<bu3, bu4, bu5, bu6, bu1, bu2>,
+                          List<bu3, bu4, bu5, bu6, bu1, bu2>>);
+    static_assert(
+        is_same<ListPrepend_v<bu4, List<bu5, bu6, bu1, bu2, bu3, bu4, bu5>>,
+                List<bu4, bu5, bu6, bu1, bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<List<bu5, bu6, bu1, bu2, bu3, bu4, bu5>,
+                          List<bu5, bu6, bu1, bu2, bu3, bu4, bu5>>);
 } // namespace list_prepend_tests

@@ -4,42 +4,44 @@
 #include "types/list/list.hh"
 
 #include "../../utils/is_same.hh"
-#include "../../utils/numbers.hh"
+#include "../numbers/unsigned/bigunsigned/literals.hh"
 
 namespace list_set_tests
 {
     // Fails (as expected)
-    // static_assert(is_same<Set_v<List<>, n1, n1>, List<>>);
-    // static_assert(is_same<Set_v<List<>, n1, n0>, List<>>);
-    // static_assert(is_same<Set_v<List<n1>, n2, n1>, List<>>);
-    // static_assert(is_same<Set_v<List<n1, n2>, n3, n2>, List<>>);
+    // static_assert(is_same<Set_v<List<>, bu1, bu1>, List<>>);
+    // static_assert(is_same<Set_v<List<>, bu1, bu0>, List<>>);
+    // static_assert(is_same<Set_v<List<bu1>, bu2, bu1>, List<>>);
+    // static_assert(is_same<Set_v<List<bu1, bu2>, bu3, bu2>, List<>>);
     static_assert(
-        is_same<ListSet_v<List<n1, n2, n3>, n4, n0>, List<n4, n2, n3>>);
+        is_same<ListSet_v<List<bu1, bu2, bu3>, bu4, bu0>, List<bu4, bu2, bu3>>);
     static_assert(
-        is_same<ListSet_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
+        is_same<ListSet_v<List<bu1, bu2, bu3>, bu4, bu1>, List<bu1, bu4, bu3>>);
     static_assert(
-        is_same<ListSet_v<List<n1, n2, n3>, n4, n2>, List<n1, n2, n4>>);
-    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
-                          List<n1, n2, n6, n4, n5>>);
+        is_same<ListSet_v<List<bu1, bu2, bu3>, bu4, bu2>, List<bu1, bu2, bu4>>);
+    static_assert(is_same<ListSet_v<List<bu1, bu2, bu3, bu4, bu5>, bu6, bu2>,
+                          List<bu1, bu2, bu6, bu4, bu5>>);
     static_assert(
-        is_same<ListSet_v<List<n2, n3, n2>, n4, n0>, List<n4, n3, n2>>);
+        is_same<ListSet_v<List<bu2, bu3, bu2>, bu4, bu0>, List<bu4, bu3, bu2>>);
     static_assert(
-        is_same<ListSet_v<List<n2, n3, n2>, n4, n1>, List<n2, n4, n2>>);
+        is_same<ListSet_v<List<bu2, bu3, bu2>, bu4, bu1>, List<bu2, bu4, bu2>>);
     static_assert(
-        is_same<ListSet_v<List<n2, n3, n2>, n4, n2>, List<n2, n3, n4>>);
+        is_same<ListSet_v<List<bu2, bu3, bu2>, bu4, bu2>, List<bu2, bu3, bu4>>);
     static_assert(
-        is_same<ListSet_v<List<n1, n2, n3>, n4, n1>, List<n1, n4, n3>>);
-    static_assert(is_same<List<n1, n2, n3>, List<n1, n2, n3>>);
-    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
-                          List<n1, n2, n6, n4, n5>>);
-    static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
+        is_same<ListSet_v<List<bu1, bu2, bu3>, bu4, bu1>, List<bu1, bu4, bu3>>);
+    static_assert(is_same<List<bu1, bu2, bu3>, List<bu1, bu2, bu3>>);
+    static_assert(is_same<ListSet_v<List<bu1, bu2, bu3, bu4, bu5>, bu6, bu2>,
+                          List<bu1, bu2, bu6, bu4, bu5>>);
     static_assert(
-        is_same<ListSet_v<List<n2, n3, n4, n5>, n6, n0>, List<n6, n3, n4, n5>>);
-    static_assert(is_same<List<n2, n3, n4, n5>, List<n2, n3, n4, n5>>);
+        is_same<List<bu1, bu2, bu3, bu4, bu5>, List<bu1, bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<ListSet_v<List<bu2, bu3, bu4, bu5>, bu6, bu0>,
+                          List<bu6, bu3, bu4, bu5>>);
+    static_assert(is_same<List<bu2, bu3, bu4, bu5>, List<bu2, bu3, bu4, bu5>>);
+    static_assert(is_same<ListSet_v<List<bu1, bu2, bu3, bu4>, bu5, bu3>,
+                          List<bu1, bu2, bu3, bu5>>);
+    static_assert(is_same<List<bu1, bu2, bu3, bu4>, List<bu1, bu2, bu3, bu4>>);
+    static_assert(is_same<ListSet_v<List<bu1, bu2, bu3, bu4, bu5>, bu6, bu2>,
+                          List<bu1, bu2, bu6, bu4, bu5>>);
     static_assert(
-        is_same<ListSet_v<List<n1, n2, n3, n4>, n5, n3>, List<n1, n2, n3, n5>>);
-    static_assert(is_same<List<n1, n2, n3, n4>, List<n1, n2, n3, n4>>);
-    static_assert(is_same<ListSet_v<List<n1, n2, n3, n4, n5>, n6, n2>,
-                          List<n1, n2, n6, n4, n5>>);
-    static_assert(is_same<List<n1, n2, n3, n4, n5>, List<n1, n2, n3, n4, n5>>);
+        is_same<List<bu1, bu2, bu3, bu4, bu5>, List<bu1, bu2, bu3, bu4, bu5>>);
 } // namespace list_set_tests
