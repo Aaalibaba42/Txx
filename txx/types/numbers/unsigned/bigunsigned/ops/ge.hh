@@ -8,43 +8,45 @@
 #include "types/list/list.hh"
 #include "types/list/ops/length.hh"
 #include "types/list/ops/reverse.hh"
-#include "types/numbers/unsigned/concept.hh"
+#include "types/numbers/unsigned/bigunsigned/concept.hh"
 
-namespace UnsignedGEImpl
+namespace BigUnsignedGEImpl
 {
     template <List_t LHS, List_t RHS>
-    struct UnsignedGreaterEqImpl;
+    struct BigUnsignedGreaterEqImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedGreaterEqImpl_v = UnsignedGreaterEqImpl<LHS, RHS>::result;
+    using BigUnsignedGreaterEqImpl_v =
+        BigUnsignedGreaterEqImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedGreaterEqImpl<List<>, List<>>
+    struct BigUnsignedGreaterEqImpl<List<>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<>, List<RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<>, List<RRest...>>
     {
         using result = False;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedGreaterEqImpl<List<LRest...>, List<>>
+    struct BigUnsignedGreaterEqImpl<List<LRest...>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<SameBit, LRest...>,
-                                 List<SameBit, RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<SameBit, LRest...>,
+                                    List<SameBit, RRest...>>
     {
-        using result = UnsignedGreaterEqImpl_v<List<LRest...>, List<RRest...>>;
+        using result =
+            BigUnsignedGreaterEqImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         // The LHS is greater than RHS if LHS has the One (thus RHS has the
         // Zero)
@@ -81,14 +83,14 @@ namespace UnsignedGEImpl
         using result = False;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedGE;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedGE;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedGE_v = UnsignedGE<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedGE_v = BigUnsignedGE<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedGE<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedGE<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -96,11 +98,11 @@ namespace UnsignedGEImpl
             // If they are the same size
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
             // First One encountered from the end is biggest
-            UnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
-                                    ListReverse_v<List<RHS...>>>,
+            BigUnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
+                                       ListReverse_v<List<RHS...>>>,
             // The lengthiest number is the biggest
             GEImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedGEImpl
+} // namespace BigUnsignedGEImpl
 
-using UnsignedGEImpl::UnsignedGE_v;
+using BigUnsignedGEImpl::BigUnsignedGE_v;

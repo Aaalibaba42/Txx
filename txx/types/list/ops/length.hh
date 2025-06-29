@@ -2,8 +2,8 @@
 
 #include "types/list/concept.hh"
 #include "types/meta/any.hh"
-#include "types/numbers/unsigned/unsigned.hh"
-#include "types/numbers/unsigned/ops/inc.hh"
+#include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "types/numbers/unsigned/bigunsigned/ops/inc.hh"
 
 namespace ListLengthImpl
 {
@@ -16,13 +16,13 @@ namespace ListLengthImpl
     template <>
     struct ListLength<List<>>
     {
-        using result = Unsigned<>;
+        using result = BigUnsigned<>;
     };
 
     template <Any_t Head, Any_t... Tail>
     struct ListLength<List<Head, Tail...>>
     {
-        using result = UnsignedInc_v<ListLength_v<List<Tail...>>>;
+        using result = BigUnsignedInc_v<ListLength_v<List<Tail...>>>;
     };
 } // namespace ListLengthImpl
 

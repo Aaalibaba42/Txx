@@ -8,48 +8,48 @@
 #include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
-#include "types/numbers/unsigned/concept.hh"
-#include "types/numbers/unsigned/unsigned.hh"
-#include "types/numbers/unsigned/utils/fromList.hh"
+#include "types/numbers/unsigned/bigunsigned/concept.hh"
+#include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "types/numbers/unsigned/bigunsigned/utils/fromList.hh"
 
-namespace UnsignedAddImpl
+namespace BigUnsignedAddImpl
 {
     template <List_t LHS, List_t RHS, Bit_t Carry>
-    struct AddUnsignedCarry;
+    struct AddBigUnsignedCarry;
 
     template <List_t LHS, List_t RHS, Bit_t Carry>
-    using AddUnsignedCarry_v = AddUnsignedCarry<LHS, RHS, Carry>::result;
+    using AddBigUnsignedCarry_v = AddBigUnsignedCarry<LHS, RHS, Carry>::result;
 
     // Both Lists are empty, add the remaining carry
     template <Bit_t Carry>
-    struct AddUnsignedCarry<List<>, List<>, Carry>
+    struct AddBigUnsignedCarry<List<>, List<>, Carry>
     {
         using result = Ternary_v<IsSame_v<Carry, One>, List<One>, List<>>;
     };
 
     // RHS is empty, propagate on LHS
     template <Bit_t L0, Bit_t... LRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<L0, LRest...>, List<>, Carry>
+    struct AddBigUnsignedCarry<List<L0, LRest...>, List<>, Carry>
     {
         using FA = FullAdder<L0, Carry>;
         using tail =
-            AddUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
+            AddBigUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
     // LHS is empty, propagate on RHS
     template <Bit_t R0, Bit_t... RRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<>, List<R0, RRest...>, Carry>
+    struct AddBigUnsignedCarry<List<>, List<R0, RRest...>, Carry>
     {
         using FA = FullAdder<R0, Carry>;
         using tail =
-            AddUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
+            AddBigUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
     // Base case
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
+    struct AddBigUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     {
         using FA1 = FullAdder<L0, R0>;
         using FA2 = FullAdder<typename FA1::Sum, Carry>;
@@ -60,22 +60,22 @@ namespace UnsignedAddImpl
             FullAdder<typename FA1::Carry, typename FA2::Carry>::Sum;
 
         using tail =
-            AddUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
+            AddBigUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
         using result = ListPrepend_v<result_sum, tail>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedAdd;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedAdd;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedAdd_v = UnsignedAdd<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedAdd_v = BigUnsignedAdd<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedAdd<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedAdd<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
-        using result =
-            ToUnsigned_v<AddUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
+        using result = ToBigUnsigned_v<
+            AddBigUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
     };
-} // namespace UnsignedAddImpl
+} // namespace BigUnsignedAddImpl
 
-using UnsignedAddImpl::UnsignedAdd_v;
+using BigUnsignedAddImpl::BigUnsignedAdd_v;

@@ -23,55 +23,124 @@ Features
 - [x] Or
 - [x] Xor
 
-
 ### Numbers
 
-- [x] Unsigned Numbers:
-  - [x] Incrementation
-  - [x] Addition
-  - [x] Subtraction
-  - [x] LeftShift
-  - [ ] RightShift
-  - [x] Multiplication
-  - [x] Division
-  - [x] Mod
-  - [x] LT
-  - [x] LE
-  - [x] GT
-  - [x] GE
-  - [x] EQ
+- [ ] Unsigned Numbers:
+  - [x] BigUnsigned (Unbounded unsigned):
+    - [x] Incrementation
+    - [ ] Decrementation
+    - [x] Addition
+    - [x] Subtraction
+    - [x] LeftShift
+    - [ ] RightShift
+    - [x] Multiplication
+    - [x] Division
+    - [x] Mod
+    - [x] LT
+    - [x] LE
+    - [x] GT
+    - [x] GE
+    - [x] EQ
+  - [ ] Unsigned8:
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] Mod
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
+  - [ ] Unsigned32:
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] Mod
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
 - [ ] Signed Numbers
-  - [ ] Incrementation
-  - [ ] Addition
-  - [ ] Subtraction
-  - [ ] LeftShift
-  - [ ] RightShift
-  - [ ] Multiplication
-  - [ ] Division
-  - [ ] LT
-  - [ ] LE
-  - [ ] GT
-  - [ ] GE
-  - [ ] EQ
-- [ ] IEEE754
-  - Constants:
-    - [ ] +Zero
-    - [ ] -Zero
-    - [ ] +Inf
-    - [ ] -Inf
-    - [ ] Epsilon
-  - [ ] Incrementation
-  - [ ] Addition
-  - [ ] Subtraction
-  - [ ] LeftShift
-  - [ ] RightShift
-  - [ ] Multiplication
-  - [ ] Division
-  - [ ] LT
-  - [ ] LE
-  - [ ] GT
-  - [ ] GE
-  - [ ] EQ
+  - [ ] Signed8:
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
+  - [ ] Signed32:
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
+- [ ] IEEE754:
+  - Float32:
+    - Constants:
+      - [ ] +Zero
+      - [ ] -Zero
+      - [ ] +Inf
+      - [ ] -Inf
+      - [ ] Epsilon
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
+  - Float64:
+    - Constants:
+      - [ ] +Zero
+      - [ ] -Zero
+      - [ ] +Inf
+      - [ ] -Inf
+      - [ ] Epsilon
+    - [ ] Incrementation
+    - [ ] Decrementation
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] LeftShift
+    - [ ] RightShift
+    - [ ] Multiplication
+    - [ ] Division
+    - [ ] LT
+    - [ ] LE
+    - [ ] GT
+    - [ ] GE
+    - [ ] EQ
 
 Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 

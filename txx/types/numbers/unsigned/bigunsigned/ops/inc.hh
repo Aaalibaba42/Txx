@@ -8,11 +8,11 @@
 #include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
-#include "types/numbers/unsigned/concept.hh"
-#include "types/numbers/unsigned/unsigned.hh"
-#include "types/numbers/unsigned/utils/fromList.hh"
+#include "types/numbers/unsigned/bigunsigned/concept.hh"
+#include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "types/numbers/unsigned/bigunsigned/utils/fromList.hh"
 
-namespace UnsignedIncImpl
+namespace BigUnsignedIncImpl
 {
     template <List_t List, Bit_t Carry>
     struct AddCarry;
@@ -36,17 +36,17 @@ namespace UnsignedIncImpl
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
-    template <Unsigned_t Num>
-    struct UnsignedInc;
+    template <BigUnsigned_t Num>
+    struct BigUnsignedInc;
 
-    template <Unsigned_t Num>
-    using UnsignedInc_v = UnsignedInc<Num>::result;
+    template <BigUnsigned_t Num>
+    using BigUnsignedInc_v = BigUnsignedInc<Num>::result;
 
     template <Bit_t... Bits>
-    struct UnsignedInc<Unsigned<Bits...>>
+    struct BigUnsignedInc<BigUnsigned<Bits...>>
     {
-        using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
+        using result = ToBigUnsigned_v<AddCarry_v<List<Bits...>, One>>;
     };
-} // namespace UnsignedIncImpl
+} // namespace BigUnsignedIncImpl
 
-using UnsignedIncImpl::UnsignedInc_v;
+using BigUnsignedIncImpl::BigUnsignedInc_v;

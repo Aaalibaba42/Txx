@@ -11,5 +11,5 @@
 // Upper bound of definition is limited by the compiler's template instantiation
 // limits
 template <Bit_t... BitPack>
-struct Unsigned
+struct BigUnsigned
 {};

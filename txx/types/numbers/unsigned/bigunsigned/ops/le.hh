@@ -8,42 +8,43 @@
 #include "types/list/list.hh"
 #include "types/list/ops/length.hh"
 #include "types/list/ops/reverse.hh"
-#include "types/numbers/unsigned/concept.hh"
+#include "types/numbers/unsigned/bigunsigned/concept.hh"
 
-namespace UnsignedLEImpl
+namespace BigUnsignedLEImpl
 {
     template <List_t LHS, List_t RHS>
-    struct UnsignedLowerEqImpl;
+    struct BigUnsignedLowerEqImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedLowerEqImpl_v = UnsignedLowerEqImpl<LHS, RHS>::result;
+    using BigUnsignedLowerEqImpl_v = BigUnsignedLowerEqImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedLowerEqImpl<List<>, List<>>
+    struct BigUnsignedLowerEqImpl<List<>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<>, List<RRest...>>
+    struct BigUnsignedLowerEqImpl<List<>, List<RRest...>>
     {
         using result = True;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedLowerEqImpl<List<LRest...>, List<>>
+    struct BigUnsignedLowerEqImpl<List<LRest...>, List<>>
     {
         using result = False;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
+    struct BigUnsignedLowerEqImpl<List<SameBit, LRest...>,
+                                  List<SameBit, RRest...>>
     {
-        using result = UnsignedLowerEqImpl_v<List<LRest...>, List<RRest...>>;
+        using result = BigUnsignedLowerEqImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedLowerEqImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         // The LHS is lower than RHS if LHS has the Zero (thus RHS has the One)
         using result = IsSame_v<L0, Zero>;
@@ -79,14 +80,14 @@ namespace UnsignedLEImpl
         using result = True;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedLE;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedLE;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedLE_v = UnsignedLE<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedLE_v = BigUnsignedLE<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedLE<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedLE<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -94,11 +95,11 @@ namespace UnsignedLEImpl
             // If they are the same size
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
             // First One encountered from the end is biggest
-            UnsignedLowerEqImpl_v<ListReverse_v<List<LHS...>>,
-                                  ListReverse_v<List<RHS...>>>,
+            BigUnsignedLowerEqImpl_v<ListReverse_v<List<LHS...>>,
+                                     ListReverse_v<List<RHS...>>>,
             // The lengthiest number is the biggest
             LEImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedLEImpl
+} // namespace BigUnsignedLEImpl
 
-using UnsignedLEImpl::UnsignedLE_v;
+using BigUnsignedLEImpl::BigUnsignedLE_v;

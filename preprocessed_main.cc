@@ -139,68 +139,68 @@ namespace ListPrependImpl
 using ListPrependImpl::ListPrepend_v;
 
 template <Bit_t... BitPack>
-struct Unsigned
+struct BigUnsigned
 {};
 
 template <Bit_t... bits>
-void unsigned_t_stub(Unsigned<bits...>);
+void bigunsigned_t_stub(BigUnsigned<bits...>);
 
 template <typename T>
-concept Unsigned_t = requires(T us) {
-    { unsigned_t_stub(us) };
+concept BigUnsigned_t = requires(T us) {
+    { bigunsigned_t_stub(us) };
 };
 
-namespace ToUnsignedImpl
+namespace ToBigUnsignedImpl
 {
     template <List_t List>
-    struct ToUnsigned;
+    struct ToBigUnsigned;
 
     template <List_t List>
-    using ToUnsigned_v = ToUnsigned<List>::result;
+    using ToBigUnsigned_v = ToBigUnsigned<List>::result;
 
     template <Bit_t... Bits>
-    struct ToUnsigned<List<Bits...>>
+    struct ToBigUnsigned<List<Bits...>>
     {
-        using result = Unsigned<Bits...>;
+        using result = BigUnsigned<Bits...>;
     };
-} // namespace ToUnsignedImpl
+} // namespace ToBigUnsignedImpl
 
-using ToUnsignedImpl::ToUnsigned_v;
+using ToBigUnsignedImpl::ToBigUnsigned_v;
 
-namespace UnsignedAddImpl
+namespace BigUnsignedAddImpl
 {
     template <List_t LHS, List_t RHS, Bit_t Carry>
-    struct AddUnsignedCarry;
+    struct AddBigUnsignedCarry;
 
     template <List_t LHS, List_t RHS, Bit_t Carry>
-    using AddUnsignedCarry_v = AddUnsignedCarry<LHS, RHS, Carry>::result;
+    using AddBigUnsignedCarry_v = AddBigUnsignedCarry<LHS, RHS, Carry>::result;
 
     template <Bit_t Carry>
-    struct AddUnsignedCarry<List<>, List<>, Carry>
+    struct AddBigUnsignedCarry<List<>, List<>, Carry>
     {
         using result = Ternary_v<IsSame_v<Carry, One>, List<One>, List<>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<L0, LRest...>, List<>, Carry>
+    struct AddBigUnsignedCarry<List<L0, LRest...>, List<>, Carry>
     {
         using FA = FullAdder<L0, Carry>;
         using tail =
-            AddUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
+            AddBigUnsignedCarry_v<List<LRest...>, List<>, typename FA::Carry>;
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
     template <Bit_t R0, Bit_t... RRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<>, List<R0, RRest...>, Carry>
+    struct AddBigUnsignedCarry<List<>, List<R0, RRest...>, Carry>
     {
         using FA = FullAdder<R0, Carry>;
         using tail =
-            AddUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
+            AddBigUnsignedCarry_v<List<>, List<RRest...>, typename FA::Carry>;
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Carry>
-    struct AddUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
+    struct AddBigUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Carry>
     {
         using FA1 = FullAdder<L0, R0>;
         using FA2 = FullAdder<typename FA1::Sum, Carry>;
@@ -211,25 +211,25 @@ namespace UnsignedAddImpl
             FullAdder<typename FA1::Carry, typename FA2::Carry>::Sum;
 
         using tail =
-            AddUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
+            AddBigUnsignedCarry_v<List<LRest...>, List<RRest...>, next_carry>;
         using result = ListPrepend_v<result_sum, tail>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedAdd;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedAdd;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedAdd_v = UnsignedAdd<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedAdd_v = BigUnsignedAdd<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedAdd<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedAdd<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
-        using result =
-            ToUnsigned_v<AddUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
+        using result = ToBigUnsigned_v<
+            AddBigUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
     };
-} // namespace UnsignedAddImpl
+} // namespace BigUnsignedAddImpl
 
-using UnsignedAddImpl::UnsignedAdd_v;
+using BigUnsignedAddImpl::BigUnsignedAdd_v;
 
 template <typename T1, typename T2>
 inline constexpr bool is_same = false;
@@ -237,104 +237,104 @@ inline constexpr bool is_same = false;
 template <typename T>
 inline constexpr bool is_same<T, T> = true;
 
-using n0 = Unsigned<>;
-using n1 = Unsigned<One>;
-using n2 = Unsigned<Zero, One>;
-using n3 = Unsigned<One, One>;
-using n4 = Unsigned<Zero, Zero, One>;
-using n5 = Unsigned<One, Zero, One>;
-using n6 = Unsigned<Zero, One, One>;
-using n7 = Unsigned<One, One, One>;
-using n8 = Unsigned<Zero, Zero, Zero, One>;
-using n9 = Unsigned<One, Zero, Zero, One>;
-using n10 = Unsigned<Zero, One, Zero, One>;
-using n11 = Unsigned<One, One, Zero, One>;
-using n12 = Unsigned<Zero, Zero, One, One>;
-using n13 = Unsigned<One, Zero, One, One>;
-using n14 = Unsigned<Zero, One, One, One>;
-using n15 = Unsigned<One, One, One, One>;
-using n16 = Unsigned<Zero, Zero, Zero, Zero, One>;
-using n17 = Unsigned<One, Zero, Zero, Zero, One>;
-using n18 = Unsigned<Zero, One, Zero, Zero, One>;
-using n19 = Unsigned<One, One, Zero, Zero, One>;
-using n20 = Unsigned<Zero, Zero, One, Zero, One>;
-using n21 = Unsigned<One, Zero, One, Zero, One>;
-using n22 = Unsigned<Zero, One, One, Zero, One>;
-using n23 = Unsigned<One, One, One, Zero, One>;
-using n24 = Unsigned<Zero, Zero, Zero, One, One>;
-using n25 = Unsigned<One, Zero, Zero, One, One>;
-using n26 = Unsigned<Zero, One, Zero, One, One>;
-using n27 = Unsigned<One, One, Zero, One, One>;
-using n28 = Unsigned<Zero, Zero, One, One, One>;
-using n29 = Unsigned<One, Zero, One, One, One>;
-using n30 = Unsigned<Zero, One, One, One, One>;
-using n31 = Unsigned<One, One, One, One, One>;
-using n32 = Unsigned<Zero, Zero, Zero, Zero, Zero, One>;
-using n33 = Unsigned<One, Zero, Zero, Zero, Zero, One>;
-using n34 = Unsigned<Zero, One, Zero, Zero, Zero, One>;
-using n35 = Unsigned<One, One, Zero, Zero, Zero, One>;
-using n36 = Unsigned<Zero, Zero, One, Zero, Zero, One>;
-using n37 = Unsigned<One, Zero, One, Zero, Zero, One>;
-using n38 = Unsigned<Zero, One, One, Zero, Zero, One>;
-using n39 = Unsigned<One, One, One, Zero, Zero, One>;
-using n40 = Unsigned<Zero, Zero, Zero, One, Zero, One>;
-using n41 = Unsigned<One, Zero, Zero, One, Zero, One>;
-using n42 = Unsigned<Zero, One, Zero, One, Zero, One>;
-using n43 = Unsigned<One, One, Zero, One, Zero, One>;
-using n44 = Unsigned<Zero, Zero, One, One, Zero, One>;
-using n45 = Unsigned<One, Zero, One, One, Zero, One>;
-using n46 = Unsigned<Zero, One, One, One, Zero, One>;
-using n47 = Unsigned<One, One, One, One, Zero, One>;
-using n48 = Unsigned<Zero, Zero, Zero, Zero, One, One>;
-using n49 = Unsigned<One, Zero, Zero, Zero, One, One>;
-using n50 = Unsigned<Zero, One, Zero, Zero, One, One>;
-using n51 = Unsigned<One, One, Zero, Zero, One, One>;
-using n52 = Unsigned<Zero, Zero, One, Zero, One, One>;
-using n53 = Unsigned<One, Zero, One, Zero, One, One>;
-using n54 = Unsigned<Zero, One, One, Zero, One, One>;
-using n55 = Unsigned<One, One, One, Zero, One, One>;
-using n56 = Unsigned<Zero, Zero, Zero, One, One, One>;
-using n57 = Unsigned<One, Zero, Zero, One, One, One>;
-using n58 = Unsigned<Zero, One, Zero, One, One, One>;
-using n59 = Unsigned<One, One, Zero, One, One, One>;
-using n60 = Unsigned<Zero, Zero, One, One, One, One>;
-using n61 = Unsigned<One, Zero, One, One, One, One>;
-using n62 = Unsigned<Zero, One, One, One, One, One>;
-using n63 = Unsigned<One, One, One, One, One, One>;
-using n64 = Unsigned<Zero, Zero, Zero, Zero, Zero, Zero, One>;
+using n0 = BigUnsigned<>;
+using n1 = BigUnsigned<One>;
+using n2 = BigUnsigned<Zero, One>;
+using n3 = BigUnsigned<One, One>;
+using n4 = BigUnsigned<Zero, Zero, One>;
+using n5 = BigUnsigned<One, Zero, One>;
+using n6 = BigUnsigned<Zero, One, One>;
+using n7 = BigUnsigned<One, One, One>;
+using n8 = BigUnsigned<Zero, Zero, Zero, One>;
+using n9 = BigUnsigned<One, Zero, Zero, One>;
+using n10 = BigUnsigned<Zero, One, Zero, One>;
+using n11 = BigUnsigned<One, One, Zero, One>;
+using n12 = BigUnsigned<Zero, Zero, One, One>;
+using n13 = BigUnsigned<One, Zero, One, One>;
+using n14 = BigUnsigned<Zero, One, One, One>;
+using n15 = BigUnsigned<One, One, One, One>;
+using n16 = BigUnsigned<Zero, Zero, Zero, Zero, One>;
+using n17 = BigUnsigned<One, Zero, Zero, Zero, One>;
+using n18 = BigUnsigned<Zero, One, Zero, Zero, One>;
+using n19 = BigUnsigned<One, One, Zero, Zero, One>;
+using n20 = BigUnsigned<Zero, Zero, One, Zero, One>;
+using n21 = BigUnsigned<One, Zero, One, Zero, One>;
+using n22 = BigUnsigned<Zero, One, One, Zero, One>;
+using n23 = BigUnsigned<One, One, One, Zero, One>;
+using n24 = BigUnsigned<Zero, Zero, Zero, One, One>;
+using n25 = BigUnsigned<One, Zero, Zero, One, One>;
+using n26 = BigUnsigned<Zero, One, Zero, One, One>;
+using n27 = BigUnsigned<One, One, Zero, One, One>;
+using n28 = BigUnsigned<Zero, Zero, One, One, One>;
+using n29 = BigUnsigned<One, Zero, One, One, One>;
+using n30 = BigUnsigned<Zero, One, One, One, One>;
+using n31 = BigUnsigned<One, One, One, One, One>;
+using n32 = BigUnsigned<Zero, Zero, Zero, Zero, Zero, One>;
+using n33 = BigUnsigned<One, Zero, Zero, Zero, Zero, One>;
+using n34 = BigUnsigned<Zero, One, Zero, Zero, Zero, One>;
+using n35 = BigUnsigned<One, One, Zero, Zero, Zero, One>;
+using n36 = BigUnsigned<Zero, Zero, One, Zero, Zero, One>;
+using n37 = BigUnsigned<One, Zero, One, Zero, Zero, One>;
+using n38 = BigUnsigned<Zero, One, One, Zero, Zero, One>;
+using n39 = BigUnsigned<One, One, One, Zero, Zero, One>;
+using n40 = BigUnsigned<Zero, Zero, Zero, One, Zero, One>;
+using n41 = BigUnsigned<One, Zero, Zero, One, Zero, One>;
+using n42 = BigUnsigned<Zero, One, Zero, One, Zero, One>;
+using n43 = BigUnsigned<One, One, Zero, One, Zero, One>;
+using n44 = BigUnsigned<Zero, Zero, One, One, Zero, One>;
+using n45 = BigUnsigned<One, Zero, One, One, Zero, One>;
+using n46 = BigUnsigned<Zero, One, One, One, Zero, One>;
+using n47 = BigUnsigned<One, One, One, One, Zero, One>;
+using n48 = BigUnsigned<Zero, Zero, Zero, Zero, One, One>;
+using n49 = BigUnsigned<One, Zero, Zero, Zero, One, One>;
+using n50 = BigUnsigned<Zero, One, Zero, Zero, One, One>;
+using n51 = BigUnsigned<One, One, Zero, Zero, One, One>;
+using n52 = BigUnsigned<Zero, Zero, One, Zero, One, One>;
+using n53 = BigUnsigned<One, Zero, One, Zero, One, One>;
+using n54 = BigUnsigned<Zero, One, One, Zero, One, One>;
+using n55 = BigUnsigned<One, One, One, Zero, One, One>;
+using n56 = BigUnsigned<Zero, Zero, Zero, One, One, One>;
+using n57 = BigUnsigned<One, Zero, Zero, One, One, One>;
+using n58 = BigUnsigned<Zero, One, Zero, One, One, One>;
+using n59 = BigUnsigned<One, One, Zero, One, One, One>;
+using n60 = BigUnsigned<Zero, Zero, One, One, One, One>;
+using n61 = BigUnsigned<One, Zero, One, One, One, One>;
+using n62 = BigUnsigned<Zero, One, One, One, One, One>;
+using n63 = BigUnsigned<One, One, One, One, One, One>;
+using n64 = BigUnsigned<Zero, Zero, Zero, Zero, Zero, Zero, One>;
 
 namespace unsigned_add_tests
 {
-    using A5 = UnsignedAdd_v<n3, n2>;
-    using A16 = UnsignedAdd_v<n8, n8>;
-    using A8 = UnsignedAdd_v<n7, n1>;
-    using A1 = UnsignedAdd_v<n0, n1>;
-    using A0 = UnsignedAdd_v<n0, n0>;
-    using A15_1 = UnsignedAdd_v<n15, n0>;
-    using A15_2 = UnsignedAdd_v<n0, n15>;
-    using A16_1 = UnsignedAdd_v<n15, n1>;
-    using A16_2 = UnsignedAdd_v<n1, n15>;
-    using A6 = UnsignedAdd_v<n2, n4>;
-    using A9 = UnsignedAdd_v<n5, n4>;
-    using A11 = UnsignedAdd_v<n3, n8>;
-    using A14 = UnsignedAdd_v<n6, n8>;
-    using A15 = UnsignedAdd_v<n7, n8>;
-    using A10 = UnsignedAdd_v<n4, n6>;
-    using A13 = UnsignedAdd_v<n5, n8>;
-    using A17 = UnsignedAdd_v<n9, n8>;
-    using A19 = UnsignedAdd_v<n11, n8>;
-    using A22 = UnsignedAdd_v<n14, n8>;
-    using A25 = UnsignedAdd_v<n16, n9>;
-    using A28 = UnsignedAdd_v<n19, n9>;
-    using A30 = UnsignedAdd_v<n20, n10>;
-    using A33 = UnsignedAdd_v<n22, n11>;
-    using A35 = UnsignedAdd_v<n24, n11>;
-    using A38 = UnsignedAdd_v<n27, n11>;
-    using A40 = UnsignedAdd_v<n30, n10>;
-    using A42 = UnsignedAdd_v<n33, n9>;
-    using A45 = UnsignedAdd_v<n36, n9>;
-    using A48 = UnsignedAdd_v<n39, n9>;
-    using A50 = UnsignedAdd_v<n41, n9>;
+    using A5 = BigUnsignedAdd_v<n3, n2>;
+    using A16 = BigUnsignedAdd_v<n8, n8>;
+    using A8 = BigUnsignedAdd_v<n7, n1>;
+    using A1 = BigUnsignedAdd_v<n0, n1>;
+    using A0 = BigUnsignedAdd_v<n0, n0>;
+    using A15_1 = BigUnsignedAdd_v<n15, n0>;
+    using A15_2 = BigUnsignedAdd_v<n0, n15>;
+    using A16_1 = BigUnsignedAdd_v<n15, n1>;
+    using A16_2 = BigUnsignedAdd_v<n1, n15>;
+    using A6 = BigUnsignedAdd_v<n2, n4>;
+    using A9 = BigUnsignedAdd_v<n5, n4>;
+    using A11 = BigUnsignedAdd_v<n3, n8>;
+    using A14 = BigUnsignedAdd_v<n6, n8>;
+    using A15 = BigUnsignedAdd_v<n7, n8>;
+    using A10 = BigUnsignedAdd_v<n4, n6>;
+    using A13 = BigUnsignedAdd_v<n5, n8>;
+    using A17 = BigUnsignedAdd_v<n9, n8>;
+    using A19 = BigUnsignedAdd_v<n11, n8>;
+    using A22 = BigUnsignedAdd_v<n14, n8>;
+    using A25 = BigUnsignedAdd_v<n16, n9>;
+    using A28 = BigUnsignedAdd_v<n19, n9>;
+    using A30 = BigUnsignedAdd_v<n20, n10>;
+    using A33 = BigUnsignedAdd_v<n22, n11>;
+    using A35 = BigUnsignedAdd_v<n24, n11>;
+    using A38 = BigUnsignedAdd_v<n27, n11>;
+    using A40 = BigUnsignedAdd_v<n30, n10>;
+    using A42 = BigUnsignedAdd_v<n33, n9>;
+    using A45 = BigUnsignedAdd_v<n36, n9>;
+    using A48 = BigUnsignedAdd_v<n39, n9>;
+    using A50 = BigUnsignedAdd_v<n41, n9>;
 
     static_assert(is_same<A6, n6>);
     static_assert(is_same<A9, n9>);
@@ -408,7 +408,7 @@ namespace ListReverseImpl
 
 using ListReverseImpl::ListReverse_v;
 
-namespace UnsignedIncImpl
+namespace BigUnsignedIncImpl
 {
     template <List_t List, Bit_t Carry>
     struct AddCarry;
@@ -432,20 +432,20 @@ namespace UnsignedIncImpl
         using result = ListPrepend_v<typename FA::Sum, tail>;
     };
 
-    template <Unsigned_t Num>
-    struct UnsignedInc;
+    template <BigUnsigned_t Num>
+    struct BigUnsignedInc;
 
-    template <Unsigned_t Num>
-    using UnsignedInc_v = UnsignedInc<Num>::result;
+    template <BigUnsigned_t Num>
+    using BigUnsignedInc_v = BigUnsignedInc<Num>::result;
 
     template <Bit_t... Bits>
-    struct UnsignedInc<Unsigned<Bits...>>
+    struct BigUnsignedInc<BigUnsigned<Bits...>>
     {
-        using result = ToUnsigned_v<AddCarry_v<List<Bits...>, One>>;
+        using result = ToBigUnsigned_v<AddCarry_v<List<Bits...>, One>>;
     };
-} // namespace UnsignedIncImpl
+} // namespace BigUnsignedIncImpl
 
-using UnsignedIncImpl::UnsignedInc_v;
+using BigUnsignedIncImpl::BigUnsignedInc_v;
 
 namespace ListLengthImpl
 {
@@ -458,53 +458,55 @@ namespace ListLengthImpl
     template <>
     struct ListLength<List<>>
     {
-        using result = Unsigned<>;
+        using result = BigUnsigned<>;
     };
 
     template <Any_t Head, Any_t... Tail>
     struct ListLength<List<Head, Tail...>>
     {
-        using result = UnsignedInc_v<ListLength_v<List<Tail...>>>;
+        using result = BigUnsignedInc_v<ListLength_v<List<Tail...>>>;
     };
 } // namespace ListLengthImpl
 
 using ListLengthImpl::ListLength_v;
 
-namespace UnsignedGEImpl
+namespace BigUnsignedGEImpl
 {
     template <List_t LHS, List_t RHS>
-    struct UnsignedGreaterEqImpl;
+    struct BigUnsignedGreaterEqImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedGreaterEqImpl_v = UnsignedGreaterEqImpl<LHS, RHS>::result;
+    using BigUnsignedGreaterEqImpl_v =
+        BigUnsignedGreaterEqImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedGreaterEqImpl<List<>, List<>>
+    struct BigUnsignedGreaterEqImpl<List<>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<>, List<RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<>, List<RRest...>>
     {
         using result = False;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedGreaterEqImpl<List<LRest...>, List<>>
+    struct BigUnsignedGreaterEqImpl<List<LRest...>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<SameBit, LRest...>,
-                                 List<SameBit, RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<SameBit, LRest...>,
+                                    List<SameBit, RRest...>>
     {
-        using result = UnsignedGreaterEqImpl_v<List<LRest...>, List<RRest...>>;
+        using result =
+            BigUnsignedGreaterEqImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedGreaterEqImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedGreaterEqImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         using result = IsSame_v<L0, One>;
     };
@@ -539,14 +541,14 @@ namespace UnsignedGEImpl
         using result = False;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedGE;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedGE;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedGE_v = UnsignedGE<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedGE_v = BigUnsignedGE<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedGE<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedGE<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -554,25 +556,25 @@ namespace UnsignedGEImpl
 
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
 
-            UnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
-                                    ListReverse_v<List<RHS...>>>,
+            BigUnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
+                                       ListReverse_v<List<RHS...>>>,
 
             GEImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedGEImpl
+} // namespace BigUnsignedGEImpl
 
-using UnsignedGEImpl::UnsignedGE_v;
+using BigUnsignedGEImpl::BigUnsignedGE_v;
 
 namespace ToListImpl
 {
-    template <Unsigned_t T>
+    template <BigUnsigned_t T>
     struct ToList;
 
-    template <Unsigned_t T>
+    template <BigUnsigned_t T>
     using ToList_v = ToList<T>::result;
 
     template <Bit_t... Bits>
-    struct ToList<Unsigned<Bits...>>
+    struct ToList<BigUnsigned<Bits...>>
     {
         using result = List<Bits...>;
     };
@@ -645,7 +647,7 @@ namespace FullSubtractorImpl
 
 using FullSubtractorImpl::FullSubtractor;
 
-namespace CanonicalizeImpl
+namespace BigUnsignedCanonicalizeImpl
 {
     template <List_t List>
     struct DropLeadingZeros;
@@ -670,312 +672,320 @@ namespace CanonicalizeImpl
             Ternary_v<IsSame_v<Head, Zero>, TailResult, List<Head, Tail...>>;
     };
 
-    template <Unsigned_t Number>
-    struct Canonicalize;
+    template <BigUnsigned_t Number>
+    struct BigUnsignedCanonicalize;
 
-    template <Unsigned_t Number>
-    using Canonicalize_v = Canonicalize<Number>::result;
+    template <BigUnsigned_t Number>
+    using BigUnsignedCanonicalize_v = BigUnsignedCanonicalize<Number>::result;
 
-    template <Unsigned_t Number>
-    struct Canonicalize;
+    template <BigUnsigned_t Number>
+    struct BigUnsignedCanonicalize;
 
     template <Bit_t... Bits>
-    struct Canonicalize<Unsigned<Bits...>>
+    struct BigUnsignedCanonicalize<BigUnsigned<Bits...>>
     {
         using rev = ListReverse_v<List<Bits...>>;
         using stripped = DropLeadingZeros_v<rev>;
         using result_list = ListReverse_v<stripped>;
-        using result = ToUnsigned_v<result_list>;
+        using result = ToBigUnsigned_v<result_list>;
     };
-} // namespace CanonicalizeImpl
+} // namespace BigUnsignedCanonicalizeImpl
 
-using CanonicalizeImpl::Canonicalize_v;
+using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalize_v;
 
-namespace UnsignedSubImpl
+namespace BigUnsignedSubImpl
 {
     template <List_t LHS, List_t RHS, Bit_t Borrow>
-    struct SubUnsignedCarry;
+    struct SubBigUnsignedCarry;
 
     template <List_t LHS, List_t RHS, Bit_t Borrow>
-    using SubUnsignedCarry_v = SubUnsignedCarry<LHS, RHS, Borrow>::result;
+    using SubBigUnsignedCarry_v = SubBigUnsignedCarry<LHS, RHS, Borrow>::result;
 
     template <Bit_t Borrow>
-    struct SubUnsignedCarry<List<>, List<>, Borrow>
+    struct SubBigUnsignedCarry<List<>, List<>, Borrow>
     {
         using result = Ternary_v<IsSame_v<Borrow, One>, List<>, List<>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t Borrow>
-    struct SubUnsignedCarry<List<L0, LRest...>, List<>, Borrow>
+    struct SubBigUnsignedCarry<List<L0, LRest...>, List<>, Borrow>
     {
         using FS = FullSubtractor<L0, Zero, Borrow>;
         using tail =
-            SubUnsignedCarry_v<List<LRest...>, List<>, typename FS::Borrow>;
+            SubBigUnsignedCarry_v<List<LRest...>, List<>, typename FS::Borrow>;
         using result = ListPrepend_v<typename FS::Diff, tail>;
     };
 
     template <Bit_t R0, Bit_t... RRest, Bit_t Borrow>
-    struct SubUnsignedCarry<List<>, List<R0, RRest...>, Borrow>
+    struct SubBigUnsignedCarry<List<>, List<R0, RRest...>, Borrow>
     {
         using FS = FullSubtractor<Zero, R0, Borrow>;
         using tail =
-            SubUnsignedCarry_v<List<>, List<RRest...>, typename FS::Borrow>;
+            SubBigUnsignedCarry_v<List<>, List<RRest...>, typename FS::Borrow>;
         using result = ListPrepend_v<typename FS::Diff, tail>;
     };
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest, Bit_t Borrow>
-    struct SubUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
+    struct SubBigUnsignedCarry<List<L0, LRest...>, List<R0, RRest...>, Borrow>
     {
         using FS = FullSubtractor<L0, R0, Borrow>;
-        using tail = SubUnsignedCarry_v<List<LRest...>, List<RRest...>,
-                                        typename FS::Borrow>;
+        using tail = SubBigUnsignedCarry_v<List<LRest...>, List<RRest...>,
+                                           typename FS::Borrow>;
         using result = ListPrepend_v<typename FS::Diff, tail>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedSub;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedSub;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedSub_v = UnsignedSub<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedSub_v = BigUnsignedSub<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedSub<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedSub<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
-        using result = Canonicalize_v<
-            ToUnsigned_v<SubUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
+        using result = BigUnsignedCanonicalize_v<ToBigUnsigned_v<
+            SubBigUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
     };
-} // namespace UnsignedSubImpl
+} // namespace BigUnsignedSubImpl
 
-using UnsignedSubImpl::UnsignedSub_v;
+using BigUnsignedSubImpl::BigUnsignedSub_v;
 
-namespace UnsignedLShiftImpl
+namespace BigUnsignedLShiftImpl
 {
-    template <Unsigned_t Value, Unsigned_t Amount>
-    struct UnsignedLShift;
+    template <BigUnsigned_t Value, BigUnsigned_t Amount>
+    struct BigUnsignedLShift;
 
-    template <Unsigned_t Value, Unsigned_t Amount>
-    using UnsignedLShift_v = UnsignedLShift<Value, Amount>::result;
+    template <BigUnsigned_t Value, BigUnsigned_t Amount>
+    using BigUnsignedLShift_v = BigUnsignedLShift<Value, Amount>::result;
 
-    template <Unsigned_t Value>
-    struct UnsignedLShift<Value, Unsigned<>>
+    template <BigUnsigned_t Value>
+    struct BigUnsignedLShift<Value, BigUnsigned<>>
     {
         using result = Value;
     };
 
-    template <Unsigned_t Value, Bit_t... AmountBits>
-    struct UnsignedLShift<Value, Unsigned<AmountBits...>>
+    template <BigUnsigned_t Value, Bit_t... AmountBits>
+    struct BigUnsignedLShift<Value, BigUnsigned<AmountBits...>>
     {
         using NewBits = ListPrepend_v<Zero, ToList_v<Value>>;
-        using ShiftedOnce = ToUnsigned_v<NewBits>;
+        using ShiftedOnce = ToBigUnsigned_v<NewBits>;
 
-        using Decrement = UnsignedSub_v<Unsigned<AmountBits...>, Unsigned<One>>;
-        using result = Canonicalize_v<UnsignedLShift_v<ShiftedOnce, Decrement>>;
+        using Decrement =
+            BigUnsignedSub_v<BigUnsigned<AmountBits...>, BigUnsigned<One>>;
+        using result = BigUnsignedCanonicalize_v<
+            BigUnsignedLShift_v<ShiftedOnce, Decrement>>;
     };
-} // namespace UnsignedLShiftImpl
+} // namespace BigUnsignedLShiftImpl
 
-using UnsignedLShiftImpl::UnsignedLShift_v;
+using BigUnsignedLShiftImpl::BigUnsignedLShift_v;
 
-namespace UnsignedDivImpl
+namespace BigUnsignedDivImpl
 {
-    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+    template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    struct UnsignedDivStep;
+    struct BigUnsignedDivStep;
 
-    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+    template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    using UnsignedDivStep_quot =
-        UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
+    using BigUnsignedDivStep_quot =
+        BigUnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
 
-    template <List_t BitsMSB, Unsigned_t Divisor, Unsigned_t Remainder,
+    template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    using UnsignedDivStep_rem =
-        UnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
+    using BigUnsignedDivStep_rem =
+        BigUnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
 
-    template <Unsigned_t Divisor, Unsigned_t Remainder, List_t QuotientMSB>
-    struct UnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
+    template <BigUnsigned_t Divisor, BigUnsigned_t Remainder,
+              List_t QuotientMSB>
+    struct BigUnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
     {
         using quotient = QuotientMSB;
         using remainder = Remainder;
     };
 
-    template <Bit_t B0, Bit_t... BRest, Unsigned_t Divisor,
-              Unsigned_t Remainder, List_t QuotientMSB>
-    struct UnsignedDivStep<List<B0, BRest...>, Divisor, Remainder, QuotientMSB>
+    template <Bit_t B0, Bit_t... BRest, BigUnsigned_t Divisor,
+              BigUnsigned_t Remainder, List_t QuotientMSB>
+    struct BigUnsignedDivStep<List<B0, BRest...>, Divisor, Remainder,
+                              QuotientMSB>
     {
-        using Shifted = UnsignedLShift_v<Remainder, Unsigned<One>>;
-        using NewRem = UnsignedAdd_v<Shifted, Unsigned<B0>>;
+        using Shifted = BigUnsignedLShift_v<Remainder, BigUnsigned<One>>;
+        using NewRem = BigUnsignedAdd_v<Shifted, BigUnsigned<B0>>;
 
-        using UpdatedRem = Ternary_v<UnsignedGE_v<NewRem, Divisor>,
-                                     UnsignedSub_v<NewRem, Divisor>, NewRem>;
+        using UpdatedRem = Ternary_v<BigUnsignedGE_v<NewRem, Divisor>,
+                                     BigUnsignedSub_v<NewRem, Divisor>, NewRem>;
 
         using NewQuot =
-            ListAppend_v<Ternary_v<UnsignedGE_v<NewRem, Divisor>, One, Zero>,
+            ListAppend_v<Ternary_v<BigUnsignedGE_v<NewRem, Divisor>, One, Zero>,
                          QuotientMSB>;
 
         using Rec =
-            UnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
+            BigUnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
 
         using quotient = Rec::quotient;
         using remainder = Rec::remainder;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedDivModCommon;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedDivModCommon;
 
     template <Bit_t... LHSBits>
-    struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<>>
+    struct BigUnsignedDivModCommon<BigUnsigned<LHSBits...>, BigUnsigned<>>
     {
-        static_assert(false, "UnsignedModDivCommon: Division by 0");
+        static_assert(false, "BigUnsignedModDivCommon: Division by 0");
     };
 
     template <Bit_t... LHSBits, Bit_t... RHSBits>
-    struct UnsignedDivModCommon<Unsigned<LHSBits...>, Unsigned<RHSBits...>>
+    struct BigUnsignedDivModCommon<BigUnsigned<LHSBits...>,
+                                   BigUnsigned<RHSBits...>>
     {
         using LHSList = List<LHSBits...>;
-        using RHSNum = Unsigned<RHSBits...>;
+        using RHSNum = BigUnsigned<RHSBits...>;
         using LHSBitsMSB = ListReverse_v<LHSList>;
 
         using Quotient = ListReverse_v<
-            UnsignedDivStep_quot<LHSBitsMSB, RHSNum, Unsigned<>, List<>>>;
+            BigUnsignedDivStep_quot<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>>;
 
-        using DivStep = UnsignedDivStep<LHSBitsMSB, RHSNum, Unsigned<>, List<>>;
+        using DivStep =
+            BigUnsignedDivStep<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>;
 
-        using remainder = Canonicalize_v<typename DivStep::remainder>;
-        using quotient = Canonicalize_v<
-            ToUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
+        using remainder =
+            BigUnsignedCanonicalize_v<typename DivStep::remainder>;
+        using quotient = BigUnsignedCanonicalize_v<
+            ToBigUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedDiv_v = UnsignedDivModCommon<LHS, RHS>::quotient;
-} // namespace UnsignedDivImpl
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedDiv_v = BigUnsignedDivModCommon<LHS, RHS>::quotient;
+} // namespace BigUnsignedDivImpl
 
-using UnsignedDivImpl::UnsignedDiv_v;
+using BigUnsignedDivImpl::BigUnsignedDiv_v;
 
 namespace unsigned_div_tests
 {
 
-    static_assert(is_same<UnsignedDiv_v<n1, n2>, n0>);
-    static_assert(is_same<UnsignedDiv_v<n5, n5>, n1>);
-    static_assert(is_same<UnsignedDiv_v<n10, n2>, n5>);
-    static_assert(is_same<UnsignedDiv_v<n10, n1>, n10>);
-    static_assert(is_same<UnsignedDiv_v<n0, n5>, n0>);
-    static_assert(is_same<UnsignedDiv_v<n20, n4>, n5>);
-    static_assert(is_same<UnsignedDiv_v<n50, n10>, n5>);
-    static_assert(is_same<UnsignedDiv_v<n64, n2>, n32>);
-    static_assert(is_same<UnsignedDiv_v<n25, n3>, n8>);
-    static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
-    static_assert(is_same<UnsignedDiv_v<n50, n25>, n2>);
-    static_assert(is_same<UnsignedDiv_v<n64, n63>, n1>);
-    static_assert(is_same<UnsignedDiv_v<n64, n16>, n4>);
-    static_assert(is_same<UnsignedDiv_v<n15, n1>, n15>);
-    static_assert(is_same<UnsignedDiv_v<n10, n3>, n3>);
-    static_assert(is_same<UnsignedDiv_v<n64, n64>, n1>);
-    static_assert(is_same<UnsignedDiv_v<n30, n7>, n4>);
-    static_assert(is_same<UnsignedDiv_v<n17, n5>, n3>);
-    static_assert(is_same<UnsignedDiv_v<n50, n26>, n1>);
-    static_assert(is_same<UnsignedDiv_v<n50, n24>, n2>);
-    static_assert(is_same<UnsignedDiv_v<n1, n64>, n0>);
-    static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
-    static_assert(is_same<UnsignedDiv_v<n10, n20>, n0>);
-    static_assert(is_same<UnsignedDiv_v<n64, n1>, n64>);
+    static_assert(is_same<BigUnsignedDiv_v<n1, n2>, n0>);
+    static_assert(is_same<BigUnsignedDiv_v<n5, n5>, n1>);
+    static_assert(is_same<BigUnsignedDiv_v<n10, n2>, n5>);
+    static_assert(is_same<BigUnsignedDiv_v<n10, n1>, n10>);
+    static_assert(is_same<BigUnsignedDiv_v<n0, n5>, n0>);
+    static_assert(is_same<BigUnsignedDiv_v<n20, n4>, n5>);
+    static_assert(is_same<BigUnsignedDiv_v<n50, n10>, n5>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n2>, n32>);
+    static_assert(is_same<BigUnsignedDiv_v<n25, n3>, n8>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n1>, n64>);
+    static_assert(is_same<BigUnsignedDiv_v<n50, n25>, n2>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n63>, n1>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n16>, n4>);
+    static_assert(is_same<BigUnsignedDiv_v<n15, n1>, n15>);
+    static_assert(is_same<BigUnsignedDiv_v<n10, n3>, n3>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n64>, n1>);
+    static_assert(is_same<BigUnsignedDiv_v<n30, n7>, n4>);
+    static_assert(is_same<BigUnsignedDiv_v<n17, n5>, n3>);
+    static_assert(is_same<BigUnsignedDiv_v<n50, n26>, n1>);
+    static_assert(is_same<BigUnsignedDiv_v<n50, n24>, n2>);
+    static_assert(is_same<BigUnsignedDiv_v<n1, n64>, n0>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n1>, n64>);
+    static_assert(is_same<BigUnsignedDiv_v<n10, n20>, n0>);
+    static_assert(is_same<BigUnsignedDiv_v<n64, n1>, n64>);
 } // namespace unsigned_div_tests
 
-namespace UnsignedEQImpl
+namespace BigUnsignedEQImpl
 {
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedEQ;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedEQ;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedEQ_v = UnsignedEQ<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedEQ_v = BigUnsignedEQ<LHS, RHS>::result;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedEQ
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedEQ
     {
         using result = IsSame_v<LHS, RHS>;
     };
-} // namespace UnsignedEQImpl
+} // namespace BigUnsignedEQImpl
 
-using UnsignedEQImpl::UnsignedEQ_v;
+using BigUnsignedEQImpl::BigUnsignedEQ_v;
 
 namespace unsigned_eq_tests
 {
-    static_assert(is_same<UnsignedEQ_v<n1, n1>, True>);
-    static_assert(is_same<UnsignedEQ_v<n1, n2>, False>);
-    static_assert(is_same<UnsignedEQ_v<n5, n5>, True>);
-    static_assert(is_same<UnsignedEQ_v<n5, n6>, False>);
-    static_assert(is_same<UnsignedEQ_v<n10, n10>, True>);
-    static_assert(is_same<UnsignedEQ_v<n10, n11>, False>);
-    static_assert(is_same<UnsignedEQ_v<n0, n0>, True>);
-    static_assert(is_same<UnsignedEQ_v<n1, n0>, False>);
-    static_assert(is_same<UnsignedEQ_v<n64, n64>, True>);
-    static_assert(is_same<UnsignedEQ_v<n64, n63>, False>);
-    static_assert(is_same<UnsignedEQ_v<n32, n32>, True>);
-    static_assert(is_same<UnsignedEQ_v<n32, n33>, False>);
-    static_assert(is_same<UnsignedEQ_v<n1, n1>, True>);
-    static_assert(is_same<UnsignedEQ_v<n1, n2>, False>);
-    static_assert(is_same<UnsignedEQ_v<n10, n10>, True>);
-    static_assert(is_same<UnsignedEQ_v<n10, n20>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n1, n1>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n1, n2>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n5, n5>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n5, n6>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n10, n10>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n10, n11>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n0, n0>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n1, n0>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n64, n64>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n64, n63>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n32, n32>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n32, n33>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n1, n1>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n1, n2>, False>);
+    static_assert(is_same<BigUnsignedEQ_v<n10, n10>, True>);
+    static_assert(is_same<BigUnsignedEQ_v<n10, n20>, False>);
 } // namespace unsigned_eq_tests
 
 namespace unsigned_ge_tests
 {
-    static_assert(is_same<UnsignedGE_v<n1, n2>, False>);
-    static_assert(is_same<UnsignedGE_v<n1, n1>, True>);
-    static_assert(is_same<UnsignedGE_v<n2, n1>, True>);
-    static_assert(is_same<UnsignedGE_v<n10, n20>, False>);
-    static_assert(is_same<UnsignedGE_v<n10, n10>, True>);
-    static_assert(is_same<UnsignedGE_v<n20, n10>, True>);
-    static_assert(is_same<UnsignedGE_v<n63, n64>, False>);
-    static_assert(is_same<UnsignedGE_v<n64, n63>, True>);
-    static_assert(is_same<UnsignedGE_v<n50, n60>, False>);
-    static_assert(is_same<UnsignedGE_v<n50, n50>, True>);
-    static_assert(is_same<UnsignedGE_v<n60, n50>, True>);
-    static_assert(is_same<UnsignedGE_v<n0, n1>, False>);
-    static_assert(is_same<UnsignedGE_v<n0, n0>, True>);
-    static_assert(is_same<UnsignedGE_v<n1, n0>, True>);
-    static_assert(is_same<UnsignedGE_v<n64, n64>, True>);
-    static_assert(is_same<UnsignedGE_v<n10, n30>, False>);
-    static_assert(is_same<UnsignedGE_v<n30, n10>, True>);
-    static_assert(is_same<UnsignedGE_v<n32, n33>, False>);
-    static_assert(is_same<UnsignedGE_v<n33, n33>, True>);
-    static_assert(is_same<UnsignedGE_v<n33, n32>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n1, n2>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n1, n1>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n2, n1>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n10, n20>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n10, n10>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n20, n10>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n63, n64>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n64, n63>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n50, n60>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n50, n50>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n60, n50>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n0, n1>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n0, n0>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n1, n0>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n64, n64>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n10, n30>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n30, n10>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n32, n33>, False>);
+    static_assert(is_same<BigUnsignedGE_v<n33, n33>, True>);
+    static_assert(is_same<BigUnsignedGE_v<n33, n32>, True>);
 } // namespace unsigned_ge_tests
 
-namespace UnsignedGTImpl
+namespace BigUnsignedGTImpl
 {
     template <List_t LHS, List_t RHS>
-    struct UnsignedGreaterThanImpl;
+    struct BigUnsignedGreaterThanImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedGreaterThanImpl_v = UnsignedGreaterThanImpl<LHS, RHS>::result;
+    using BigUnsignedGreaterThanImpl_v =
+        BigUnsignedGreaterThanImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedGreaterThanImpl<List<>, List<>>
+    struct BigUnsignedGreaterThanImpl<List<>, List<>>
     {
         using result = False;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedGreaterThanImpl<List<>, List<RRest...>>
+    struct BigUnsignedGreaterThanImpl<List<>, List<RRest...>>
     {
         using result = False;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedGreaterThanImpl<List<LRest...>, List<>>
+    struct BigUnsignedGreaterThanImpl<List<LRest...>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedGreaterThanImpl<List<SameBit, LRest...>,
-                                   List<SameBit, RRest...>>
+    struct BigUnsignedGreaterThanImpl<List<SameBit, LRest...>,
+                                      List<SameBit, RRest...>>
     {
         using result =
-            UnsignedGreaterThanImpl_v<List<LRest...>, List<RRest...>>;
+            BigUnsignedGreaterThanImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedGreaterThanImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedGreaterThanImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         using result = IsSame_v<L0, One>;
     };
@@ -1010,14 +1020,14 @@ namespace UnsignedGTImpl
         using result = False;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedGT;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedGT;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedGT_v = UnsignedGT<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedGT_v = BigUnsignedGT<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedGT<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedGT<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -1025,106 +1035,106 @@ namespace UnsignedGTImpl
 
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
 
-            UnsignedGreaterThanImpl_v<ListReverse_v<List<LHS...>>,
-                                      ListReverse_v<List<RHS...>>>,
+            BigUnsignedGreaterThanImpl_v<ListReverse_v<List<LHS...>>,
+                                         ListReverse_v<List<RHS...>>>,
 
             GTImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedGTImpl
+} // namespace BigUnsignedGTImpl
 
-using UnsignedGTImpl::UnsignedGT_v;
+using BigUnsignedGTImpl::BigUnsignedGT_v;
 
 namespace unsigned_gt_tests
 {
-    static_assert(is_same<UnsignedGT_v<n1, n2>, False>);
-    static_assert(is_same<UnsignedGT_v<n1, n1>, False>);
-    static_assert(is_same<UnsignedGT_v<n2, n1>, True>);
-    static_assert(is_same<UnsignedGT_v<n10, n20>, False>);
-    static_assert(is_same<UnsignedGT_v<n10, n10>, False>);
-    static_assert(is_same<UnsignedGT_v<n20, n10>, True>);
-    static_assert(is_same<UnsignedGT_v<n63, n64>, False>);
-    static_assert(is_same<UnsignedGT_v<n64, n63>, True>);
-    static_assert(is_same<UnsignedGT_v<n50, n60>, False>);
-    static_assert(is_same<UnsignedGT_v<n50, n50>, False>);
-    static_assert(is_same<UnsignedGT_v<n60, n50>, True>);
-    static_assert(is_same<UnsignedGT_v<n0, n1>, False>);
-    static_assert(is_same<UnsignedGT_v<n0, n0>, False>);
-    static_assert(is_same<UnsignedGT_v<n1, n0>, True>);
-    static_assert(is_same<UnsignedGT_v<n64, n64>, False>);
-    static_assert(is_same<UnsignedGT_v<n10, n30>, False>);
-    static_assert(is_same<UnsignedGT_v<n30, n10>, True>);
-    static_assert(is_same<UnsignedGT_v<n32, n33>, False>);
-    static_assert(is_same<UnsignedGT_v<n33, n33>, False>);
-    static_assert(is_same<UnsignedGT_v<n33, n32>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n1, n2>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n1, n1>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n2, n1>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n10, n20>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n10, n10>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n20, n10>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n63, n64>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n64, n63>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n50, n60>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n50, n50>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n60, n50>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n0, n1>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n0, n0>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n1, n0>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n64, n64>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n10, n30>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n30, n10>, True>);
+    static_assert(is_same<BigUnsignedGT_v<n32, n33>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n33, n33>, False>);
+    static_assert(is_same<BigUnsignedGT_v<n33, n32>, True>);
 } // namespace unsigned_gt_tests
 
 namespace unsigned_increment_tests
 {
     using N0 = n0;
-    using N1 = UnsignedInc_v<N0>;
-    using N2 = UnsignedInc_v<N1>;
-    using N3 = UnsignedInc_v<N2>;
-    using N4 = UnsignedInc_v<N3>;
-    using N5 = UnsignedInc_v<N4>;
-    using N6 = UnsignedInc_v<N5>;
-    using N7 = UnsignedInc_v<N6>;
-    using N8 = UnsignedInc_v<N7>;
-    using N9 = UnsignedInc_v<N8>;
-    using N10 = UnsignedInc_v<N9>;
-    using N11 = UnsignedInc_v<N10>;
-    using N12 = UnsignedInc_v<N11>;
-    using N13 = UnsignedInc_v<N12>;
-    using N14 = UnsignedInc_v<N13>;
-    using N15 = UnsignedInc_v<N14>;
-    using N16 = UnsignedInc_v<N15>;
-    using N17 = UnsignedInc_v<N16>;
-    using N18 = UnsignedInc_v<N17>;
-    using N19 = UnsignedInc_v<N18>;
-    using N20 = UnsignedInc_v<N19>;
-    using N21 = UnsignedInc_v<N20>;
-    using N22 = UnsignedInc_v<N21>;
-    using N23 = UnsignedInc_v<N22>;
-    using N24 = UnsignedInc_v<N23>;
-    using N25 = UnsignedInc_v<N24>;
-    using N26 = UnsignedInc_v<N25>;
-    using N27 = UnsignedInc_v<N26>;
-    using N28 = UnsignedInc_v<N27>;
-    using N29 = UnsignedInc_v<N28>;
-    using N30 = UnsignedInc_v<N29>;
-    using N31 = UnsignedInc_v<N30>;
-    using N32 = UnsignedInc_v<N31>;
-    using N33 = UnsignedInc_v<N32>;
-    using N34 = UnsignedInc_v<N33>;
-    using N35 = UnsignedInc_v<N34>;
-    using N36 = UnsignedInc_v<N35>;
-    using N37 = UnsignedInc_v<N36>;
-    using N38 = UnsignedInc_v<N37>;
-    using N39 = UnsignedInc_v<N38>;
-    using N40 = UnsignedInc_v<N39>;
-    using N41 = UnsignedInc_v<N40>;
-    using N42 = UnsignedInc_v<N41>;
-    using N43 = UnsignedInc_v<N42>;
-    using N44 = UnsignedInc_v<N43>;
-    using N45 = UnsignedInc_v<N44>;
-    using N46 = UnsignedInc_v<N45>;
-    using N47 = UnsignedInc_v<N46>;
-    using N48 = UnsignedInc_v<N47>;
-    using N49 = UnsignedInc_v<N48>;
-    using N50 = UnsignedInc_v<N49>;
-    using N51 = UnsignedInc_v<N50>;
-    using N52 = UnsignedInc_v<N51>;
-    using N53 = UnsignedInc_v<N52>;
-    using N54 = UnsignedInc_v<N53>;
-    using N55 = UnsignedInc_v<N54>;
-    using N56 = UnsignedInc_v<N55>;
-    using N57 = UnsignedInc_v<N56>;
-    using N58 = UnsignedInc_v<N57>;
-    using N59 = UnsignedInc_v<N58>;
-    using N60 = UnsignedInc_v<N59>;
-    using N61 = UnsignedInc_v<N60>;
-    using N62 = UnsignedInc_v<N61>;
-    using N63 = UnsignedInc_v<N62>;
-    using N64 = UnsignedInc_v<N63>;
+    using N1 = BigUnsignedInc_v<N0>;
+    using N2 = BigUnsignedInc_v<N1>;
+    using N3 = BigUnsignedInc_v<N2>;
+    using N4 = BigUnsignedInc_v<N3>;
+    using N5 = BigUnsignedInc_v<N4>;
+    using N6 = BigUnsignedInc_v<N5>;
+    using N7 = BigUnsignedInc_v<N6>;
+    using N8 = BigUnsignedInc_v<N7>;
+    using N9 = BigUnsignedInc_v<N8>;
+    using N10 = BigUnsignedInc_v<N9>;
+    using N11 = BigUnsignedInc_v<N10>;
+    using N12 = BigUnsignedInc_v<N11>;
+    using N13 = BigUnsignedInc_v<N12>;
+    using N14 = BigUnsignedInc_v<N13>;
+    using N15 = BigUnsignedInc_v<N14>;
+    using N16 = BigUnsignedInc_v<N15>;
+    using N17 = BigUnsignedInc_v<N16>;
+    using N18 = BigUnsignedInc_v<N17>;
+    using N19 = BigUnsignedInc_v<N18>;
+    using N20 = BigUnsignedInc_v<N19>;
+    using N21 = BigUnsignedInc_v<N20>;
+    using N22 = BigUnsignedInc_v<N21>;
+    using N23 = BigUnsignedInc_v<N22>;
+    using N24 = BigUnsignedInc_v<N23>;
+    using N25 = BigUnsignedInc_v<N24>;
+    using N26 = BigUnsignedInc_v<N25>;
+    using N27 = BigUnsignedInc_v<N26>;
+    using N28 = BigUnsignedInc_v<N27>;
+    using N29 = BigUnsignedInc_v<N28>;
+    using N30 = BigUnsignedInc_v<N29>;
+    using N31 = BigUnsignedInc_v<N30>;
+    using N32 = BigUnsignedInc_v<N31>;
+    using N33 = BigUnsignedInc_v<N32>;
+    using N34 = BigUnsignedInc_v<N33>;
+    using N35 = BigUnsignedInc_v<N34>;
+    using N36 = BigUnsignedInc_v<N35>;
+    using N37 = BigUnsignedInc_v<N36>;
+    using N38 = BigUnsignedInc_v<N37>;
+    using N39 = BigUnsignedInc_v<N38>;
+    using N40 = BigUnsignedInc_v<N39>;
+    using N41 = BigUnsignedInc_v<N40>;
+    using N42 = BigUnsignedInc_v<N41>;
+    using N43 = BigUnsignedInc_v<N42>;
+    using N44 = BigUnsignedInc_v<N43>;
+    using N45 = BigUnsignedInc_v<N44>;
+    using N46 = BigUnsignedInc_v<N45>;
+    using N47 = BigUnsignedInc_v<N46>;
+    using N48 = BigUnsignedInc_v<N47>;
+    using N49 = BigUnsignedInc_v<N48>;
+    using N50 = BigUnsignedInc_v<N49>;
+    using N51 = BigUnsignedInc_v<N50>;
+    using N52 = BigUnsignedInc_v<N51>;
+    using N53 = BigUnsignedInc_v<N52>;
+    using N54 = BigUnsignedInc_v<N53>;
+    using N55 = BigUnsignedInc_v<N54>;
+    using N56 = BigUnsignedInc_v<N55>;
+    using N57 = BigUnsignedInc_v<N56>;
+    using N58 = BigUnsignedInc_v<N57>;
+    using N59 = BigUnsignedInc_v<N58>;
+    using N60 = BigUnsignedInc_v<N59>;
+    using N61 = BigUnsignedInc_v<N60>;
+    using N62 = BigUnsignedInc_v<N61>;
+    using N63 = BigUnsignedInc_v<N62>;
+    using N64 = BigUnsignedInc_v<N63>;
 
     static_assert(is_same<n0, N0>);
     static_assert(is_same<n1, N1>);
@@ -1193,40 +1203,41 @@ namespace unsigned_increment_tests
     static_assert(is_same<n64, N64>);
 } // namespace unsigned_increment_tests
 
-namespace UnsignedLEImpl
+namespace BigUnsignedLEImpl
 {
     template <List_t LHS, List_t RHS>
-    struct UnsignedLowerEqImpl;
+    struct BigUnsignedLowerEqImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedLowerEqImpl_v = UnsignedLowerEqImpl<LHS, RHS>::result;
+    using BigUnsignedLowerEqImpl_v = BigUnsignedLowerEqImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedLowerEqImpl<List<>, List<>>
+    struct BigUnsignedLowerEqImpl<List<>, List<>>
     {
         using result = True;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<>, List<RRest...>>
+    struct BigUnsignedLowerEqImpl<List<>, List<RRest...>>
     {
         using result = True;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedLowerEqImpl<List<LRest...>, List<>>
+    struct BigUnsignedLowerEqImpl<List<LRest...>, List<>>
     {
         using result = False;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<SameBit, LRest...>, List<SameBit, RRest...>>
+    struct BigUnsignedLowerEqImpl<List<SameBit, LRest...>,
+                                  List<SameBit, RRest...>>
     {
-        using result = UnsignedLowerEqImpl_v<List<LRest...>, List<RRest...>>;
+        using result = BigUnsignedLowerEqImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedLowerEqImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedLowerEqImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         using result = IsSame_v<L0, Zero>;
     };
@@ -1261,14 +1272,14 @@ namespace UnsignedLEImpl
         using result = True;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedLE;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedLE;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedLE_v = UnsignedLE<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedLE_v = BigUnsignedLE<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedLE<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedLE<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -1276,100 +1287,102 @@ namespace UnsignedLEImpl
 
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
 
-            UnsignedLowerEqImpl_v<ListReverse_v<List<LHS...>>,
-                                  ListReverse_v<List<RHS...>>>,
+            BigUnsignedLowerEqImpl_v<ListReverse_v<List<LHS...>>,
+                                     ListReverse_v<List<RHS...>>>,
 
             LEImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedLEImpl
+} // namespace BigUnsignedLEImpl
 
-using UnsignedLEImpl::UnsignedLE_v;
+using BigUnsignedLEImpl::BigUnsignedLE_v;
 
 namespace unsigned_le_tests
 {
-    static_assert(is_same<UnsignedLE_v<n1, n2>, True>);
-    static_assert(is_same<UnsignedLE_v<n1, n1>, True>);
-    static_assert(is_same<UnsignedLE_v<n2, n1>, False>);
-    static_assert(is_same<UnsignedLE_v<n10, n20>, True>);
-    static_assert(is_same<UnsignedLE_v<n10, n10>, True>);
-    static_assert(is_same<UnsignedLE_v<n20, n10>, False>);
-    static_assert(is_same<UnsignedLE_v<n63, n64>, True>);
-    static_assert(is_same<UnsignedLE_v<n64, n63>, False>);
-    static_assert(is_same<UnsignedLE_v<n50, n60>, True>);
-    static_assert(is_same<UnsignedLE_v<n50, n50>, True>);
-    static_assert(is_same<UnsignedLE_v<n60, n50>, False>);
-    static_assert(is_same<UnsignedLE_v<n0, n1>, True>);
-    static_assert(is_same<UnsignedLE_v<n0, n0>, True>);
-    static_assert(is_same<UnsignedLE_v<n1, n0>, False>);
-    static_assert(is_same<UnsignedLE_v<n64, n64>, True>);
-    static_assert(is_same<UnsignedLE_v<n10, n30>, True>);
-    static_assert(is_same<UnsignedLE_v<n30, n10>, False>);
-    static_assert(is_same<UnsignedLE_v<n32, n33>, True>);
-    static_assert(is_same<UnsignedLE_v<n33, n33>, True>);
-    static_assert(is_same<UnsignedLE_v<n33, n32>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n1, n2>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n1, n1>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n2, n1>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n10, n20>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n10, n10>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n20, n10>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n63, n64>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n64, n63>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n50, n60>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n50, n50>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n60, n50>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n0, n1>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n0, n0>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n1, n0>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n64, n64>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n10, n30>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n30, n10>, False>);
+    static_assert(is_same<BigUnsignedLE_v<n32, n33>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n33, n33>, True>);
+    static_assert(is_same<BigUnsignedLE_v<n33, n32>, False>);
 } // namespace unsigned_le_tests
 
 namespace unsigned_lshift_tests
 {
-    static_assert(is_same<UnsignedLShift_v<n1, n0>, n1>);
-    static_assert(is_same<UnsignedLShift_v<n1, n1>, n2>);
-    static_assert(is_same<UnsignedLShift_v<n2, n2>, n8>);
-    static_assert(is_same<UnsignedLShift_v<n3, n3>, n24>);
-    static_assert(is_same<UnsignedLShift_v<n4, n1>, n8>);
-    static_assert(is_same<UnsignedLShift_v<n5, n2>, n20>);
-    static_assert(is_same<UnsignedLShift_v<n6, n1>, n12>);
-    static_assert(is_same<UnsignedLShift_v<n7, n2>, n28>);
-    static_assert(is_same<UnsignedLShift_v<n8, n1>, n16>);
-    static_assert(is_same<UnsignedLShift_v<n9, n2>, n36>);
-    static_assert(is_same<UnsignedLShift_v<n10, n1>, n20>);
-    static_assert(is_same<UnsignedLShift_v<n0, n5>, n0>);
-    static_assert(is_same<UnsignedLShift_v<n1, n3>, n8>);
-    static_assert(is_same<UnsignedLShift_v<n2, n1>, n4>);
-    static_assert(is_same<UnsignedLShift_v<n3, n2>, n12>);
-    static_assert(is_same<UnsignedLShift_v<n4, n3>, n32>);
-    static_assert(is_same<UnsignedLShift_v<n5, n1>, n10>);
-    static_assert(is_same<UnsignedLShift_v<n6, n2>, n24>);
-    static_assert(is_same<UnsignedLShift_v<n7, n1>, n14>);
-    static_assert(is_same<UnsignedLShift_v<n8, n2>, n32>);
-    static_assert(is_same<UnsignedLShift_v<n1, n4>, n16>);
+    static_assert(is_same<BigUnsignedLShift_v<n1, n0>, n1>);
+    static_assert(is_same<BigUnsignedLShift_v<n1, n1>, n2>);
+    static_assert(is_same<BigUnsignedLShift_v<n2, n2>, n8>);
+    static_assert(is_same<BigUnsignedLShift_v<n3, n3>, n24>);
+    static_assert(is_same<BigUnsignedLShift_v<n4, n1>, n8>);
+    static_assert(is_same<BigUnsignedLShift_v<n5, n2>, n20>);
+    static_assert(is_same<BigUnsignedLShift_v<n6, n1>, n12>);
+    static_assert(is_same<BigUnsignedLShift_v<n7, n2>, n28>);
+    static_assert(is_same<BigUnsignedLShift_v<n8, n1>, n16>);
+    static_assert(is_same<BigUnsignedLShift_v<n9, n2>, n36>);
+    static_assert(is_same<BigUnsignedLShift_v<n10, n1>, n20>);
+    static_assert(is_same<BigUnsignedLShift_v<n0, n5>, n0>);
+    static_assert(is_same<BigUnsignedLShift_v<n1, n3>, n8>);
+    static_assert(is_same<BigUnsignedLShift_v<n2, n1>, n4>);
+    static_assert(is_same<BigUnsignedLShift_v<n3, n2>, n12>);
+    static_assert(is_same<BigUnsignedLShift_v<n4, n3>, n32>);
+    static_assert(is_same<BigUnsignedLShift_v<n5, n1>, n10>);
+    static_assert(is_same<BigUnsignedLShift_v<n6, n2>, n24>);
+    static_assert(is_same<BigUnsignedLShift_v<n7, n1>, n14>);
+    static_assert(is_same<BigUnsignedLShift_v<n8, n2>, n32>);
+    static_assert(is_same<BigUnsignedLShift_v<n1, n4>, n16>);
 } // namespace unsigned_lshift_tests
 
-namespace UnsignedLTImpl
+namespace BigUnsignedLTImpl
 {
 
     template <List_t LHS, List_t RHS>
-    struct UnsignedLowerThanImpl;
+    struct BigUnsignedLowerThanImpl;
 
     template <List_t LHS, List_t RHS>
-    using UnsignedLowerThanImpl_v = UnsignedLowerThanImpl<LHS, RHS>::result;
+    using BigUnsignedLowerThanImpl_v =
+        BigUnsignedLowerThanImpl<LHS, RHS>::result;
 
     template <>
-    struct UnsignedLowerThanImpl<List<>, List<>>
+    struct BigUnsignedLowerThanImpl<List<>, List<>>
     {
         using result = False;
     };
 
     template <Bit_t... RRest>
-    struct UnsignedLowerThanImpl<List<>, List<RRest...>>
+    struct BigUnsignedLowerThanImpl<List<>, List<RRest...>>
     {
         using result = True;
     };
 
     template <Bit_t... LRest>
-    struct UnsignedLowerThanImpl<List<LRest...>, List<>>
+    struct BigUnsignedLowerThanImpl<List<LRest...>, List<>>
     {
         using result = False;
     };
 
     template <Bit_t SameBit, Bit_t... LRest, Bit_t... RRest>
-    struct UnsignedLowerThanImpl<List<SameBit, LRest...>,
-                                 List<SameBit, RRest...>>
+    struct BigUnsignedLowerThanImpl<List<SameBit, LRest...>,
+                                    List<SameBit, RRest...>>
     {
-        using result = UnsignedLowerThanImpl_v<List<LRest...>, List<RRest...>>;
+        using result =
+            BigUnsignedLowerThanImpl_v<List<LRest...>, List<RRest...>>;
     };
 
     template <Bit_t L0, Bit_t... LRest, Bit_t R0, Bit_t... RRest>
-    struct UnsignedLowerThanImpl<List<L0, LRest...>, List<R0, RRest...>>
+    struct BigUnsignedLowerThanImpl<List<L0, LRest...>, List<R0, RRest...>>
     {
         using result = IsSame_v<L0, Zero>;
     };
@@ -1404,14 +1417,14 @@ namespace UnsignedLTImpl
         using result = True;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedLT;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedLT;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedLT_v = UnsignedLT<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedLT_v = BigUnsignedLT<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedLT<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedLT<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
@@ -1419,167 +1432,168 @@ namespace UnsignedLTImpl
 
             IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
 
-            UnsignedLowerThanImpl_v<ListReverse_v<List<LHS...>>,
-                                    ListReverse_v<List<RHS...>>>,
+            BigUnsignedLowerThanImpl_v<ListReverse_v<List<LHS...>>,
+                                       ListReverse_v<List<RHS...>>>,
 
             LTImplIsLHSLongest_v<LList, RList>>;
     };
-} // namespace UnsignedLTImpl
+} // namespace BigUnsignedLTImpl
 
-using UnsignedLTImpl::UnsignedLT_v;
+using BigUnsignedLTImpl::BigUnsignedLT_v;
 
 namespace unsigned_lt_tests
 {
-    static_assert(is_same<UnsignedLT_v<n1, n2>, True>);
-    static_assert(is_same<UnsignedLT_v<n1, n1>, False>);
-    static_assert(is_same<UnsignedLT_v<n2, n1>, False>);
-    static_assert(is_same<UnsignedLT_v<n10, n20>, True>);
-    static_assert(is_same<UnsignedLT_v<n10, n10>, False>);
-    static_assert(is_same<UnsignedLT_v<n20, n10>, False>);
-    static_assert(is_same<UnsignedLT_v<n63, n64>, True>);
-    static_assert(is_same<UnsignedLT_v<n64, n63>, False>);
-    static_assert(is_same<UnsignedLT_v<n50, n60>, True>);
-    static_assert(is_same<UnsignedLT_v<n50, n50>, False>);
-    static_assert(is_same<UnsignedLT_v<n60, n50>, False>);
-    static_assert(is_same<UnsignedLT_v<n0, n1>, True>);
-    static_assert(is_same<UnsignedLT_v<n0, n0>, False>);
-    static_assert(is_same<UnsignedLT_v<n1, n0>, False>);
-    static_assert(is_same<UnsignedLT_v<n64, n64>, False>);
-    static_assert(is_same<UnsignedLT_v<n10, n30>, True>);
-    static_assert(is_same<UnsignedLT_v<n30, n10>, False>);
-    static_assert(is_same<UnsignedLT_v<n32, n33>, True>);
-    static_assert(is_same<UnsignedLT_v<n33, n33>, False>);
-    static_assert(is_same<UnsignedLT_v<n33, n32>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n1, n2>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n1, n1>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n2, n1>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n10, n20>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n10, n10>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n20, n10>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n63, n64>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n64, n63>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n50, n60>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n50, n50>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n60, n50>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n0, n1>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n0, n0>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n1, n0>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n64, n64>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n10, n30>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n30, n10>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n32, n33>, True>);
+    static_assert(is_same<BigUnsignedLT_v<n33, n33>, False>);
+    static_assert(is_same<BigUnsignedLT_v<n33, n32>, False>);
 } // namespace unsigned_lt_tests
 
-namespace UnsignedModImpl
+namespace BigUnsignedModImpl
 {
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedMod_v =
-        UnsignedDivImpl::UnsignedDivModCommon<LHS, RHS>::remainder;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedMod_v =
+        BigUnsignedDivImpl::BigUnsignedDivModCommon<LHS, RHS>::remainder;
 }
 
-using UnsignedModImpl::UnsignedMod_v;
+using BigUnsignedModImpl::BigUnsignedMod_v;
 
 namespace unsigned_mod_tests
 {
 
-    static_assert(is_same<UnsignedMod_v<n1, n2>, n1>);
-    static_assert(is_same<UnsignedMod_v<n5, n5>, n0>);
-    static_assert(is_same<UnsignedMod_v<n10, n2>, n0>);
-    static_assert(is_same<UnsignedMod_v<n10, n1>, n0>);
-    static_assert(is_same<UnsignedMod_v<n0, n5>, n0>);
-    static_assert(is_same<UnsignedMod_v<n20, n4>, n0>);
-    static_assert(is_same<UnsignedMod_v<n50, n10>, n0>);
-    static_assert(is_same<UnsignedMod_v<n64, n2>, n0>);
-    static_assert(is_same<UnsignedMod_v<n25, n3>, n1>);
-    static_assert(is_same<UnsignedMod_v<n64, n1>, n0>);
-    static_assert(is_same<UnsignedMod_v<n50, n25>, n0>);
-    static_assert(is_same<UnsignedMod_v<n64, n63>, n1>);
-    static_assert(is_same<UnsignedMod_v<n64, n16>, n0>);
-    static_assert(is_same<UnsignedMod_v<n15, n16>, n15>);
-    static_assert(is_same<UnsignedMod_v<n10, n3>, n1>);
-    static_assert(is_same<UnsignedMod_v<n64, n64>, n0>);
-    static_assert(is_same<UnsignedMod_v<n30, n7>, n2>);
-    static_assert(is_same<UnsignedMod_v<n17, n5>, n2>);
-    static_assert(is_same<UnsignedMod_v<n50, n26>, n24>);
-    static_assert(is_same<UnsignedMod_v<n50, n24>, n2>);
-    static_assert(is_same<UnsignedMod_v<n1, n64>, n1>);
-    static_assert(is_same<UnsignedMod_v<n33, n32>, n1>);
-    static_assert(is_same<UnsignedMod_v<n10, n9>, n1>);
-    static_assert(is_same<UnsignedMod_v<n64, n1>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n1, n2>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n5, n5>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n10, n2>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n10, n1>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n0, n5>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n20, n4>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n50, n10>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n2>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n25, n3>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n1>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n50, n25>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n63>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n16>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n15, n16>, n15>);
+    static_assert(is_same<BigUnsignedMod_v<n10, n3>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n64>, n0>);
+    static_assert(is_same<BigUnsignedMod_v<n30, n7>, n2>);
+    static_assert(is_same<BigUnsignedMod_v<n17, n5>, n2>);
+    static_assert(is_same<BigUnsignedMod_v<n50, n26>, n24>);
+    static_assert(is_same<BigUnsignedMod_v<n50, n24>, n2>);
+    static_assert(is_same<BigUnsignedMod_v<n1, n64>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n33, n32>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n10, n9>, n1>);
+    static_assert(is_same<BigUnsignedMod_v<n64, n1>, n0>);
 } // namespace unsigned_mod_tests
 
-namespace UnsignedMulImpl
+namespace BigUnsignedMulImpl
 {
-    template <Unsigned_t LHS, Bit_t RHS, Unsigned_t Shift>
+    template <BigUnsigned_t LHS, Bit_t RHS, BigUnsigned_t Shift>
     struct MulByBit;
 
-    template <Unsigned_t LHS, Bit_t RHS, Unsigned_t Shift>
+    template <BigUnsigned_t LHS, Bit_t RHS, BigUnsigned_t Shift>
     using MulByBit_v = MulByBit<LHS, RHS, Shift>::result;
 
-    template <Unsigned_t LHS, Unsigned_t Shift>
+    template <BigUnsigned_t LHS, BigUnsigned_t Shift>
     struct MulByBit<LHS, Zero, Shift>
     {
-        using result = Unsigned<>;
+        using result = BigUnsigned<>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t Shift>
+    template <BigUnsigned_t LHS, BigUnsigned_t Shift>
     struct MulByBit<LHS, One, Shift>
     {
-        using result = UnsignedLShift_v<LHS, Shift>;
+        using result = BigUnsignedLShift_v<LHS, Shift>;
     };
 
-    template <Unsigned_t LHS, List_t BList, Unsigned_t Shift>
-    struct UnsignedMulHelper;
+    template <BigUnsigned_t LHS, List_t BList, BigUnsigned_t Shift>
+    struct BigUnsignedMulHelper;
 
-    template <Unsigned_t LHS, List_t BList, Unsigned_t Shift>
-    using UnsignedMulHelper_v = UnsignedMulHelper<LHS, BList, Shift>::result;
+    template <BigUnsigned_t LHS, List_t BList, BigUnsigned_t Shift>
+    using BigUnsignedMulHelper_v =
+        BigUnsignedMulHelper<LHS, BList, Shift>::result;
 
-    template <Unsigned_t LHS, Unsigned_t Shift>
-    struct UnsignedMulHelper<LHS, List<>, Shift>
+    template <BigUnsigned_t LHS, BigUnsigned_t Shift>
+    struct BigUnsignedMulHelper<LHS, List<>, Shift>
     {
-        using result = Unsigned<>;
+        using result = BigUnsigned<>;
     };
 
-    template <Bit_t R0, Bit_t... RRest, Unsigned_t LHS, Unsigned_t Shift>
-    struct UnsignedMulHelper<LHS, List<R0, RRest...>, Shift>
+    template <Bit_t R0, Bit_t... RRest, BigUnsigned_t LHS, BigUnsigned_t Shift>
+    struct BigUnsignedMulHelper<LHS, List<R0, RRest...>, Shift>
     {
         using partial = MulByBit_v<LHS, R0, Shift>;
-        using rest =
-            UnsignedMulHelper_v<LHS, List<RRest...>, UnsignedInc_v<Shift>>;
-        using result = UnsignedAdd_v<partial, rest>;
+        using rest = BigUnsignedMulHelper_v<LHS, List<RRest...>,
+                                            BigUnsignedInc_v<Shift>>;
+        using result = BigUnsignedAdd_v<partial, rest>;
     };
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    struct UnsignedMul;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    struct BigUnsignedMul;
 
-    template <Unsigned_t LHS, Unsigned_t RHS>
-    using UnsignedMul_v = UnsignedMul<LHS, RHS>::result;
+    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+    using BigUnsignedMul_v = BigUnsignedMul<LHS, RHS>::result;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct UnsignedMul<Unsigned<LHS...>, Unsigned<RHS...>>
+    struct BigUnsignedMul<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
-        using result = Canonicalize_v<
-            UnsignedMulHelper_v<Unsigned<LHS...>, List<RHS...>, Unsigned<>>>;
+        using result = BigUnsignedCanonicalize_v<BigUnsignedMulHelper_v<
+            BigUnsigned<LHS...>, List<RHS...>, BigUnsigned<>>>;
     };
-} // namespace UnsignedMulImpl
+} // namespace BigUnsignedMulImpl
 
-using UnsignedMulImpl::UnsignedMul_v;
+using BigUnsignedMulImpl::BigUnsignedMul_v;
 
 namespace unsigned_mul_tests
 {
-    using M0 = UnsignedMul_v<n0, n1>;
-    using M1 = UnsignedMul_v<n1, n1>;
-    using M0_1 = UnsignedMul_v<n0, n0>;
-    using M4 = UnsignedMul_v<n2, n2>;
-    using M6 = UnsignedMul_v<n2, n3>;
-    using M8 = UnsignedMul_v<n2, n4>;
-    using M10 = UnsignedMul_v<n2, n5>;
-    using M12 = UnsignedMul_v<n3, n4>;
-    using M14 = UnsignedMul_v<n2, n7>;
-    using M15 = UnsignedMul_v<n3, n5>;
-    using M16 = UnsignedMul_v<n4, n4>;
-    using M18 = UnsignedMul_v<n3, n6>;
-    using M20 = UnsignedMul_v<n4, n5>;
-    using M21 = UnsignedMul_v<n3, n7>;
-    using M24 = UnsignedMul_v<n3, n8>;
-    using M25 = UnsignedMul_v<n5, n5>;
-    using M27 = UnsignedMul_v<n3, n9>;
-    using M28 = UnsignedMul_v<n4, n7>;
-    using M30 = UnsignedMul_v<n5, n6>;
-    using M32 = UnsignedMul_v<n4, n8>;
-    using M35 = UnsignedMul_v<n5, n7>;
-    using M36 = UnsignedMul_v<n4, n9>;
-    using M40 = UnsignedMul_v<n5, n8>;
-    using M42 = UnsignedMul_v<n6, n7>;
-    using M45 = UnsignedMul_v<n5, n9>;
-    using M48 = UnsignedMul_v<n6, n8>;
-    using M49 = UnsignedMul_v<n7, n7>;
-    using M54 = UnsignedMul_v<n6, n9>;
-    using M56 = UnsignedMul_v<n7, n8>;
-    using M63 = UnsignedMul_v<n7, n9>;
-    using M64 = UnsignedMul_v<n8, n8>;
+    using M0 = BigUnsignedMul_v<n0, n1>;
+    using M1 = BigUnsignedMul_v<n1, n1>;
+    using M0_1 = BigUnsignedMul_v<n0, n0>;
+    using M4 = BigUnsignedMul_v<n2, n2>;
+    using M6 = BigUnsignedMul_v<n2, n3>;
+    using M8 = BigUnsignedMul_v<n2, n4>;
+    using M10 = BigUnsignedMul_v<n2, n5>;
+    using M12 = BigUnsignedMul_v<n3, n4>;
+    using M14 = BigUnsignedMul_v<n2, n7>;
+    using M15 = BigUnsignedMul_v<n3, n5>;
+    using M16 = BigUnsignedMul_v<n4, n4>;
+    using M18 = BigUnsignedMul_v<n3, n6>;
+    using M20 = BigUnsignedMul_v<n4, n5>;
+    using M21 = BigUnsignedMul_v<n3, n7>;
+    using M24 = BigUnsignedMul_v<n3, n8>;
+    using M25 = BigUnsignedMul_v<n5, n5>;
+    using M27 = BigUnsignedMul_v<n3, n9>;
+    using M28 = BigUnsignedMul_v<n4, n7>;
+    using M30 = BigUnsignedMul_v<n5, n6>;
+    using M32 = BigUnsignedMul_v<n4, n8>;
+    using M35 = BigUnsignedMul_v<n5, n7>;
+    using M36 = BigUnsignedMul_v<n4, n9>;
+    using M40 = BigUnsignedMul_v<n5, n8>;
+    using M42 = BigUnsignedMul_v<n6, n7>;
+    using M45 = BigUnsignedMul_v<n5, n9>;
+    using M48 = BigUnsignedMul_v<n6, n8>;
+    using M49 = BigUnsignedMul_v<n7, n7>;
+    using M54 = BigUnsignedMul_v<n6, n9>;
+    using M56 = BigUnsignedMul_v<n7, n8>;
+    using M63 = BigUnsignedMul_v<n7, n9>;
+    using M64 = BigUnsignedMul_v<n8, n8>;
 
     static_assert(is_same<M0, n0>);
     static_assert(is_same<M1, n1>);
@@ -1616,47 +1630,47 @@ namespace unsigned_mul_tests
 
 namespace unsigned_sub_tests
 {
-    using S0_1 = UnsignedSub_v<n1, n1>;
-    using S1 = UnsignedSub_v<n3, n2>;
-    using S0 = UnsignedSub_v<n8, n8>;
-    using S6 = UnsignedSub_v<n7, n1>;
-    using S7 = UnsignedSub_v<n8, n1>;
-    using S15 = UnsignedSub_v<n15, n0>;
-    using S14 = UnsignedSub_v<n15, n1>;
-    using S5 = UnsignedSub_v<n6, n1>;
-    using S8 = UnsignedSub_v<n10, n2>;
-    using S9 = UnsignedSub_v<n11, n2>;
-    using S10 = UnsignedSub_v<n12, n2>;
-    using S11 = UnsignedSub_v<n13, n2>;
-    using S12 = UnsignedSub_v<n14, n2>;
-    using S13 = UnsignedSub_v<n15, n2>;
-    using S14_1 = UnsignedSub_v<n16, n2>;
-    using S15_1 = UnsignedSub_v<n17, n2>;
-    using S16 = UnsignedSub_v<n18, n2>;
-    using S17 = UnsignedSub_v<n19, n2>;
-    using S18 = UnsignedSub_v<n20, n2>;
-    using S19 = UnsignedSub_v<n21, n2>;
-    using S20 = UnsignedSub_v<n22, n2>;
-    using S21 = UnsignedSub_v<n23, n2>;
-    using S22 = UnsignedSub_v<n24, n2>;
-    using S23 = UnsignedSub_v<n25, n2>;
-    using S24 = UnsignedSub_v<n26, n2>;
-    using S12 = UnsignedSub_v<n27, n15>;
-    using S26 = UnsignedSub_v<n28, n2>;
-    using S27 = UnsignedSub_v<n29, n2>;
-    using S28 = UnsignedSub_v<n30, n2>;
-    using S29 = UnsignedSub_v<n31, n2>;
-    using S30 = UnsignedSub_v<n32, n2>;
-    using S31 = UnsignedSub_v<n33, n2>;
-    using S32 = UnsignedSub_v<n34, n2>;
-    using S33 = UnsignedSub_v<n35, n2>;
-    using S34 = UnsignedSub_v<n36, n2>;
-    using S35 = UnsignedSub_v<n37, n2>;
-    using S36 = UnsignedSub_v<n38, n2>;
-    using S37 = UnsignedSub_v<n39, n2>;
-    using S38 = UnsignedSub_v<n40, n2>;
-    using S39 = UnsignedSub_v<n41, n2>;
-    using S40 = UnsignedSub_v<n42, n2>;
+    using S0_1 = BigUnsignedSub_v<n1, n1>;
+    using S1 = BigUnsignedSub_v<n3, n2>;
+    using S0 = BigUnsignedSub_v<n8, n8>;
+    using S6 = BigUnsignedSub_v<n7, n1>;
+    using S7 = BigUnsignedSub_v<n8, n1>;
+    using S15 = BigUnsignedSub_v<n15, n0>;
+    using S14 = BigUnsignedSub_v<n15, n1>;
+    using S5 = BigUnsignedSub_v<n6, n1>;
+    using S8 = BigUnsignedSub_v<n10, n2>;
+    using S9 = BigUnsignedSub_v<n11, n2>;
+    using S10 = BigUnsignedSub_v<n12, n2>;
+    using S11 = BigUnsignedSub_v<n13, n2>;
+    using S12 = BigUnsignedSub_v<n14, n2>;
+    using S13 = BigUnsignedSub_v<n15, n2>;
+    using S14_1 = BigUnsignedSub_v<n16, n2>;
+    using S15_1 = BigUnsignedSub_v<n17, n2>;
+    using S16 = BigUnsignedSub_v<n18, n2>;
+    using S17 = BigUnsignedSub_v<n19, n2>;
+    using S18 = BigUnsignedSub_v<n20, n2>;
+    using S19 = BigUnsignedSub_v<n21, n2>;
+    using S20 = BigUnsignedSub_v<n22, n2>;
+    using S21 = BigUnsignedSub_v<n23, n2>;
+    using S22 = BigUnsignedSub_v<n24, n2>;
+    using S23 = BigUnsignedSub_v<n25, n2>;
+    using S24 = BigUnsignedSub_v<n26, n2>;
+    using S12 = BigUnsignedSub_v<n27, n15>;
+    using S26 = BigUnsignedSub_v<n28, n2>;
+    using S27 = BigUnsignedSub_v<n29, n2>;
+    using S28 = BigUnsignedSub_v<n30, n2>;
+    using S29 = BigUnsignedSub_v<n31, n2>;
+    using S30 = BigUnsignedSub_v<n32, n2>;
+    using S31 = BigUnsignedSub_v<n33, n2>;
+    using S32 = BigUnsignedSub_v<n34, n2>;
+    using S33 = BigUnsignedSub_v<n35, n2>;
+    using S34 = BigUnsignedSub_v<n36, n2>;
+    using S35 = BigUnsignedSub_v<n37, n2>;
+    using S36 = BigUnsignedSub_v<n38, n2>;
+    using S37 = BigUnsignedSub_v<n39, n2>;
+    using S38 = BigUnsignedSub_v<n40, n2>;
+    using S39 = BigUnsignedSub_v<n41, n2>;
+    using S40 = BigUnsignedSub_v<n42, n2>;
 
     static_assert(is_same<S1, n1>);
     static_assert(is_same<S0, n0>);
@@ -1843,31 +1857,31 @@ namespace list_reverse_tests
 
 namespace ListSetImpl
 {
-    template <List_t L, Any_t Elem, Unsigned_t Position>
+    template <List_t L, Any_t Elem, BigUnsigned_t Position>
     struct ListSet;
 
-    template <List_t L, Any_t Elem, Unsigned_t Position>
+    template <List_t L, Any_t Elem, BigUnsigned_t Position>
     using ListSet_v = typename ListSet<L, Elem, Position>::result;
 
-    template <Any_t Elem, Unsigned_t Position>
+    template <Any_t Elem, BigUnsigned_t Position>
     struct ListSet<List<>, Elem, Position>
     {
         static_assert(false, "ListSet: index out of bounds");
     };
 
     template <Any_t Head, Any_t... Tail, Any_t Elem>
-    struct ListSet<List<Head, Tail...>, Elem, Unsigned<>>
+    struct ListSet<List<Head, Tail...>, Elem, BigUnsigned<>>
     {
         using result = List<Elem, Tail...>;
     };
 
-    template <Any_t Head, Any_t... Tail, Any_t Elem, Unsigned_t Position>
+    template <Any_t Head, Any_t... Tail, Any_t Elem, BigUnsigned_t Position>
     struct ListSet<List<Head, Tail...>, Elem, Position>
     {
-        using result =
-            ListPrepend_v<Head,
-                          ListSet_v<List<Tail...>, Elem,
-                                    UnsignedSub_v<Position, Unsigned<One>>>>;
+        using result = ListPrepend_v<
+            Head,
+            ListSet_v<List<Tail...>, Elem,
+                      BigUnsignedSub_v<Position, BigUnsigned<One>>>>;
     };
 } // namespace ListSetImpl
 
