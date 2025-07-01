@@ -42,7 +42,7 @@ Features
     - [x] GE
     - [x] EQ
   - [ ] Unsigned8:
-    - [ ] Incrementation
+    - [x] Incrementation
     - [ ] Decrementation
     - [ ] Addition
     - [ ] Subtraction
