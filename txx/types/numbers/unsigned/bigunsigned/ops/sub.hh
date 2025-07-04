@@ -1,7 +1,7 @@
 #pragma once
 
-#include "control_flow/ternary.hh"
-#include "traits/is_same.hh"
+#include "types/functions/ternary.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bits/ops/fullsubtractor.hh"
@@ -65,6 +65,18 @@ namespace BigUnsignedSubImpl
         using result = BigUnsignedCanonicalize_v<ToBigUnsigned_v<
             SubBigUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>>;
     };
+
+    struct BigUnsignedSubFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedSub_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedSubImpl
 
 using BigUnsignedSubImpl::BigUnsignedSub_v;
+using BigUnsignedSubImpl::BigUnsignedSubFunc;

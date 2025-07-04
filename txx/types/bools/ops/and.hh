@@ -2,6 +2,7 @@
 
 #include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
+#include "types/functions/function.hh"
 
 namespace BoolAndImpl
 {
@@ -28,6 +29,18 @@ namespace BoolAndImpl
     {
         using result = BoolAnd_v<Bools...>;
     };
+
+    struct BoolAndFunc
+    {
+        using is_function = IsFunction;
+
+        template <Bool_t... Bools>
+        struct apply
+        {
+            using result = BoolAnd_v<Bools...>;
+        };
+    };
 } // namespace BoolAndImpl
 
+using BoolAndImpl::BoolAndFunc;
 using BoolAndImpl::BoolAnd_v;

@@ -24,6 +24,18 @@ namespace ListReverseImpl
     {
         using result = ListReverse_v<List<Tail...>, ListPrepend_v<Head, Acc>>;
     };
+
+    struct ListReverseFunc
+    {
+        using is_function = IsFunction;
+
+        template <List_t L>
+        struct apply
+        {
+            using result = ListReverse_v<L>;
+        };
+    };
 } // namespace ListReverseImpl
 
+using ListReverseImpl::ListReverseFunc;
 using ListReverseImpl::ListReverse_v;

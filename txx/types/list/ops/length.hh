@@ -24,6 +24,18 @@ namespace ListLengthImpl
     {
         using result = BigUnsignedInc_v<ListLength_v<List<Tail...>>>;
     };
+
+    struct ListLengthFunc
+    {
+        using is_function = IsFunction;
+
+        template <List_t L>
+        struct apply
+        {
+            using result = ListLength_v<L>;
+        };
+    };
 } // namespace ListLengthImpl
 
+using ListLengthImpl::ListLengthFunc;
 using ListLengthImpl::ListLength_v;

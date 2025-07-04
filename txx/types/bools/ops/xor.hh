@@ -2,6 +2,7 @@
 
 #include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
+#include "types/functions/function.hh"
 
 namespace BoolXorImpl
 {
@@ -22,6 +23,18 @@ namespace BoolXorImpl
     {
         using result = False;
     };
+
+    struct BoolXorFunc
+    {
+        using is_function = IsFunction;
+
+        template <Bool_t B1, Bool_t B2>
+        struct apply
+        {
+            using result = BoolXor_v<B1, B2>;
+        };
+    };
 } // namespace BoolXorImpl
 
+using BoolXorImpl::BoolXorFunc;
 using BoolXorImpl::BoolXor_v;

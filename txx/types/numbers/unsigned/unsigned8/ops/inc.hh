@@ -3,6 +3,7 @@
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bits/ops/fulladder.hh"
+#include "types/functions/function.hh"
 #include "types/numbers/unsigned/unsigned8/concept.hh"
 #include "types/numbers/unsigned/unsigned8/unsigned8.hh"
 
@@ -51,6 +52,17 @@ namespace Unsigned8IncImpl
         using result = AddCarry8<B0, B1, B2, B3, B4, B5, B6, B7, One>::result;
     };
 
+    struct Unsigned8IncFunc
+    {
+        using is_function = IsFunction;
+
+        template <Unsigned8_t Num>
+        struct apply
+        {
+            using result = Unsigned8Inc_v<Num>;
+        };
+    };
 } // namespace Unsigned8IncImpl
 
 using Unsigned8IncImpl::Unsigned8Inc_v;
+using Unsigned8IncImpl::Unsigned8IncFunc;

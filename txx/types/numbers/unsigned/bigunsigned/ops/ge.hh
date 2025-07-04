@@ -1,6 +1,6 @@
 #pragma once
 
-#include "traits/is_same.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bools/literals.hh"
@@ -103,6 +103,18 @@ namespace BigUnsignedGEImpl
             // The lengthiest number is the biggest
             GEImplIsLHSLongest_v<LList, RList>>;
     };
+
+    struct BigUnsignedGEFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedGE_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedGEImpl
 
 using BigUnsignedGEImpl::BigUnsignedGE_v;
+using BigUnsignedGEImpl::BigUnsignedGEFunc;

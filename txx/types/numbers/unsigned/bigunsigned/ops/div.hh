@@ -1,6 +1,6 @@
 #pragma once
 
-#include "control_flow/ternary.hh"
+#include "types/functions/ternary.hh"
 #include "types/bits/literals.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/append.hh"
@@ -91,6 +91,18 @@ namespace BigUnsignedDivImpl
 
     template <BigUnsigned_t LHS, BigUnsigned_t RHS>
     using BigUnsignedDiv_v = BigUnsignedDivModCommon<LHS, RHS>::quotient;
+
+    struct BigUnsignedDivFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedDiv_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedDivImpl
 
 using BigUnsignedDivImpl::BigUnsignedDiv_v;
+using BigUnsignedDivImpl::BigUnsignedDivFunc;

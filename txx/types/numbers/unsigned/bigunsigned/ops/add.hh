@@ -1,7 +1,7 @@
 #pragma once
 
-#include "control_flow/ternary.hh"
-#include "traits/is_same.hh"
+#include "types/functions/ternary.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bits/ops/fulladder.hh"
@@ -76,6 +76,18 @@ namespace BigUnsignedAddImpl
         using result = ToBigUnsigned_v<
             AddBigUnsignedCarry_v<List<LHS...>, List<RHS...>, Zero>>;
     };
+
+    struct BigUnsignedAddFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedAdd_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedAddImpl
 
 using BigUnsignedAddImpl::BigUnsignedAdd_v;
+using BigUnsignedAddImpl::BigUnsignedAddFunc;

@@ -35,6 +35,9 @@ namespace FullAdderImpl
         using Sum = Zero;
         using Carry = One;
     };
+
+    // TODO: This would need to return a Tuple to be made a function
+
 } // namespace FullAdderImpl
 
 using FullAdderImpl::FullAdder;

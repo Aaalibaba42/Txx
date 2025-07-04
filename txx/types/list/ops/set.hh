@@ -36,6 +36,18 @@ namespace ListSetImpl
             ListSet_v<List<Tail...>, Elem,
                       BigUnsignedSub_v<Position, BigUnsigned<One>>>>;
     };
+
+    struct ListSetFunc
+    {
+        using is_function = IsFunction;
+
+        template <List_t L, Any_t Elem, BigUnsigned_t Position>
+        struct apply
+        {
+            using result = ListSet_v<L, Elem, Position>;
+        };
+    };
 } // namespace ListSetImpl
 
 using ListSetImpl::ListSet_v;
+using ListSetImpl::ListSetFunc;

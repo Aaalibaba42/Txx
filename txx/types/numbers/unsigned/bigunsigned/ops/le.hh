@@ -1,6 +1,6 @@
 #pragma once
 
-#include "traits/is_same.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bools/literals.hh"
@@ -100,6 +100,18 @@ namespace BigUnsignedLEImpl
             // The lengthiest number is the biggest
             LEImplIsLHSLongest_v<LList, RList>>;
     };
+
+    struct BigUnsignedLEFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedLE_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedLEImpl
 
 using BigUnsignedLEImpl::BigUnsignedLE_v;
+using BigUnsignedLEImpl::BigUnsignedLEFunc;

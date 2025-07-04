@@ -1,7 +1,7 @@
 #pragma once
 
-#include "control_flow/ternary.hh"
-#include "traits/is_same.hh"
+#include "types/functions/ternary.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/list/list.hh"
@@ -58,6 +58,18 @@ namespace BigUnsignedCanonicalizeImpl
         using result_list = ListReverse_v<stripped>;
         using result = ToBigUnsigned_v<result_list>;
     };
+
+    struct BigUnsignedCanonicalizeFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t Number>
+        struct apply
+        {
+            using result = BigUnsignedCanonicalize_v<Number>;
+        };
+    };
 } // namespace BigUnsignedCanonicalizeImpl
 
 using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalize_v;
+using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalizeFunc;

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "types/function/function.hh"
+#include "types/functions/function.hh"
 #include "types/list/list.hh"
 #include "types/list/ops/prepend.hh"
-#include "types/function/apply.hh"
+#include "types/functions/apply.hh"
 
 namespace ListMapImpl
 {
@@ -39,3 +39,4 @@ namespace ListMapImpl
 } // namespace ListMapImpl
 
 using ListMapImpl::ListMapFunc;
+using ListMapImpl::ListMap_v;

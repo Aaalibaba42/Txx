@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types/function/function.hh"
+#include "types/functions/function.hh"
 
 // The initial plan was to have functions just be templated structure that
 // exposes a `result` typealias to the result of the function. So the concept
@@ -81,9 +81,9 @@ namespace FunctionConceptImpl
     template <typename FuncTag>
     concept FunctionTag_t = requires(FuncTag tag) { function_tag_t_stub(tag); };
 
-    template <typename T>
-    concept Function_t = requires { typename T::is_function; }
-        && FunctionTag_t<typename T::is_function>;
+    template <typename Foo>
+    concept Function_t = requires { typename Foo::is_function; }
+        && FunctionTag_t<typename Foo::is_function>;
 } // namespace FunctionConceptImpl
 
 using FunctionConceptImpl::FunctionTag_t;

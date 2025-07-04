@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types/bits/concept.hh"
+#include "types/functions/function.hh"
 #include "types/list/concept.hh"
 #include "types/list/list.hh"
 #include "types/numbers/unsigned/unsigned8/unsigned8.hh"
@@ -19,6 +20,17 @@ namespace ToUnsigned8Impl
     {
         using result =
             Unsigned8<Bit0, Bit1, Bit2, Bit3, Bit4, Bit5, Bit6, Bit7>;
+    };
+
+    struct ToUnsigned8Func
+    {
+        using is_function = IsFunction;
+
+        template <List_t List>
+        struct apply
+        {
+            using result = ToUnsigned8_v<List>;
+        };
     };
 } // namespace ToUnsigned8Impl
 

@@ -65,6 +65,18 @@ namespace BigUnsignedMulImpl
         using result = BigUnsignedCanonicalize_v<BigUnsignedMulHelper_v<
             BigUnsigned<LHS...>, List<RHS...>, BigUnsigned<>>>;
     };
+
+    struct BigUnsignedMulFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedMul_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedMulImpl
 
 using BigUnsignedMulImpl::BigUnsignedMul_v;
+using BigUnsignedMulImpl::BigUnsignedMulFunc;

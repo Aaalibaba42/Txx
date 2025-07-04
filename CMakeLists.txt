@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -pedantic -ftemplate-depth=2000000000 -pipe -O0")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -pedantic -ftemplate-depth=2147483647 -pipe -O0")
 
 include_directories(txx)
 add_executable(main main.cc)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "control_flow/ternary.hh"
-#include "traits/is_same.hh"
+#include "types/functions/ternary.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bits/ops/fulladder.hh"
@@ -11,7 +11,7 @@
 #include "types/numbers/unsigned/bigunsigned/concept.hh"
 #include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "types/numbers/unsigned/bigunsigned/utils/fromList.hh"
-#include "types/function/function.hh"
+#include "types/functions/function.hh"
 
 namespace BigUnsignedIncImpl
 {

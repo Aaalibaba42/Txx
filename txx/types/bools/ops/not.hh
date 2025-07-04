@@ -2,6 +2,7 @@
 
 #include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
+#include "types/functions/function.hh"
 
 namespace BoolNotImpl
 {
@@ -22,6 +23,18 @@ namespace BoolNotImpl
     {
         using result = True;
     };
+
+    struct BoolNotFunc
+    {
+        using is_function = IsFunction;
+
+        template <Bool_t Bool>
+        struct apply
+        {
+            using result = BoolNot_v<Bool>;
+        };
+    };
 } // namespace BoolNotImpl
 
+using BoolNotImpl::BoolNotFunc;
 using BoolNotImpl::BoolNot_v;

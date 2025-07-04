@@ -67,6 +67,9 @@ namespace FullSubtractorImpl
         using Diff = One;
         using Borrow = One;
     };
+
+    // TODO: This would need to return a Tuple to be made a function
+
 } // namespace FullSubtractorImpl
 
 using FullSubtractorImpl::FullSubtractor;

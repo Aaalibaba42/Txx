@@ -146,16 +146,13 @@ Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 
 ### Lists
 
-I don't aim to do these unless I need to. These are just ideas of the kind
-of things I'd be capable of doing.
-
 - [x] Prepend
 - [x] Append
 - [x] Reverse
 - [ ] Set i-th
 - [ ] AllOf
 - [ ] NoneOf
-- [ ] Map
+- [x] Map
 - [ ] Reduce
 - [ ] FoldL
 - [ ] FoldR
@@ -164,8 +161,11 @@ of things I'd be capable of doing.
 
 ### Functions
 
-Functions ought to be first class objects. I guess a function is "just" a
-structure which takes template parameters and has a Result of a certain type.
+- [x] Functions
+- [x] Apply
+- [ ] Combine
+- [ ] Curry
+- [ ] Uncurry
 
 ### Others
 
@@ -173,6 +173,11 @@ Structures that would be nice to have natively:
 - [ ] Sets
 - [ ] Maps
 - [ ] Graphs
+
+- Tuples: since the list I have has many types already, they kinda are tuples,
+  but formalizing a tuple type would allow for some practicle things, like
+  wrapping a result type in a tuple that can be converted back to a parameter
+  pack and vice-versa (since we can't do `using result = ParameterPack...;`)
 
 ### Control Flow
 

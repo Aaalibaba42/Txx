@@ -1,6 +1,6 @@
 #pragma once
 
-#include "traits/is_same.hh"
+#include "types/functions/is_same.hh"
 #include "types/bits/concept.hh"
 #include "types/bits/literals.hh"
 #include "types/bools/literals.hh"
@@ -103,6 +103,18 @@ namespace BigUnsignedLTImpl
             // The lengthiest number is the biggest
             LTImplIsLHSLongest_v<LList, RList>>;
     };
+
+    struct BigUnsignedLTFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedLT_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedLTImpl
 
 using BigUnsignedLTImpl::BigUnsignedLT_v;
+using BigUnsignedLTImpl::BigUnsignedLTFunc;

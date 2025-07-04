@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types/numbers/unsigned/bigunsigned/concept.hh"
-#include "traits/is_same.hh"
+#include "types/functions/is_same.hh"
 
 // LHS and RHS are assumed canonicalized
 //
@@ -21,6 +21,18 @@ namespace BigUnsignedEQImpl
     {
         using result = IsSame_v<LHS, RHS>;
     };
+
+    struct BigUnsignedEQFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
+        struct apply
+        {
+            using result = BigUnsignedEQ_v<LHS, RHS>;
+        };
+    };
 } // namespace BigUnsignedEQImpl
 
 using BigUnsignedEQImpl::BigUnsignedEQ_v;
+using BigUnsignedEQImpl::BigUnsignedEQFunc;

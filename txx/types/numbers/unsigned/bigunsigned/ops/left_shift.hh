@@ -36,6 +36,18 @@ namespace BigUnsignedLShiftImpl
         using result = BigUnsignedCanonicalize_v<
             BigUnsignedLShift_v<ShiftedOnce, Decrement>>;
     };
+
+    struct BigUnsignedLShiftFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t Value, BigUnsigned_t Amount>
+        struct apply
+        {
+            using result = BigUnsignedLShift_v<Value, Amount>;
+        };
+    };
 } // namespace BigUnsignedLShiftImpl
 
 using BigUnsignedLShiftImpl::BigUnsignedLShift_v;
+using BigUnsignedLShiftImpl::BigUnsignedLShiftFunc;

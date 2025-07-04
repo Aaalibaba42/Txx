@@ -2,18 +2,16 @@
 
 #include "types/bools/concept.hh"
 #include "types/bools/literals.hh"
+#include "types/functions/function.hh"
 #include "types/meta/any.hh"
-
-/* WARNING:
-    The ternary is **not** lazy. Boths sides will always be evaluated.
-
-    Meaning you **cannot** stop a recursion using this structure.
-*/
 
 namespace TernaryImpl
 {
     template <Bool_t Cond, Any_t Success, Any_t Failure>
     struct Ternary;
+
+    template <Bool_t Cond, Any_t Success, Any_t Failure>
+    using Ternary_v = Ternary<Cond, Success, Failure>::result;
 
     template <Any_t Success, Any_t Failure>
     struct Ternary<True, Success, Failure>
@@ -26,7 +24,18 @@ namespace TernaryImpl
     {
         using result = Failure;
     };
+
+    struct TernaryFunc
+    {
+        using is_function = IsFunction;
+
+        template <Bool_t Cond, Any_t Success, Any_t Failure>
+        struct apply
+        {
+            using result = Ternary_v<Cond, Success, Failure>;
+        };
+    };
 } // namespace TernaryImpl
 
-template <Bool_t Cond, Any_t Success, Any_t Failure>
-using Ternary_v = TernaryImpl::Ternary<Cond, Success, Failure>::result;
+using TernaryImpl::TernaryFunc;
+using TernaryImpl::Ternary_v;
