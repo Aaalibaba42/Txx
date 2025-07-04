@@ -11,6 +11,7 @@
 #include "types/numbers/unsigned/bigunsigned/concept.hh"
 #include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "types/numbers/unsigned/bigunsigned/utils/fromList.hh"
+#include "types/function/function.hh"
 
 namespace BigUnsignedIncImpl
 {
@@ -47,6 +48,18 @@ namespace BigUnsignedIncImpl
     {
         using result = ToBigUnsigned_v<AddCarry_v<List<Bits...>, One>>;
     };
+
+    struct BigUnsignedIncFunc
+    {
+        using is_function = IsFunction;
+
+        template <BigUnsigned_t Num>
+        struct apply
+        {
+            using result = BigUnsignedInc_v<Num>;
+        };
+    };
 } // namespace BigUnsignedIncImpl
 
 using BigUnsignedIncImpl::BigUnsignedInc_v;
+using BigUnsignedIncImpl::BigUnsignedIncFunc;

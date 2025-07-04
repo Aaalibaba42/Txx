@@ -5,3 +5,4 @@
 #include "prepend.hh"
 #include "reverse.hh"
 #include "set.hh"
+#include "map.hh"
