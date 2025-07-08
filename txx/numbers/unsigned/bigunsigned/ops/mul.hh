@@ -1,14 +1,15 @@
 #pragma once
 
 #include "bits/concept.hh"
-#include "literals/bits.hh"
+#include "functions/function.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
+#include "literals/bits.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/add.hh"
 #include "numbers/unsigned/bigunsigned/ops/inc.hh"
 #include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
-#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
 
 namespace BigUnsignedMulImpl

@@ -1,15 +1,14 @@
 #pragma once
 
-#include "numbers/unsigned/bigunsigned/ops/mod.hh"
-
 #include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "numbers/unsigned/bigunsigned/ops/mod.hh"
 
 namespace bigunsigned_mod_tests
 {
     // Fails (as expected)
-    // static_assert(is_same<UnsignedMod_v<bu10, bu0>, bu0>);
-    // static_assert(is_same<UnsignedMod_v<bu0, bu0>, bu0>);
+    // static_assert(is_same<BigUnsignedMod_v<bu10, bu0>, bu0>);
+    // static_assert(is_same<BigUnsignedMod_v<bu0, bu0>, bu0>);
 
     static_assert(is_same<BigUnsignedMod_v<bu1, bu2>, bu1>);
     static_assert(is_same<BigUnsignedMod_v<bu5, bu5>, bu0>);

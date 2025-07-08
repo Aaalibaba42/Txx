@@ -17,7 +17,7 @@ concept Function_t = requires { T::result; };
 // other:
 #if 0
 template <Function_t F, Function_t G, Any_t... Args>
-struct Combine
+struct CombineAndCall
 {
     using result = F<typename G<Args...>::result>::result;
 };
@@ -29,7 +29,7 @@ struct Combine
 // The solution is to have function have an `apply` nested templated structure
 // who takes the argument and exposes the result.
 #if 0
-struct Combine
+struct CombineAndCall
 {
     template <Function_t F, Function_t G, Any_t... Args>
     struct apply
@@ -40,7 +40,19 @@ struct Combine
 };
 #endif
 //
-// It's not exactly easy on the eyes, but it has the strong advantage to work.
+// It's not exactly easy on the eyes, but it has the strong advantage to work,
+// since the `CombineAndCall` structure is not a template, and thus can be
+// passed as a template parameter. Then we would need to call this function like
+// so:
+#if 0
+CombineAndCall::template apply<Foo, Goo, True, False>::result;
+#endif
+//
+// This is still a mouthful, so checkout `./apply.hh` to see how we
+// bootstrapped this concept easiely, making it way more legible:
+#if 0
+Apply_v<CombineAndCall, Foo, Goo, True>;
+#endif
 //
 // Then there is the issue at hand, defining a concept to keep a sens of strong
 // typing. The 2 main solutions would be a dummy probe structure that I use to
@@ -60,7 +72,7 @@ concept Function_t = requires {
 // name that would indicate that what we are dealing with is a function. Thus a
 // our Combine function looks like so:
 #if 0
-struct Combine
+struct CombineAndCall
 {
     template <Function_t F, Function_t G, Any_t... Args>
     struct apply

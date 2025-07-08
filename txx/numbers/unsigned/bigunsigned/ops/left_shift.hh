@@ -1,12 +1,13 @@
 #pragma once
 
 #include "bits/concept.hh"
-#include "literals/bits.hh"
+#include "functions/function.hh"
 #include "list/ops/prepend.hh"
 #include "list/utils/fromUnsigned.hh"
+#include "literals/bits.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/sub.hh"
-#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
 #include "numbers/unsigned/bigunsigned/utils/fromList.hh"
 

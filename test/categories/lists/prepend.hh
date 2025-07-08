@@ -1,9 +1,8 @@
 #pragma once
 
-#include "list/ops/prepend.hh"
-#include "list/list.hh"
-
 #include "../../utils/is_same.hh"
+#include "list/list.hh"
+#include "list/ops/prepend.hh"
 #include "literals/bigunsigned.hh"
 
 namespace list_prepend_tests

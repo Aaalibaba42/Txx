@@ -1,9 +1,9 @@
 #pragma once
 
 #include "bits/concept.hh"
-#include "literals/bits.hh"
 #include "bits/ops/fulladder.hh"
 #include "functions/function.hh"
+#include "literals/bits.hh"
 #include "numbers/unsigned/unsigned8/concept.hh"
 #include "numbers/unsigned/unsigned8/unsigned8.hh"
 

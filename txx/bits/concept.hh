@@ -2,10 +2,15 @@
 
 #include "literals/bits.hh"
 
-void bit_t_stub(Zero);
-void bit_t_stub(One);
+namespace BitTImpl
+{
+    void bit_t_stub(Zero);
+    void bit_t_stub(One);
 
-template <typename T>
-concept Bit_t = requires(T b) {
-    { bit_t_stub(b) };
-};
+    template <typename T>
+    concept Bit_t = requires(T b) {
+        { bit_t_stub(b) };
+    };
+} // namespace BitTImpl
+
+using BitTImpl::Bit_t;

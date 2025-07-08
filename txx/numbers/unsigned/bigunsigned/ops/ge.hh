@@ -1,13 +1,16 @@
 #pragma once
 
-#include "functions/is_same.hh"
 #include "bits/concept.hh"
-#include "literals/bits.hh"
-#include "literals/bools.hh"
+#include "functions/function.hh"
+#include "functions/is_same.hh"
+#include "functions/ternary.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/length.hh"
 #include "list/ops/reverse.hh"
+#include "literals/bits.hh"
+#include "literals/bools.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 
 namespace BigUnsignedGEImpl

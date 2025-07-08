@@ -1,8 +1,8 @@
 #pragma once
 
 #include "bools/concept.hh"
-#include "bools/literals.hh"
 #include "functions/function.hh"
+#include "literals/bools.hh"
 
 namespace BoolOrImpl
 {

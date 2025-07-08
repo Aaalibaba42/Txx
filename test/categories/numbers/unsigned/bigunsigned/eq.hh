@@ -1,9 +1,9 @@
 #pragma once
 
-#include "numbers/unsigned/bigunsigned/ops/eq.hh"
-
 #include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "literals/bools.hh"
+#include "numbers/unsigned/bigunsigned/ops/eq.hh"
 
 namespace bigunsigned_eq_tests
 {

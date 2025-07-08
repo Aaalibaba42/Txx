@@ -1,9 +1,8 @@
 #pragma once
 
-#include "numbers/unsigned/bigunsigned/ops/mul.hh"
-
 #include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "numbers/unsigned/bigunsigned/ops/mul.hh"
 
 namespace bigunsigned_mul_tests
 {

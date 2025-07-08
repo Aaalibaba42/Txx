@@ -1,14 +1,15 @@
 #pragma once
 
-#include "functions/ternary.hh"
-#include "functions/is_same.hh"
 #include "bits/concept.hh"
-#include "literals/bits.hh"
-#include "list/list.hh"
+#include "functions/function.hh"
+#include "functions/is_same.hh"
+#include "functions/ternary.hh"
 #include "list/concept.hh"
+#include "list/list.hh"
 #include "list/ops/reverse.hh"
-#include "numbers/unsigned/bigunsigned/concept.hh"
+#include "literals/bits.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/utils/fromList.hh"
 
 // The technique here is to reverse the bitpack of the number, dropping leading

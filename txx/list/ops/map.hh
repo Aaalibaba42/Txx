@@ -1,9 +1,12 @@
 #pragma once
 
+#include "functions/apply.hh"
+#include "functions/concept.hh"
 #include "functions/function.hh"
+#include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/prepend.hh"
-#include "functions/apply.hh"
+#include "meta/any.hh"
 
 namespace ListMapImpl
 {

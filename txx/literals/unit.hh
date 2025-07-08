@@ -1,5 +1,5 @@
 #pragma once
 
-// Equivalent to ()
+// Equivalent to () in traditional functional languages
 struct Unit
 {};

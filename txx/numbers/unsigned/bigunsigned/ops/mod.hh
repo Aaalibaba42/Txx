@@ -1,6 +1,8 @@
 #pragma once
 
-#include "div.hh"
+#include "functions/function.hh"
+#include "numbers/unsigned/bigunsigned/concept.hh"
+#include "numbers/unsigned/bigunsigned/ops/div.hh"
 
 namespace BigUnsignedModImpl
 {

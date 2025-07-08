@@ -1,7 +1,8 @@
 #pragma once
 
-#include "numbers/unsigned/bigunsigned/concept.hh"
+#include "functions/function.hh"
 #include "functions/is_same.hh"
+#include "numbers/unsigned/bigunsigned/concept.hh"
 
 // LHS and RHS are assumed canonicalized
 //

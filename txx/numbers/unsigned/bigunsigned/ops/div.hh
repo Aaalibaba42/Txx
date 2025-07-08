@@ -1,15 +1,19 @@
 #pragma once
 
+#include "bits/concept.hh"
+#include "functions/function.hh"
 #include "functions/ternary.hh"
-#include "literals/bits.hh"
+#include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/append.hh"
 #include "list/ops/reverse.hh"
+#include "literals/bits.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/add.hh"
 #include "numbers/unsigned/bigunsigned/ops/ge.hh"
 #include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
 #include "numbers/unsigned/bigunsigned/ops/sub.hh"
-#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
 #include "numbers/unsigned/bigunsigned/utils/fromList.hh"
 

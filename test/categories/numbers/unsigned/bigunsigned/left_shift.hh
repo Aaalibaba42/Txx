@@ -1,9 +1,8 @@
 #pragma once
 
-#include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
-
 #include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
 
 namespace bigunsigned_lshift_tests
 {

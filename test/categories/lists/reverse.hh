@@ -1,9 +1,8 @@
 #pragma once
 
-#include "list/ops/reverse.hh"
-#include "list/list.hh"
-
 #include "../../utils/is_same.hh"
+#include "list/list.hh"
+#include "list/ops/reverse.hh"
 #include "literals/bigunsigned.hh"
 
 namespace list_reverse_tests

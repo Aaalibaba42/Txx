@@ -1,7 +1,7 @@
 #pragma once
 
-#include "literals/bools.hh"
 #include "functions/function.hh"
+#include "literals/bools.hh"
 #include "meta/any.hh"
 
 namespace IsSameImpl

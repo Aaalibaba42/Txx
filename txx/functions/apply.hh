@@ -1,7 +1,10 @@
 #pragma once
 
 #include "functions/concept.hh"
+#include "functions/function.hh"
 #include "meta/any.hh"
+
+// Bootstrapping applying 1st class functions
 
 namespace FunctionApplyImpl
 {
@@ -21,4 +24,5 @@ namespace FunctionApplyImpl
 
 } // namespace FunctionApplyImpl
 
+using ApplyFunc = FunctionApplyImpl::Apply;
 using FunctionApplyImpl::Apply_v;

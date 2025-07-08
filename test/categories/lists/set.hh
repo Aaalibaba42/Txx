@@ -1,18 +1,17 @@
 #pragma once
 
-#include "list/ops/set.hh"
-#include "list/list.hh"
-
 #include "../../utils/is_same.hh"
+#include "list/list.hh"
+#include "list/ops/set.hh"
 #include "literals/bigunsigned.hh"
 
 namespace list_set_tests
 {
     // Fails (as expected)
-    // static_assert(is_same<Set_v<List<>, bu1, bu1>, List<>>);
-    // static_assert(is_same<Set_v<List<>, bu1, bu0>, List<>>);
-    // static_assert(is_same<Set_v<List<bu1>, bu2, bu1>, List<>>);
-    // static_assert(is_same<Set_v<List<bu1, bu2>, bu3, bu2>, List<>>);
+    // static_assert(is_same<ListSet_v<List<>, bu1, bu1>, List<>>);
+    // static_assert(is_same<ListSet_v<List<>, bu1, bu0>, List<>>);
+    // static_assert(is_same<ListSet_v<List<bu1>, bu2, bu1>, List<>>);
+    // static_assert(is_same<ListSet_v<List<bu1, bu2>, bu3, bu2>, List<>>);
     static_assert(
         is_same<ListSet_v<List<bu1, bu2, bu3>, bu4, bu0>, List<bu4, bu2, bu3>>);
     static_assert(

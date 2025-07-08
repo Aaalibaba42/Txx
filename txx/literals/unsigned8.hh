@@ -1,7 +1,7 @@
 #pragma once
 
-#include "numbers/unsigned/unsigned8/unsigned8.hh"
 #include "literals/bits.hh"
+#include "numbers/unsigned/unsigned8/unsigned8.hh"
 
 using u8_0 = Unsigned8<Zero, Zero, Zero, Zero, Zero, Zero, Zero, Zero>;
 using u8_1 = Unsigned8<One, Zero, Zero, Zero, Zero, Zero, Zero, Zero>;
