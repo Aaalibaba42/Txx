@@ -1,7 +1,7 @@
 #pragma once
 
-#include "types/numbers/unsigned/bigunsigned/bigunsigned.hh"
-#include "types/bits/literals.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
+#include "bits/literals.hh"
 
 using bu0 = BigUnsigned<>;
 using bu1 = BigUnsigned<One>;

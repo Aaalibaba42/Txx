@@ -1,8 +1,8 @@
 #pragma once
 
-#include "types/list/ops/map.hh"
-#include "types/list/list.hh"
-#include "types/numbers/unsigned/bigunsigned/ops/inc.hh"
+#include "list/ops/map.hh"
+#include "list/list.hh"
+#include "numbers/unsigned/bigunsigned/ops/inc.hh"
 
 #include "../../utils/is_same.hh"
 #include "../numbers/unsigned/bigunsigned/literals.hh"

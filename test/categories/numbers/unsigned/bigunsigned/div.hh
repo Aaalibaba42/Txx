@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types/numbers/unsigned/bigunsigned/ops/div.hh"
+#include "numbers/unsigned/bigunsigned/ops/div.hh"
 
 #include "../../../../utils/is_same.hh"
 #include "literals.hh"

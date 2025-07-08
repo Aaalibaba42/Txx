@@ -1,7 +1,7 @@
 #pragma once
 
-#include "types/list/ops/prepend.hh"
-#include "types/list/list.hh"
+#include "list/ops/prepend.hh"
+#include "list/list.hh"
 
 #include "../../utils/is_same.hh"
 #include "../numbers/unsigned/bigunsigned/literals.hh"
