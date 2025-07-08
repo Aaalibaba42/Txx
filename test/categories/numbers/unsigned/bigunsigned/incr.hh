@@ -1,9 +1,9 @@
 #pragma once
 
 #include "numbers/unsigned/bigunsigned/ops/inc.hh"
+#include "literals/bigunsigned.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "literals.hh"
 
 namespace bigunsigned_increment_tests
 {

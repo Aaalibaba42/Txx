@@ -3,7 +3,7 @@
 #include "numbers/unsigned/bigunsigned/ops/gt.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "literals.hh"
+#include "literals/bigunsigned.hh"
 
 namespace bigunsigned_gt_tests
 {

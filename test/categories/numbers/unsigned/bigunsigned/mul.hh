@@ -3,7 +3,7 @@
 #include "numbers/unsigned/bigunsigned/ops/mul.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "literals.hh"
+#include "literals/bigunsigned.hh"
 
 namespace bigunsigned_mul_tests
 {

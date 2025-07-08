@@ -1,7 +1,7 @@
 #pragma once
 
 #include "functions/ternary.hh"
-#include "bits/literals.hh"
+#include "literals/bits.hh"
 #include "list/list.hh"
 #include "list/ops/append.hh"
 #include "list/ops/reverse.hh"

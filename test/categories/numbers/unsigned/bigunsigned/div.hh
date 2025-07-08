@@ -3,7 +3,7 @@
 #include "numbers/unsigned/bigunsigned/ops/div.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "literals.hh"
+#include "literals/bigunsigned.hh"
 
 namespace bigunsigned_div_tests
 {

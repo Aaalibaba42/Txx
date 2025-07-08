@@ -5,7 +5,7 @@
 #include "numbers/unsigned/bigunsigned/ops/inc.hh"
 
 #include "../../utils/is_same.hh"
-#include "../numbers/unsigned/bigunsigned/literals.hh"
+#include "literals/bigunsigned.hh"
 
 namespace list_map_tests
 {

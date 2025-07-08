@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bools/literals.hh"
+#include "literals/bools.hh"
 
 void bool_t_stub(True);
 void bool_t_stub(False);

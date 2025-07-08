@@ -1,7 +1,7 @@
 #pragma once
 
 #include "bits/concept.hh"
-#include "bits/literals.hh"
+#include "literals/bits.hh"
 #include "bits/ops/fulladder.hh"
 #include "functions/function.hh"
 #include "numbers/unsigned/unsigned8/concept.hh"

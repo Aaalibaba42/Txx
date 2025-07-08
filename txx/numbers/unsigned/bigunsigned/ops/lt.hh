@@ -2,8 +2,8 @@
 
 #include "functions/is_same.hh"
 #include "bits/concept.hh"
-#include "bits/literals.hh"
-#include "bools/literals.hh"
+#include "literals/bits.hh"
+#include "literals/bools.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/length.hh"

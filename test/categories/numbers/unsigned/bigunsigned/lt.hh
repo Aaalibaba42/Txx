@@ -3,7 +3,8 @@
 #include "numbers/unsigned/bigunsigned/ops/lt.hh"
 
 #include "../../../../utils/is_same.hh"
-#include "literals.hh"
+#include "literals/bigunsigned.hh"
+#include "literals/bools.hh"
 
 namespace bigunsigned_lt_tests
 {
