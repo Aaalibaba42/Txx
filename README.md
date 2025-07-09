@@ -153,9 +153,8 @@ Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 - [ ] AllOf
 - [ ] NoneOf
 - [x] Map
-- [ ] Reduce
 - [ ] FoldL
-- [ ] FoldR
+- [x] FoldR
 - [ ] i-th
 - [ ] Concat
 
