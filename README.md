@@ -44,7 +44,7 @@ Features
   - [ ] Unsigned8:
     - [x] Incrementation
     - [x] Decrementation
-    - [ ] Addition
+    - [x] Addition
     - [ ] Subtraction
     - [ ] LeftShift
     - [ ] RightShift
