@@ -41,13 +41,13 @@ Features
     - [x] GT
     - [x] GE
     - [x] EQ
-  - [ ] Unsigned8:
+  - [x] Unsigned8:
     - [x] Incrementation
     - [x] Decrementation
     - [x] Addition
     - [x] Subtraction
     - [x] LeftShift
-    - [ ] RightShift
+    - [x] RightShift
     - [ ] Multiplication
     - [ ] Division
     - [ ] Mod
