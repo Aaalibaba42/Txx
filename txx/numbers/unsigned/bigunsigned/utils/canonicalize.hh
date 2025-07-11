@@ -72,5 +72,5 @@ namespace BigUnsignedCanonicalizeImpl
     };
 } // namespace BigUnsignedCanonicalizeImpl
 
-using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalize_v;
 using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalizeFunc;
+using BigUnsignedCanonicalizeImpl::BigUnsignedCanonicalize_v;
