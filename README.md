@@ -46,7 +46,7 @@ Features
     - [x] Decrementation
     - [x] Addition
     - [x] Subtraction
-    - [ ] LeftShift
+    - [x] LeftShift
     - [ ] RightShift
     - [ ] Multiplication
     - [ ] Division
