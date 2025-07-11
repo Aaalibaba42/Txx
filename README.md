@@ -43,7 +43,7 @@ Features
     - [x] EQ
   - [ ] Unsigned8:
     - [x] Incrementation
-    - [ ] Decrementation
+    - [x] Decrementation
     - [ ] Addition
     - [ ] Subtraction
     - [ ] LeftShift

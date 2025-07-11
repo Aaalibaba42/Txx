@@ -64,5 +64,5 @@ namespace Unsigned8IncImpl
     };
 } // namespace Unsigned8IncImpl
 
-using Unsigned8IncImpl::Unsigned8Inc_v;
 using Unsigned8IncImpl::Unsigned8IncFunc;
+using Unsigned8IncImpl::Unsigned8Inc_v;

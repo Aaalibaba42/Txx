@@ -4,7 +4,7 @@
 #include "literals/unsigned8.hh"
 #include "numbers/unsigned/unsigned8/ops/inc.hh"
 
-namespace bigunsigned_increment_tests
+namespace unsigned8_increment_tests
 {
     using U8_0 = u8_0;
     using U8_1 = Unsigned8Inc_v<U8_0>;
@@ -529,4 +529,4 @@ namespace bigunsigned_increment_tests
     static_assert(is_same<u8_253, U8_253>);
     static_assert(is_same<u8_254, U8_254>);
     static_assert(is_same<u8_255, U8_255>);
-} // namespace bigunsigned_increment_tests
+} // namespace unsigned8_increment_tests
