@@ -153,7 +153,7 @@ Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 - [ ] AllOf
 - [ ] NoneOf
 - [x] Map
-- [ ] FoldL
+- [x] FoldL
 - [x] FoldR
 - [ ] i-th
 - [ ] Concat
@@ -162,6 +162,7 @@ Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 
 - [x] Functions
 - [x] Apply
+- [x] Ternary
 - [ ] Combine
 - [ ] Curry
 - [ ] Uncurry
@@ -177,10 +178,3 @@ Structures that would be nice to have natively:
   but formalizing a tuple type would allow for some practicle things, like
   wrapping a result type in a tuple that can be converted back to a parameter
   pack and vice-versa (since we can't do `using result = ParameterPack...;`)
-
-### Control Flow
-
-- [x] Ternary
-
-This is a function really, it takes an input and returns an output, it will be
-moved and formalized as a function once 1st order functions are implemented.
