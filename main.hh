@@ -2,6 +2,8 @@
 
 #include "txx.hh"
 
+#include "samples/factorial.hh"
+
 namespace MainImpl
 {
     template <Any_t Input>
@@ -13,8 +15,8 @@ namespace MainImpl
     template <Any_t Input>
     struct Main
     {
-        // Write your code HERE
-        using result = Unit;
+        // Called with input: `Factorial_v<bu5>`
+        using result = AssertEq<Input, bu125>::result;
     };
 } // namespace MainImpl
 

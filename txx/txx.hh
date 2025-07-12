@@ -30,6 +30,7 @@
 #include "literals/unit.hh"
 #include "literals/unsigned8.hh"
 #include "meta/any.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/add.hh"

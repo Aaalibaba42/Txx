@@ -12,9 +12,14 @@ using Input = Unit;
 using Input = _TXX_INPUT;
 #endif
 
+#ifdef _TXX_MAIN
 // Your code needs to go in MainImpl::Main structure
 using result = Main_v<Input>;
+#else
+#    pragma message("Skipping main function")
+#endif
 
-// This is just a symbol so that the program compiles
+// This is just a symbol so that the program compiles, use the Main class for
+// the real entry point
 int main(void)
 {}
