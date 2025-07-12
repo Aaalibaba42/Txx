@@ -15,6 +15,13 @@ further.
 Features
 --------
 
+### Entry point
+
+- [ ] Figure out how to do the entry point: the main thing would be doing a
+  -DTXX_INPUT=<input>, but then the `input` must be formatted in the same way
+  as the rest of the program. That might be cheating, but since a compiler can't
+  really wait for stdin, nor can I pass raw strings, I guess I need to do this.
+
 ### Booleans:
 
 - [x] Literals
