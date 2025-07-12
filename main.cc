@@ -1,4 +1,5 @@
 #include "main.hh"
+#include "test/utils/is_same.hh"
 
 #ifndef _TXX_SKIP_TESTS
 #    pragma message("Launching Tests, define `-D_TXX_SKIP_TESTS` to disable")

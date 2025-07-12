@@ -2,7 +2,7 @@
 
 #include "txx.hh"
 
-#include "samples/factorial.hh"
+#include "factorial.hh"
 
 namespace MainImpl
 {
@@ -16,7 +16,7 @@ namespace MainImpl
     struct Main
     {
         // Write your code HERE
-        using result = Unit;
+        using result = Factorial_v<Input>;
     };
 } // namespace MainImpl
 
