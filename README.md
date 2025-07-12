@@ -57,7 +57,7 @@ Features
     - [x] Subtraction
     - [x] LeftShift
     - [x] RightShift
-    - [ ] Multiplication
+    - [x] Multiplication
     - [ ] Division
     - [ ] Mod
     - [ ] LT
