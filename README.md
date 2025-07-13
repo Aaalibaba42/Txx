@@ -61,10 +61,10 @@ Features
     - [x] Multiplication
     - [ ] Division
     - [ ] Mod
-    - [ ] LT
-    - [ ] LE
+    - [x] LT
+    - [x] LE
     - [x] GT
-    - [ ] GE
+    - [x] GE
     - [x] EQ
     - [ ] NEQ
   - [ ] Unsigned32:
