@@ -6,3 +6,5 @@
 #include "lshift.hh"
 #include "rshift.hh"
 #include "sub.hh"
+#include "eq.hh"
+#include "gt.hh"

@@ -16,7 +16,7 @@ namespace MainImpl
     struct Main
     {
         // Called with input: `Factorial_v<bu5>`
-        using result = AssertEq<Input, bu125>::result;
+        using result = AssertEq<Input, bu120>::result;
     };
 } // namespace MainImpl
 

@@ -50,6 +50,7 @@ Features
     - [x] GT
     - [x] GE
     - [x] EQ
+    - [ ] NEQ
   - [x] Unsigned8:
     - [x] Incrementation
     - [x] Decrementation
@@ -62,9 +63,10 @@ Features
     - [ ] Mod
     - [ ] LT
     - [ ] LE
-    - [ ] GT
+    - [x] GT
     - [ ] GE
-    - [ ] EQ
+    - [x] EQ
+    - [ ] NEQ
   - [ ] Unsigned32:
     - [ ] Incrementation
     - [ ] Decrementation
@@ -80,6 +82,7 @@ Features
     - [ ] GT
     - [ ] GE
     - [ ] EQ
+    - [ ] NEQ
 - [ ] Signed Numbers
   - [ ] Signed8:
     - [ ] Incrementation
@@ -95,6 +98,7 @@ Features
     - [ ] GT
     - [ ] GE
     - [ ] EQ
+    - [ ] NEQ
   - [ ] Signed32:
     - [ ] Incrementation
     - [ ] Decrementation
@@ -109,6 +113,7 @@ Features
     - [ ] GT
     - [ ] GE
     - [ ] EQ
+    - [ ] NEQ
 - [ ] IEEE754:
   - Float32:
     - Constants:
@@ -130,6 +135,7 @@ Features
     - [ ] GT
     - [ ] GE
     - [ ] EQ
+    - [ ] NEQ
   - Float64:
     - Constants:
       - [ ] +Zero
@@ -150,6 +156,7 @@ Features
     - [ ] GT
     - [ ] GE
     - [ ] EQ
+    - [ ] NEQ
 
 Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
 
