@@ -22,5 +22,5 @@ namespace BigUnsignedModImpl
     };
 } // namespace BigUnsignedModImpl
 
-using BigUnsignedModImpl::BigUnsignedMod_v;
 using BigUnsignedModImpl::BigUnsignedModFunc;
+using BigUnsignedModImpl::BigUnsignedMod_v;

@@ -2,6 +2,7 @@
 
 #include "add.hh"
 #include "dec.hh"
+#include "div.hh"
 #include "eq.hh"
 #include "ge.hh"
 #include "gt.hh"
@@ -9,5 +10,6 @@
 #include "le.hh"
 #include "lshift.hh"
 #include "lt.hh"
+#include "mod.hh"
 #include "rshift.hh"
 #include "sub.hh"
