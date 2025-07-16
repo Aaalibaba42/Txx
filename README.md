@@ -59,8 +59,8 @@ Features
     - [x] LeftShift
     - [x] RightShift
     - [x] Multiplication
-    - [ ] Division
-    - [ ] Mod
+    - [x] Division
+    - [x] Mod
     - [x] LT
     - [x] LE
     - [x] GT
@@ -159,6 +159,15 @@ Features
     - [ ] NEQ
 
 Maybe I'll investigate also doing a Dedekind–Peano Natural Number Type.
+
+### Strings
+
+Char can be aliased to u8, but with different literals, then strings would be
+a variadic char list.
+
+Many strings functions will be shared with the `List` type so either c/c, or
+convertion into call into conversion. C/C would be shallower, but conversion
+would be more explicit.
 
 ### Lists
 
