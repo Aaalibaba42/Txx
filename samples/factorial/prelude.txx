@@ -1,7 +1,3 @@
-#pragma once
-
-#include "txx.hh"
-
 namespace FactorialImpl
 {
     template <BigUnsigned_t Input>

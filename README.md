@@ -17,19 +17,31 @@ Features
 
 ### Entry point
 
-Entry point: the main thing would be doing a -D_TXX_INPUT=<input>, but then the
-`input` must be formatted in the same way as the rest of the program. That might
-be cheating, but since a compiler can't really wait for stdin, nor can I pass
-raw strings, I guess I need to do this.
+You have 2 things for an entry point, a `prelude.txx`, and a `body.txx` file.
+The prelude is functions you may need before the body of your main function,
+it's like the context of your program. The body is the *content* of the `struct
+Main` implementation. It is akin to the body of a main function in other
+languages.
 
-You can see an example of this in the `main.hh`.
+You ought to change the paths to files in `main.hh` to your paths to
+`prelude.txx` and `body.txx`.
 
-It's not ideal, I'd like to be able to do a `main.txx` in which I write the
-thing that would go *inside* `struct Main`. Preprocessor macro that would
-"statically" include `main.txx` should work, but then the entry point is always
-the file `main.txx` which sucks a bit. I don't think there is a way to do a
-`#include FILENAME` and compile with `-DFILENAME='myfile.txx'`, but ultimately
-that's what I would have liked to do. Something to ponder upon.
+> Note: These files can be named anything really, just include them accordingly
+in `main.hh`.
+
+For example, the [factorial](./samples/factorial) sample can be compiled with the following command:
+```sh
+42sh$ # -std=c++23 -pedantic: c++ standard to use, pendantic to not use language
+42sh$ #                       extension (you can also activate most warnings)
+42sh$ # -D_TXX_SKIP_TESTS: Tests take (at the time I write this) about 1.5s to
+42sh$ #                    run, better skipping them if you don't need them
+42sh$ # -D_TXX_MAIN: Enable Main function, those last 2 flags might have their
+42sh$ #              defaults flipped later on, but whilst I'm still in
+42sh$ #              development phase, I'd rather have those defaults
+42sh$ # -D_TXX_INPUT: the value of the `Input` type in `body.txx`
+42sh$ # -Itxx: Include path
+42sh$ g++ -std=c++23 -pedantic -D_TXX_SKIP_TESTS -D_TXX_MAIN -D_TXX_INPUT="bu10" -Itxx main.cc
+```
 
 ### Booleans:
 

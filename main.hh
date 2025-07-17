@@ -2,7 +2,8 @@
 
 #include "txx.hh"
 
-#include "samples/factorial.hh"
+// Change this to your path/to/prelude.txx
+#include "samples/factorial/prelude.txx"
 
 namespace MainImpl
 {
@@ -15,8 +16,8 @@ namespace MainImpl
     template <Any_t Input>
     struct Main
     {
-        // Called with input: `Factorial_v<bu5>`
-        using result = AssertEq<Input, bu120>::result;
+// Change this to your path/to/body.txx
+#include "samples/factorial/body.txx"
     };
 } // namespace MainImpl
 
