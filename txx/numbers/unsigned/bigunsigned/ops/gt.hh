@@ -119,5 +119,5 @@ namespace BigUnsignedGTImpl
     };
 } // namespace BigUnsignedGTImpl
 
-using BigUnsignedGTImpl::BigUnsignedGT_v;
 using BigUnsignedGTImpl::BigUnsignedGTFunc;
+using BigUnsignedGTImpl::BigUnsignedGT_v;

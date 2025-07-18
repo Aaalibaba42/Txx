@@ -1,5 +1,5 @@
-// Don't forget there in the Input value that exist, since this included in the
-// main function
+// Don't forget the Input value exist here, since this code is included inside
+// the `sturct Main` in `main.hh`
 
 using r0 = AssertEq<Factorial_v<bu0>, bu1>::result;
 using r1 = AssertEq<Factorial_v<bu1>, bu1>::result;
@@ -10,4 +10,5 @@ using r5 = AssertEq<Factorial_v<bu5>, bu120>::result;
 
 using r6 = Assert<BigUnsignedGE_v<Factorial_v<Input>, bu120>>::result;
 
+// Having an exposed "result" type is mandatory.
 using result = Unit;

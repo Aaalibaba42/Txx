@@ -34,4 +34,5 @@ namespace ToUnsigned8Impl
     };
 } // namespace ToUnsigned8Impl
 
+using ToUnsigned8Impl::ToUnsigned8Func;
 using ToUnsigned8Impl::ToUnsigned8_v;

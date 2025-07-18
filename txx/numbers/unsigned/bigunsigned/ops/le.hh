@@ -116,5 +116,5 @@ namespace BigUnsignedLEImpl
     };
 } // namespace BigUnsignedLEImpl
 
-using BigUnsignedLEImpl::BigUnsignedLE_v;
 using BigUnsignedLEImpl::BigUnsignedLEFunc;
+using BigUnsignedLEImpl::BigUnsignedLE_v;

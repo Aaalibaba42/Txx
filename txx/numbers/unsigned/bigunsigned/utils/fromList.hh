@@ -32,5 +32,5 @@ namespace ToBigUnsignedImpl
     };
 } // namespace ToBigUnsignedImpl
 
-using ToBigUnsignedImpl::ToBigUnsigned_v;
 using ToBigUnsignedImpl::ToBigUnsignedFunc;
+using ToBigUnsignedImpl::ToBigUnsigned_v;

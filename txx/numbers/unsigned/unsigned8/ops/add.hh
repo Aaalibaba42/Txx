@@ -67,5 +67,5 @@ namespace Unsigned8AddImpl
     };
 } // namespace Unsigned8AddImpl
 
-using Unsigned8AddImpl::Unsigned8Add_v;
 using Unsigned8AddImpl::Unsigned8AddFunc;
+using Unsigned8AddImpl::Unsigned8Add_v;
