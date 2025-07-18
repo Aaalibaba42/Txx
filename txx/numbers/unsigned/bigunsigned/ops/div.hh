@@ -108,5 +108,5 @@ namespace BigUnsignedDivImpl
     };
 } // namespace BigUnsignedDivImpl
 
-using BigUnsignedDivImpl::BigUnsignedDiv_v;
 using BigUnsignedDivImpl::BigUnsignedDivFunc;
+using BigUnsignedDivImpl::BigUnsignedDiv_v;

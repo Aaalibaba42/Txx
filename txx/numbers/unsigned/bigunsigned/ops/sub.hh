@@ -79,5 +79,5 @@ namespace BigUnsignedSubImpl
     };
 } // namespace BigUnsignedSubImpl
 
-using BigUnsignedSubImpl::BigUnsignedSub_v;
 using BigUnsignedSubImpl::BigUnsignedSubFunc;
+using BigUnsignedSubImpl::BigUnsignedSub_v;

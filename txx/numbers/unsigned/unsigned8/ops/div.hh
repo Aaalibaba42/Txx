@@ -99,5 +99,5 @@ namespace Unsigned8DivImpl
     };
 } // namespace Unsigned8DivImpl
 
-using Unsigned8DivImpl::Unsigned8Div_v;
 using Unsigned8DivImpl::Unsigned8DivFunc;
+using Unsigned8DivImpl::Unsigned8Div_v;

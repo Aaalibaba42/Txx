@@ -90,5 +90,5 @@ namespace BigUnsignedAddImpl
     };
 } // namespace BigUnsignedAddImpl
 
-using BigUnsignedAddImpl::BigUnsignedAdd_v;
 using BigUnsignedAddImpl::BigUnsignedAddFunc;
+using BigUnsignedAddImpl::BigUnsignedAdd_v;

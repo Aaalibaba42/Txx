@@ -119,5 +119,5 @@ namespace BigUnsignedGEImpl
     };
 } // namespace BigUnsignedGEImpl
 
-using BigUnsignedGEImpl::BigUnsignedGE_v;
 using BigUnsignedGEImpl::BigUnsignedGEFunc;
+using BigUnsignedGEImpl::BigUnsignedGE_v;

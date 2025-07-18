@@ -35,5 +35,5 @@ namespace BigUnsignedEQImpl
     };
 } // namespace BigUnsignedEQImpl
 
-using BigUnsignedEQImpl::BigUnsignedEQ_v;
 using BigUnsignedEQImpl::BigUnsignedEQFunc;
+using BigUnsignedEQImpl::BigUnsignedEQ_v;

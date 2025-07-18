@@ -119,5 +119,5 @@ namespace BigUnsignedLTImpl
     };
 } // namespace BigUnsignedLTImpl
 
-using BigUnsignedLTImpl::BigUnsignedLT_v;
 using BigUnsignedLTImpl::BigUnsignedLTFunc;
+using BigUnsignedLTImpl::BigUnsignedLT_v;

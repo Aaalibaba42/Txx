@@ -61,5 +61,5 @@ namespace BigUnsignedIncImpl
     };
 } // namespace BigUnsignedIncImpl
 
-using BigUnsignedIncImpl::BigUnsignedInc_v;
 using BigUnsignedIncImpl::BigUnsignedIncFunc;
+using BigUnsignedIncImpl::BigUnsignedInc_v;

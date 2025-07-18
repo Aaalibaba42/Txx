@@ -50,5 +50,5 @@ namespace BigUnsignedLShiftImpl
     };
 } // namespace BigUnsignedLShiftImpl
 
-using BigUnsignedLShiftImpl::BigUnsignedLShift_v;
 using BigUnsignedLShiftImpl::BigUnsignedLShiftFunc;
+using BigUnsignedLShiftImpl::BigUnsignedLShift_v;

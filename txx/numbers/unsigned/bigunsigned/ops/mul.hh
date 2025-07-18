@@ -79,5 +79,5 @@ namespace BigUnsignedMulImpl
     };
 } // namespace BigUnsignedMulImpl
 
-using BigUnsignedMulImpl::BigUnsignedMul_v;
 using BigUnsignedMulImpl::BigUnsignedMulFunc;
+using BigUnsignedMulImpl::BigUnsignedMul_v;
