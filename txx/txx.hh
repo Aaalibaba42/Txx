@@ -10,6 +10,7 @@
 #include "bools/ops/xor.hh"
 #include "functions/apply.hh"
 #include "functions/concept.hh"
+#include "functions/curry.hh"
 #include "functions/function.hh"
 #include "functions/is_same.hh"
 #include "functions/ternary.hh"

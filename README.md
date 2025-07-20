@@ -294,7 +294,7 @@ respectable functional language does like monads, curry, stuff like that.
 - [x] Apply
 - [x] Ternary
 - [ ] Combine
-- [ ] Curry
+- [x] Curry
 - [ ] Uncurry
 
 </details>
