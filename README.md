@@ -269,13 +269,13 @@ inside of it.
 - [x] Prepend
 - [x] Append
 - [x] Reverse
-- [ ] Set i-th
+- [ ] Set nth
 - [ ] AllOf
 - [ ] NoneOf
 - [x] Map
 - [x] FoldL
 - [x] FoldR
-- [ ] i-th
+- [ ] nth
 - [ ] Concat
 
 </details>
@@ -288,14 +288,15 @@ With the way they are architectured, I should be able to do most of what every
 respectable functional language does like monads, curry, stuff like that.
 
 <details>
-<summary>Functions utilities and tools</summary>
+<summary>Functional Programming</summary>
 
 - [x] Functions
 - [x] Apply
 - [x] Ternary
-- [ ] Combine
+- [x] Combine
 - [x] Curry
 - [ ] Uncurry
+- [ ] Monads
 
 </details>
 

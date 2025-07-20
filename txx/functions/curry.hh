@@ -4,24 +4,30 @@
 #include "functions/concept.hh"
 #include "meta/any.hh"
 
-template <Function_t F, Any_t... BoundArgs>
-struct Curry
+namespace CurryImpl
 {
-    using is_function = IsFunction;
-
-    struct Curried
+    template <Function_t F, Any_t... BoundArgs>
+    struct CurryFunc
     {
         using is_function = IsFunction;
 
-        template <Any_t... Rest>
-        struct apply
+        struct Curried
         {
-            using result = Apply_v<F, BoundArgs..., Rest...>;
+            using is_function = IsFunction;
+
+            template <Any_t... Rest>
+            struct apply
+            {
+                using result = Apply_v<F, BoundArgs..., Rest...>;
+            };
         };
+
+        using result = Curried;
     };
 
-    using result = Curried;
-};
+    template <Function_t F, Any_t... BoundArgs>
+    using Curry_v = CurryFunc<F, BoundArgs...>::result;
+} // namespace CurryImpl
 
-template <Function_t F, Any_t... BoundArgs>
-using Curry_v = Curry<F, BoundArgs...>::result;
+using CurryImpl::CurryFunc;
+using CurryImpl::Curry_v;

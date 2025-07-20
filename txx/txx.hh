@@ -9,6 +9,7 @@
 #include "bools/ops/or.hh"
 #include "bools/ops/xor.hh"
 #include "functions/apply.hh"
+#include "functions/combine.hh"
 #include "functions/concept.hh"
 #include "functions/curry.hh"
 #include "functions/function.hh"
