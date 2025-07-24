@@ -12,6 +12,17 @@ I was very much inspired by my former colleague's
 [funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
 further.
 
+Next Big Thing
+--------------
+
+As demonstrated in the samples/test_* of commit 3349672, Polymorphisme is
+possible. I ought to rewrite most functions I have done removing type specific
+information, and rethink my typing method to be maybe easier to do. Making
+every function take a Any_t and each overloading taking a Any_t and re-requiring
+MyType_t<Type> is a bit heavy. I'll have to think this through, but polymorphism
+would definitely be worth it.
+
+
 Features
 --------
 
