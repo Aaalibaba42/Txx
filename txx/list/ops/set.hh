@@ -1,6 +1,6 @@
 #pragma once
 
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/prepend.hh"
@@ -10,49 +10,32 @@
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/sub.hh"
 
-namespace ListSetImpl
+namespace SetImpl
 {
-    template <List_t L, Any_t Elem, BigUnsigned_t Position>
-    struct ListSet;
-
-    template <List_t L, Any_t Elem, BigUnsigned_t Position>
-    using ListSet_v = typename ListSet<L, Elem, Position>::result;
+    template <Any_t L, Any_t Elem, Any_t Position>
+        requires List_t<L> && BigUnsigned_t<Position>
+    struct Set<L, Elem, Position>;
 
     // List is empty
-    template <Any_t Elem, BigUnsigned_t Position>
-    struct ListSet<List<>, Elem, Position>
+    template <Any_t Elem, Any_t Position>
+    struct Set<List<>, Elem, Position>
     {
-        static_assert(false, "ListSet: index out of bounds");
+        static_assert(false, "Set: index out of bounds");
     };
 
     // We found the correct position
     template <Any_t Head, Any_t... Tail, Any_t Elem>
-    struct ListSet<List<Head, Tail...>, Elem, BigUnsigned<>>
+    struct Set<List<Head, Tail...>, Elem, BigUnsigned<>>
     {
         using result = List<Elem, Tail...>;
     };
 
     // List is not empty, and position is not 0
     template <Any_t Head, Any_t... Tail, Any_t Elem, BigUnsigned_t Position>
-    struct ListSet<List<Head, Tail...>, Elem, Position>
+    struct Set<List<Head, Tail...>, Elem, Position>
     {
-        using result = ListPrepend_v<
+        using result = Prepend_v<
             Head,
-            ListSet_v<List<Tail...>, Elem,
-                      BigUnsignedSub_v<Position, BigUnsigned<One>>>>;
+            Set_v<List<Tail...>, Elem, Sub_v<Position, BigUnsigned<One>>>>;
     };
-
-    struct ListSetFunc
-    {
-        using is_function = IsFunction;
-
-        template <List_t L, Any_t Elem, BigUnsigned_t Position>
-        struct apply
-        {
-            using result = ListSet_v<L, Elem, Position>;
-        };
-    };
-} // namespace ListSetImpl
-
-using ListSetImpl::ListSetFunc;
-using ListSetImpl::ListSet_v;
+} // namespace SetImpl

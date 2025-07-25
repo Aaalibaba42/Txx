@@ -1,26 +1,18 @@
 #pragma once
 
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/div.hh"
 
-namespace BigUnsignedModImpl
+namespace ModImpl
 {
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    using BigUnsignedMod_v =
-        BigUnsignedDivImpl::BigUnsignedDivModCommon<LHS, RHS>::remainder;
-
-    struct BigUnsignedModFunc
+    template <Any_t LHS, Any_t RHS>
+        requires BigUnsigned_t<LHS> && BigUnsigned_t<RHS>
+    struct Mod<LHS, RHS>
     {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-        struct apply
-        {
-            using result = BigUnsignedMod_v<LHS, RHS>;
-        };
+        using result = DivImpl::BigUnsignedDivModCommon<LHS, RHS>::remainder;
     };
-} // namespace BigUnsignedModImpl
+} // namespace ModImpl
 
-using BigUnsignedModImpl::BigUnsignedModFunc;
-using BigUnsignedModImpl::BigUnsignedMod_v;
+using ModImpl::ModFunc;
+using ModImpl::Mod_v;

@@ -1,19 +1,19 @@
 #pragma once
 
-#include "functions/is_same.hh"
 #include "bits/concept.hh"
-#include "literals/bits.hh"
-#include "literals/bools.hh"
+#include "functions/base/is_same.hh"
+#include "functions/base/ternary.hh"
+#include "functions/function.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
-#include "functions/function.hh"
-#include "functions/ternary.hh"
-#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "list/ops/length.hh"
 #include "list/ops/reverse.hh"
+#include "literals/bits.hh"
+#include "literals/bools.hh"
+#include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 
-namespace BigUnsignedGTImpl
+namespace GtImpl
 {
     template <List_t LHS, List_t RHS>
     struct BigUnsignedGreaterThanImpl;
@@ -86,38 +86,22 @@ namespace BigUnsignedGTImpl
         using result = False;
     };
 
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    struct BigUnsignedGT;
-
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    using BigUnsignedGT_v = BigUnsignedGT<LHS, RHS>::result;
+    template <Any_t LHS, Any_t RHS>
+        requires BigUnsigned_t<LHS> && BigUnsigned_t<RHS>
+    struct Gt<LHS, RHS>;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct BigUnsignedGT<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
+    struct Gt<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
         using result = Ternary_v<
             // If they are the same size
-            IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+            IsSame_v<Length_v<LList>, Length_v<RList>>,
             // First One encountered from the end is biggest
-            BigUnsignedGreaterThanImpl_v<ListReverse_v<List<LHS...>>,
-                                         ListReverse_v<List<RHS...>>>,
+            BigUnsignedGreaterThanImpl_v<Reverse_v<List<LHS...>>,
+                                         Reverse_v<List<RHS...>>>,
             // The lengthiest number is the biggest
             GTImplIsLHSLongest_v<LList, RList>>;
     };
-
-    struct BigUnsignedGTFunc
-    {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-        struct apply
-        {
-            using result = BigUnsignedGT_v<LHS, RHS>;
-        };
-    };
-} // namespace BigUnsignedGTImpl
-
-using BigUnsignedGTImpl::BigUnsignedGTFunc;
-using BigUnsignedGTImpl::BigUnsignedGT_v;
+} // namespace GtImpl

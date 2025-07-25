@@ -2,18 +2,20 @@
 
 #include "bits/concept.hh"
 #include "bits/ops/fulladder.hh"
+#include "casts/big_unsigned.hh"
+#include "casts/list.hh"
+#include "functions/base.hh"
+#include "functions/base/is_same.hh"
+#include "functions/base/ternary.hh"
 #include "functions/function.hh"
-#include "functions/is_same.hh"
-#include "functions/ternary.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/prepend.hh"
 #include "literals/bits.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
-#include "numbers/unsigned/bigunsigned/utils/fromList.hh"
 
-namespace BigUnsignedIncImpl
+namespace IncImpl
 {
     template <List_t List, Bit_t Carry>
     struct AddCarry;
@@ -34,32 +36,22 @@ namespace BigUnsignedIncImpl
 
         using tail = AddCarry_v<List<Rest...>, typename FA::Carry>;
 
-        using result = ListPrepend_v<typename FA::Sum, tail>;
+        using result = Prepend_v<typename FA::Sum, tail>;
     };
 
-    template <BigUnsigned_t Num>
-    struct BigUnsignedInc;
-
-    template <BigUnsigned_t Num>
-    using BigUnsignedInc_v = BigUnsignedInc<Num>::result;
+    template <Any_t Num>
+        requires BigUnsigned_t<Num>
+    struct Inc<Num>;
 
     template <Bit_t... Bits>
-    struct BigUnsignedInc<BigUnsigned<Bits...>>
+    struct Inc<BigUnsigned<Bits...>>
     {
         using result = ToBigUnsigned_v<AddCarry_v<List<Bits...>, One>>;
     };
 
-    struct BigUnsignedIncFunc
+    template <>
+    struct Inc<BigUnsigned<>>
     {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t Num>
-        struct apply
-        {
-            using result = BigUnsignedInc_v<Num>;
-        };
+        using result = BigUnsigned<One>;
     };
-} // namespace BigUnsignedIncImpl
-
-using BigUnsignedIncImpl::BigUnsignedIncFunc;
-using BigUnsignedIncImpl::BigUnsignedInc_v;
+} // namespace IncImpl

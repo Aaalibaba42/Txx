@@ -1,42 +1,33 @@
 #pragma once
 
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/prepend.hh"
 #include "meta/any.hh"
 
-namespace ListReverseImpl
+namespace ReverseImpl
 {
-    template <List_t In, List_t Acc = List<>>
-    struct ListReverse;
-
-    template <List_t In, List_t Acc = List<>>
-    using ListReverse_v = ListReverse<In, Acc>::result;
+    template <Any_t In, Any_t Acc>
+        requires List_t<In> && List_t<Acc>
+    struct ReverseRec;
 
     template <List_t Acc>
-    struct ListReverse<List<>, Acc>
+    struct ReverseRec<List<>, Acc>
     {
         using result = Acc;
     };
 
     template <Any_t Head, Any_t... Tail, List_t Acc>
-    struct ListReverse<List<Head, Tail...>, Acc>
+    struct ReverseRec<List<Head, Tail...>, Acc>
     {
-        using result = ListReverse_v<List<Tail...>, ListPrepend_v<Head, Acc>>;
+        using result = ReverseRec<List<Tail...>, Prepend_v<Head, Acc>>::result;
     };
 
-    struct ListReverseFunc
+    template <Any_t L>
+        requires List_t<L>
+    struct Reverse<L>
     {
-        using is_function = IsFunction;
-
-        template <List_t L>
-        struct apply
-        {
-            using result = ListReverse_v<L>;
-        };
+        using result = ReverseRec<L, List<>>::result;
     };
-} // namespace ListReverseImpl
-
-using ListReverseImpl::ListReverseFunc;
-using ListReverseImpl::ListReverse_v;
+} // namespace ReverseImpl

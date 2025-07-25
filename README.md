@@ -16,12 +16,47 @@ Next Big Thing
 --------------
 
 As demonstrated in the samples/test_* of commit 3349672, Polymorphisme is
-possible. I ought to rewrite most functions I have done removing type specific
-information, and rethink my typing method to be maybe easier to do. Making
-every function take a Any_t and each overloading taking a Any_t and re-requiring
-MyType_t<Type> is a bit heavy. I'll have to think this through, but polymorphism
-would definitely be worth it.
+possible. Template instantiation will always choose the most *specific*
+instantiation, specificity being defined as concept inclusion rules.
 
+Basicly, if the compiler has a choice between 2 implementation in template
+instantiation, and one is more specific than the other, it will choose the most
+specific in the inclusion tree.
+
+For example:
+
+```cpp
+template <typename T>
+concept ConParent = true; // Replace with implementation
+
+template <typename T>
+concept ConChild = ConParent<T> && true; // Replace with implementation
+
+template <typename T>
+concept ConUnrelated = true; // Replace with implementation
+
+// ConChild is included in ConParent
+// ConUnrelated is not in the same inclusion tree
+
+// Declaration of struct Foo
+template <ConParent T>
+struct Foo
+{};
+
+// Valid, if a instantiation fit both ConParent and ConChild, ConChild's
+// implementation will be chosen
+template <ConChild T>
+struct Foo<T>
+{};
+
+// Invalid declaration, because ConUnrelated is not related to ConParent
+template <ConUnrelated T>
+struct Foo<T>
+{};
+```
+
+This change showcased a lot of problems in the architecture that I now have to
+fix before doing more interesting stuff.
 
 Features
 --------

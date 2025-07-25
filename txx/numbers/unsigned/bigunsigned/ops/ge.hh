@@ -1,9 +1,10 @@
 #pragma once
 
 #include "bits/concept.hh"
+#include "functions/base.hh"
+#include "functions/base/is_same.hh"
+#include "functions/base/ternary.hh"
 #include "functions/function.hh"
-#include "functions/is_same.hh"
-#include "functions/ternary.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/length.hh"
@@ -13,7 +14,7 @@
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 
-namespace BigUnsignedGEImpl
+namespace GeImpl
 {
     template <List_t LHS, List_t RHS>
     struct BigUnsignedGreaterEqImpl;
@@ -86,38 +87,22 @@ namespace BigUnsignedGEImpl
         using result = False;
     };
 
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    struct BigUnsignedGE;
-
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    using BigUnsignedGE_v = BigUnsignedGE<LHS, RHS>::result;
+    template <Any_t LHS, Any_t RHS>
+        requires BigUnsigned_t<LHS> && BigUnsigned_t<RHS>
+    struct Ge<LHS, RHS>;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct BigUnsignedGE<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
+    struct Ge<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
         using LList = List<LHS...>;
         using RList = List<RHS...>;
         using result = Ternary_v<
             // If they are the same size
-            IsSame_v<ListLength_v<LList>, ListLength_v<RList>>,
+            IsSame_v<Length_v<LList>, Length_v<RList>>,
             // First One encountered from the end is biggest
-            BigUnsignedGreaterEqImpl_v<ListReverse_v<List<LHS...>>,
-                                       ListReverse_v<List<RHS...>>>,
+            BigUnsignedGreaterEqImpl_v<Reverse_v<List<LHS...>>,
+                                       Reverse_v<List<RHS...>>>,
             // The lengthiest number is the biggest
             GEImplIsLHSLongest_v<LList, RList>>;
     };
-
-    struct BigUnsignedGEFunc
-    {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-        struct apply
-        {
-            using result = BigUnsignedGE_v<LHS, RHS>;
-        };
-    };
-} // namespace BigUnsignedGEImpl
-
-using BigUnsignedGEImpl::BigUnsignedGEFunc;
-using BigUnsignedGEImpl::BigUnsignedGE_v;
+} // namespace GeImpl

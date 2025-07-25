@@ -7,10 +7,10 @@
 namespace IsSameImpl
 {
     template <Any_t T1, Any_t T2>
-    struct IsSame;
-
-    template <Any_t T1, Any_t T2>
-    using IsSame_v = IsSame<T1, T2>::result;
+    struct IsSame
+    {
+        using result = False;
+    };
 
     template <Any_t T>
     struct IsSame<T, T>
@@ -19,10 +19,7 @@ namespace IsSameImpl
     };
 
     template <Any_t T1, Any_t T2>
-    struct IsSame
-    {
-        using result = False;
-    };
+    using IsSame_v = IsSame<T1, T2>::result;
 
     struct IsSameFunc
     {

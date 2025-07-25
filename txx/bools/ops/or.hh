@@ -1,46 +1,30 @@
 #pragma once
 
 #include "bools/concept.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "literals/bools.hh"
+#include "meta/any.hh"
 
-namespace BoolOrImpl
+namespace OrImpl
 {
-    template <Bool_t... Bools>
-    struct BoolOr;
-
-    template <Bool_t... Bools>
-    using BoolOr_v = BoolOr<Bools...>::result;
-
-    template <Bool_t LastBool>
-    struct BoolOr<LastBool>
+    template <Any_t LastBool>
+        requires Bool_t<LastBool>
+    struct Or<LastBool>
     {
         using result = LastBool;
     };
 
-    template <Bool_t... Bools>
-    struct BoolOr<True, Bools...>
+    template <Any_t... Bools>
+        requires(Bool_t<Bools> && ...)
+    struct Or<True, Bools...>
     {
         using result = True;
     };
 
-    template <Bool_t... Bools>
-    struct BoolOr<False, Bools...>
+    template <Any_t... Bools>
+        requires(Bool_t<Bools> && ...)
+    struct Or<False, Bools...>
     {
-        using result = BoolOr<Bools...>::result;
+        using result = Or<Bools...>::result;
     };
-
-    struct BoolOrFunc
-    {
-        using is_function = IsFunction;
-
-        template <Bool_t... Bools>
-        struct apply
-        {
-            using result = BoolOr_v<Bools...>;
-        };
-    };
-} // namespace BoolOrImpl
-
-using BoolOrImpl::BoolOrFunc;
-using BoolOrImpl::BoolOr_v;
+} // namespace OrImpl

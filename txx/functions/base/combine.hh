@@ -1,6 +1,6 @@
 #pragma once
 
-#include "functions/apply.hh"
+#include "functions/base.hh"
 #include "functions/concept.hh"
 #include "meta/any.hh"
 
@@ -15,10 +15,10 @@ namespace CombineImpl
         {
             using is_function = IsFunction;
 
-            template <Any_t X>
+            template <Any_t... Xs>
             struct apply
             {
-                using result = Apply_v<G, Apply_v<F, X>>;
+                using result = Apply_v<G, Apply_v<F, Xs...>>;
             };
         };
 

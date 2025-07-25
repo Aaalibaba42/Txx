@@ -1,35 +1,19 @@
 #pragma once
 
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "meta/any.hh"
 
-namespace ListAppendImpl
+namespace AppendImpl
 {
-    template <Any_t Elem, List_t List>
-    struct ListAppend;
-
-    template <Any_t Elem, List_t List>
-    using ListAppend_v = ListAppend<Elem, List>::result;
+    template <Any_t Elem, Any_t List>
+        requires List_t<List>
+    struct Append<Elem, List>;
 
     template <Any_t Elem, Any_t... Rest>
-    struct ListAppend<Elem, List<Rest...>>
+    struct Append<Elem, List<Rest...>>
     {
         using result = List<Rest..., Elem>;
     };
-
-    struct ListAppendFunc
-    {
-        using is_function = IsFunction;
-
-        template <Any_t Elem, List_t List>
-        struct apply
-        {
-            using result = ListAppend_v<Elem, List>;
-        };
-    };
-} // namespace ListAppendImpl
-
-using ListAppendImpl::ListAppendFunc;
-using ListAppendImpl::ListAppend_v;
+} // namespace AppendImpl

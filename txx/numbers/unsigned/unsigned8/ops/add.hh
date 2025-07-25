@@ -2,23 +2,21 @@
 
 #include "bits/concept.hh"
 #include "bits/ops/fulladder.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "numbers/unsigned/unsigned8/concept.hh"
 #include "numbers/unsigned/unsigned8/unsigned8.hh"
 
-namespace Unsigned8AddImpl
+namespace AddImpl
 {
-    template <Unsigned8_t A, Unsigned8_t B>
-    struct Unsigned8Add;
-
-    template <Unsigned8_t A, Unsigned8_t B>
-    using Unsigned8Add_v = Unsigned8Add<A, B>::result;
+    template <Any_t A, Any_t B>
+        requires Unsigned8_t<A> && Unsigned8_t<B>
+    struct Add<A, B>;
 
     template <Bit_t A0, Bit_t A1, Bit_t A2, Bit_t A3, Bit_t A4, Bit_t A5,
               Bit_t A6, Bit_t A7, Bit_t B0, Bit_t B1, Bit_t B2, Bit_t B3,
               Bit_t B4, Bit_t B5, Bit_t B6, Bit_t B7>
-    struct Unsigned8Add<Unsigned8<A0, A1, A2, A3, A4, A5, A6, A7>,
-                        Unsigned8<B0, B1, B2, B3, B4, B5, B6, B7>>
+    struct Add<Unsigned8<A0, A1, A2, A3, A4, A5, A6, A7>,
+               Unsigned8<B0, B1, B2, B3, B4, B5, B6, B7>>
     {
         using FA0 = FullAdder<A0, B0>;
         using FA1 = FullAdder<A1, B1>;
@@ -54,18 +52,4 @@ namespace Unsigned8AddImpl
                       typename S3::Sum, typename S4::Sum, typename S5::Sum,
                       typename S6::Sum, typename S7::Sum>;
     };
-
-    struct Unsigned8AddFunc
-    {
-        using is_function = IsFunction;
-
-        template <Unsigned8_t A, Unsigned8_t B>
-        struct apply
-        {
-            using result = Unsigned8Add_v<A, B>;
-        };
-    };
-} // namespace Unsigned8AddImpl
-
-using Unsigned8AddImpl::Unsigned8AddFunc;
-using Unsigned8AddImpl::Unsigned8Add_v;
+} // namespace AddImpl

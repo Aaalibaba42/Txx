@@ -1,8 +1,10 @@
 #pragma once
 
 #include "bits/concept.hh"
+#include "casts/big_unsigned.hh"
+#include "functions/base.hh"
+#include "functions/base/ternary.hh"
 #include "functions/function.hh"
-#include "functions/ternary.hh"
 #include "list/concept.hh"
 #include "list/list.hh"
 #include "list/ops/append.hh"
@@ -15,28 +17,27 @@
 #include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
 #include "numbers/unsigned/bigunsigned/ops/sub.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
-#include "numbers/unsigned/bigunsigned/utils/fromList.hh"
 
-namespace BigUnsignedDivImpl
+namespace DivImpl
 {
     template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    struct BigUnsignedDivStep;
+    struct DivStep;
 
     template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    using BigUnsignedDivStep_quot =
-        BigUnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
+    using DivStep_quot =
+        DivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::quotient;
 
     template <List_t BitsMSB, BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    using BigUnsignedDivStep_rem =
-        BigUnsignedDivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
+    using DivStep_rem =
+        DivStep<BitsMSB, Divisor, Remainder, QuotientMSB>::remainder;
 
     // No more bits
     template <BigUnsigned_t Divisor, BigUnsigned_t Remainder,
               List_t QuotientMSB>
-    struct BigUnsignedDivStep<List<>, Divisor, Remainder, QuotientMSB>
+    struct DivStep<List<>, Divisor, Remainder, QuotientMSB>
     {
         using quotient = QuotientMSB;
         using remainder = Remainder;
@@ -44,21 +45,18 @@ namespace BigUnsignedDivImpl
 
     template <Bit_t B0, Bit_t... BRest, BigUnsigned_t Divisor,
               BigUnsigned_t Remainder, List_t QuotientMSB>
-    struct BigUnsignedDivStep<List<B0, BRest...>, Divisor, Remainder,
-                              QuotientMSB>
+    struct DivStep<List<B0, BRest...>, Divisor, Remainder, QuotientMSB>
     {
-        using Shifted = BigUnsignedLShift_v<Remainder, BigUnsigned<One>>;
-        using NewRem = BigUnsignedAdd_v<Shifted, BigUnsigned<B0>>;
+        using Shifted = LShift_v<Remainder, BigUnsigned<One>>;
+        using NewRem = Add_v<Shifted, BigUnsigned<B0>>;
 
-        using UpdatedRem = Ternary_v<BigUnsignedGE_v<NewRem, Divisor>,
-                                     BigUnsignedSub_v<NewRem, Divisor>, NewRem>;
+        using UpdatedRem =
+            Ternary_v<Ge_v<NewRem, Divisor>, Sub_v<NewRem, Divisor>, NewRem>;
 
         using NewQuot =
-            ListAppend_v<Ternary_v<BigUnsignedGE_v<NewRem, Divisor>, One, Zero>,
-                         QuotientMSB>;
+            Append_v<Ternary_v<Ge_v<NewRem, Divisor>, One, Zero>, QuotientMSB>;
 
-        using Rec =
-            BigUnsignedDivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
+        using Rec = DivStep<List<BRest...>, Divisor, UpdatedRem, NewQuot>;
 
         using quotient = Rec::quotient;
         using remainder = Rec::remainder;
@@ -79,34 +77,22 @@ namespace BigUnsignedDivImpl
     {
         using LHSList = List<LHSBits...>;
         using RHSNum = BigUnsigned<RHSBits...>;
-        using LHSBitsMSB = ListReverse_v<LHSList>;
+        using LHSBitsMSB = Reverse_v<LHSList>;
 
-        using Quotient = ListReverse_v<
-            BigUnsignedDivStep_quot<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>>;
+        using Quotient =
+            Reverse_v<DivStep_quot<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>>;
 
-        using DivStep =
-            BigUnsignedDivStep<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>;
+        using DS = DivStep<LHSBitsMSB, RHSNum, BigUnsigned<>, List<>>;
 
-        using remainder =
-            BigUnsignedCanonicalize_v<typename DivStep::remainder>;
-        using quotient = BigUnsignedCanonicalize_v<
-            ToBigUnsigned_v<ListReverse_v<typename DivStep::quotient>>>;
+        using remainder = Canonicalize_v<typename DS::remainder>;
+        using quotient =
+            Canonicalize_v<ToBigUnsigned_v<Reverse_v<typename DS::quotient>>>;
     };
 
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    using BigUnsignedDiv_v = BigUnsignedDivModCommon<LHS, RHS>::quotient;
-
-    struct BigUnsignedDivFunc
+    template <Any_t LHS, Any_t RHS>
+        requires BigUnsigned_t<LHS> && BigUnsigned_t<RHS>
+    struct Div<LHS, RHS>
     {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-        struct apply
-        {
-            using result = BigUnsignedDiv_v<LHS, RHS>;
-        };
+        using result = BigUnsignedDivModCommon<LHS, RHS>::quotient;
     };
-} // namespace BigUnsignedDivImpl
-
-using BigUnsignedDivImpl::BigUnsignedDivFunc;
-using BigUnsignedDivImpl::BigUnsignedDiv_v;
+} // namespace DivImpl

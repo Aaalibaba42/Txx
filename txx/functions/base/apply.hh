@@ -6,7 +6,7 @@
 
 // Bootstrapping applying 1st class functions
 
-namespace FunctionApplyImpl
+namespace ApplyImpl
 {
     struct Apply
     {
@@ -21,8 +21,7 @@ namespace FunctionApplyImpl
 
     template <Function_t Foo, Any_t... Args>
     using Apply_v = Apply::template apply<Foo, Args...>::result;
+} // namespace ApplyImpl
 
-} // namespace FunctionApplyImpl
-
-using ApplyFunc = FunctionApplyImpl::Apply;
-using FunctionApplyImpl::Apply_v;
+using ApplyFunc = ApplyImpl::Apply;
+using ApplyImpl::Apply_v;

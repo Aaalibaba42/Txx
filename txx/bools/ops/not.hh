@@ -1,40 +1,28 @@
 #pragma once
 
 #include "bools/concept.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "literals/bools.hh"
+#include "meta/any.hh"
 
-namespace BoolNotImpl
+namespace NotImpl
 {
-    template <Bool_t Bool>
-    struct BoolNot;
-
-    template <Bool_t Bool>
-    using BoolNot_v = BoolNot<Bool>::result;
+    template <Any_t Bool>
+        requires Bool_t<Bool>
+    struct Not<Bool>
+    {
+        static_assert(false, "Unreachable");
+    };
 
     template <>
-    struct BoolNot<True>
+    struct Not<True>
     {
         using result = False;
     };
 
     template <>
-    struct BoolNot<False>
+    struct Not<False>
     {
         using result = True;
     };
-
-    struct BoolNotFunc
-    {
-        using is_function = IsFunction;
-
-        template <Bool_t Bool>
-        struct apply
-        {
-            using result = BoolNot_v<Bool>;
-        };
-    };
-} // namespace BoolNotImpl
-
-using BoolNotImpl::BoolNotFunc;
-using BoolNotImpl::BoolNot_v;
+} // namespace NotImpl

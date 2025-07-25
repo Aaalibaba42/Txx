@@ -2,6 +2,7 @@
 
 #include "bits/concept.hh"
 #include "literals/bits.hh"
+#include "meta/any.hh"
 
 namespace FullSubtractorImpl
 {
@@ -9,7 +10,8 @@ namespace FullSubtractorImpl
     // This is more readable, doesn't hide the logic, and *shouldn't* lose much
     // on compilation time nor template instantiation depth.
 
-    template <Bit_t LHS, Bit_t RHS, Bit_t Borrow>
+    template <Any_t LHS, Any_t RHS, Any_t Borrow>
+        requires Bit_t<LHS> && Bit_t<RHS> && Bit_t<Borrow>
     struct FullSubtractor;
 
     template <>

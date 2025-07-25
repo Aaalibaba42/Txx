@@ -12,7 +12,7 @@
 #include "numbers/unsigned/bigunsigned/ops/left_shift.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
 
-namespace BigUnsignedMulImpl
+namespace MulImpl
 {
     template <BigUnsigned_t LHS, Bit_t RHS, BigUnsigned_t Shift>
     struct MulByBit;
@@ -29,55 +29,37 @@ namespace BigUnsignedMulImpl
     template <BigUnsigned_t LHS, BigUnsigned_t Shift>
     struct MulByBit<LHS, One, Shift>
     {
-        using result = BigUnsignedLShift_v<LHS, Shift>;
+        using result = LShift_v<LHS, Shift>;
     };
 
     template <BigUnsigned_t LHS, List_t BList, BigUnsigned_t Shift>
-    struct BigUnsignedMulHelper;
+    struct MulHelper;
 
     template <BigUnsigned_t LHS, List_t BList, BigUnsigned_t Shift>
-    using BigUnsignedMulHelper_v =
-        BigUnsignedMulHelper<LHS, BList, Shift>::result;
+    using MulHelper_v = MulHelper<LHS, BList, Shift>::result;
 
     template <BigUnsigned_t LHS, BigUnsigned_t Shift>
-    struct BigUnsignedMulHelper<LHS, List<>, Shift>
+    struct MulHelper<LHS, List<>, Shift>
     {
         using result = BigUnsigned<>;
     };
 
     template <Bit_t R0, Bit_t... RRest, BigUnsigned_t LHS, BigUnsigned_t Shift>
-    struct BigUnsignedMulHelper<LHS, List<R0, RRest...>, Shift>
+    struct MulHelper<LHS, List<R0, RRest...>, Shift>
     {
         using partial = MulByBit_v<LHS, R0, Shift>;
-        using rest = BigUnsignedMulHelper_v<LHS, List<RRest...>,
-                                            BigUnsignedInc_v<Shift>>;
-        using result = BigUnsignedAdd_v<partial, rest>;
+        using rest = MulHelper_v<LHS, List<RRest...>, Inc_v<Shift>>;
+        using result = Add_v<partial, rest>;
     };
 
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    struct BigUnsignedMul;
-
-    template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-    using BigUnsignedMul_v = BigUnsignedMul<LHS, RHS>::result;
+    template <Any_t LHS, Any_t RHS>
+        requires BigUnsigned_t<LHS> && BigUnsigned_t<RHS>
+    struct Mul<LHS, RHS>;
 
     template <Bit_t... LHS, Bit_t... RHS>
-    struct BigUnsignedMul<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
+    struct Mul<BigUnsigned<LHS...>, BigUnsigned<RHS...>>
     {
-        using result = BigUnsignedCanonicalize_v<BigUnsignedMulHelper_v<
-            BigUnsigned<LHS...>, List<RHS...>, BigUnsigned<>>>;
+        using result = Canonicalize_v<
+            MulHelper_v<BigUnsigned<LHS...>, List<RHS...>, BigUnsigned<>>>;
     };
-
-    struct BigUnsignedMulFunc
-    {
-        using is_function = IsFunction;
-
-        template <BigUnsigned_t LHS, BigUnsigned_t RHS>
-        struct apply
-        {
-            using result = BigUnsignedMul_v<LHS, RHS>;
-        };
-    };
-} // namespace BigUnsignedMulImpl
-
-using BigUnsignedMulImpl::BigUnsignedMulFunc;
-using BigUnsignedMulImpl::BigUnsignedMul_v;
+} // namespace MulImpl

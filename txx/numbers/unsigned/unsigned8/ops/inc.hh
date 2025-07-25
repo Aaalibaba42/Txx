@@ -2,12 +2,12 @@
 
 #include "bits/concept.hh"
 #include "bits/ops/fulladder.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "literals/bits.hh"
 #include "numbers/unsigned/unsigned8/concept.hh"
 #include "numbers/unsigned/unsigned8/unsigned8.hh"
 
-namespace Unsigned8IncImpl
+namespace IncImpl
 {
     template <Bit_t B0, Bit_t B1, Bit_t B2, Bit_t B3, Bit_t B4, Bit_t B5,
               Bit_t B6, Bit_t B7, Bit_t Carry>
@@ -39,30 +39,14 @@ namespace Unsigned8IncImpl
                       typename FA6::Sum, typename FA7::Sum>;
     };
 
-    template <Unsigned8_t Num>
-    struct Unsigned8Inc;
-
-    template <Unsigned8_t Num>
-    using Unsigned8Inc_v = Unsigned8Inc<Num>::result;
+    template <Any_t Num>
+        requires Unsigned8_t<Num>
+    struct Inc<Num>;
 
     template <Bit_t B0, Bit_t B1, Bit_t B2, Bit_t B3, Bit_t B4, Bit_t B5,
               Bit_t B6, Bit_t B7>
-    struct Unsigned8Inc<Unsigned8<B0, B1, B2, B3, B4, B5, B6, B7>>
+    struct Inc<Unsigned8<B0, B1, B2, B3, B4, B5, B6, B7>>
     {
         using result = AddCarry8<B0, B1, B2, B3, B4, B5, B6, B7, One>::result;
     };
-
-    struct Unsigned8IncFunc
-    {
-        using is_function = IsFunction;
-
-        template <Unsigned8_t Num>
-        struct apply
-        {
-            using result = Unsigned8Inc_v<Num>;
-        };
-    };
-} // namespace Unsigned8IncImpl
-
-using Unsigned8IncImpl::Unsigned8IncFunc;
-using Unsigned8IncImpl::Unsigned8Inc_v;
+} // namespace IncImpl
