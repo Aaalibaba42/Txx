@@ -1,40 +1,23 @@
 #pragma once
 
 #include "bools/concept.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "literals/bools.hh"
+#include "meta/any.hh"
 
-namespace BoolXorImpl
+namespace XorImpl
 {
-    template <Bool_t B1, Bool_t B2>
-    struct BoolXor;
-
-    template <Bool_t B1, Bool_t B2>
-    using BoolXor_v = BoolXor<B1, B2>::result;
-
-    template <Bool_t B1, Bool_t B2>
-    struct BoolXor
+    template <Any_t B1, Any_t B2>
+        requires Bool_t<B1> && Bool_t<B2>
+    struct Xor<B1, B2>
     {
         using result = True;
     };
 
-    template <Bool_t T>
-    struct BoolXor<T, T>
+    template <Any_t T>
+        requires Bool_t<T>
+    struct Xor<T, T>
     {
         using result = False;
     };
-
-    struct BoolXorFunc
-    {
-        using is_function = IsFunction;
-
-        template <Bool_t B1, Bool_t B2>
-        struct apply
-        {
-            using result = BoolXor_v<B1, B2>;
-        };
-    };
-} // namespace BoolXorImpl
-
-using BoolXorImpl::BoolXorFunc;
-using BoolXorImpl::BoolXor_v;
+} // namespace XorImpl

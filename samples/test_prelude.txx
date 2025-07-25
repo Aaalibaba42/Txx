@@ -20,3 +20,14 @@ struct Ge<u8N1, u8N2>
 
 template <Any_t N1, Any_t N2>
 using Ge_v = Ge<N1, N2>::result;
+
+struct GeFunc
+{
+    using is_function = IsFunction;
+
+    template <Any_t N1, Any_t N2>
+    struct apply
+    {
+        using result = Ge<N1, N2>::result;
+    };
+};

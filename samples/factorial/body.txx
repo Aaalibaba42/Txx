@@ -8,7 +8,7 @@ using r3 = AssertEq<Factorial_v<bu3>, bu6>::result;
 using r4 = AssertEq<Factorial_v<bu4>, bu24>::result;
 using r5 = AssertEq<Factorial_v<bu5>, bu120>::result;
 
-using r6 = Assert<BigUnsignedGE_v<Factorial_v<Input>, bu120>>::result;
+using r6 = Assert<Ge_v<Factorial_v<Input>, bu120>>::result;
 
 // Having an exposed "result" type is mandatory.
 using result = Unit;

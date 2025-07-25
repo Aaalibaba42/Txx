@@ -2,10 +2,12 @@
 
 #include "bits/concept.hh"
 #include "literals/bits.hh"
+#include "meta/any.hh"
 
 namespace FullAdderImpl
 {
-    template <Bit_t Bit, Bit_t Carry>
+    template <Any_t Bit, Any_t Carry>
+        requires Bit_t<Bit> && Bit_t<Carry>
     struct FullAdder;
 
     template <>

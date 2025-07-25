@@ -1,46 +1,30 @@
 #pragma once
 
 #include "bools/concept.hh"
-#include "functions/function.hh"
+#include "functions/base.hh"
 #include "literals/bools.hh"
+#include "meta/any.hh"
 
-namespace BoolAndImpl
+namespace AndImpl
 {
-    template <Bool_t... Bools>
-    struct BoolAnd;
-
-    template <Bool_t... Bools>
-    using BoolAnd_v = BoolAnd<Bools...>::result;
-
-    template <Bool_t LastBool>
-    struct BoolAnd<LastBool>
+    template <Any_t LastBool>
+        requires Bool_t<LastBool>
+    struct And<LastBool>
     {
         using result = LastBool;
     };
 
-    template <Bool_t... Bools>
-    struct BoolAnd<False, Bools...>
+    template <Any_t... Bools>
+        requires(Bool_t<Bools> && ...)
+    struct And<False, Bools...>
     {
         using result = False;
     };
 
-    template <Bool_t... Bools>
-    struct BoolAnd<True, Bools...>
+    template <Any_t... Bools>
+        requires(Bool_t<Bools> && ...)
+    struct And<True, Bools...>
     {
-        using result = BoolAnd_v<Bools...>;
+        using result = And_v<Bools...>;
     };
-
-    struct BoolAndFunc
-    {
-        using is_function = IsFunction;
-
-        template <Bool_t... Bools>
-        struct apply
-        {
-            using result = BoolAnd_v<Bools...>;
-        };
-    };
-} // namespace BoolAndImpl
-
-using BoolAndImpl::BoolAndFunc;
-using BoolAndImpl::BoolAnd_v;
+} // namespace AndImpl
