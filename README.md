@@ -12,52 +12,6 @@ I was very much inspired by my former colleague's
 [funxx](https://github.com/VokunGahrotLaas/funxx), but wanted to go even
 further.
 
-Next Big Thing
---------------
-
-As demonstrated in the samples/test_* of commit 3349672, Polymorphisme is
-possible. Template instantiation will always choose the most *specific*
-instantiation, specificity being defined as concept inclusion rules.
-
-Basicly, if the compiler has a choice between 2 implementation in template
-instantiation, and one is more specific than the other, it will choose the most
-specific in the inclusion tree.
-
-For example:
-
-```cpp
-template <typename T>
-concept ConParent = true; // Replace with implementation
-
-template <typename T>
-concept ConChild = ConParent<T> && true; // Replace with implementation
-
-template <typename T>
-concept ConUnrelated = true; // Replace with implementation
-
-// ConChild is included in ConParent
-// ConUnrelated is not in the same inclusion tree
-
-// Declaration of struct Foo
-template <ConParent T>
-struct Foo
-{};
-
-// Valid, if a instantiation fit both ConParent and ConChild, ConChild's
-// implementation will be chosen
-template <ConChild T>
-struct Foo<T>
-{};
-
-// Invalid declaration, because ConUnrelated is not related to ConParent
-template <ConUnrelated T>
-struct Foo<T>
-{};
-```
-
-This change showcased a lot of problems in the architecture that I now have to
-fix before doing more interesting stuff.
-
 Features
 --------
 
@@ -88,6 +42,12 @@ For example, the [factorial](./samples/factorial) sample can be compiled with th
 42sh$ # -Itxx: Include path
 42sh$ g++ -std=c++23 -pedantic -D_TXX_SKIP_TESTS -D_TXX_MAIN -D_TXX_INPUT="bu10" -Itxx main.cc
 ```
+
+### Functional
+
+Functions are first order objects, and we have polymorphism with strong
+typing. It's getting great, at the cost of many painful hours, and questionable
+architecture choices.
 
 ### Booleans:
 
