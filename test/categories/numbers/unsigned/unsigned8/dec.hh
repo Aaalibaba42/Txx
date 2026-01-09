@@ -1,7 +1,7 @@
 #pragma once
 
-#include "meta/assert.hh"
 #include "literals/unsigned8.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/unsigned8/ops/dec.hh"
 
 namespace unsigned8_decrement_tests

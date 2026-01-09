@@ -23,15 +23,17 @@ using lmin_t4 = AssertEq<ListMin_v<List<bu5, bu1, bu3, bu2>>, bu1>::result;
 using lmin_t5 = AssertEq<ListMin_v<List<bu1, bu5, bu3, bu2>>, bu1>::result;
 using lmin_t6 = AssertEq<ListMin_v<List<bu10, bu5, bu3, bu2>>, bu2>::result;
 
-using lext_t1 = AssertEq<ListExtremum_v<GeFunc, List<bu1, bu5, bu3>>, bu5>::result;
-using lext_t2 = AssertEq<ListExtremum_v<LeFunc, List<bu1, bu5, bu3>>, bu1>::result;
+using lext_t1 =
+    AssertEq<ListExtremum_v<GeFunc, List<bu1, bu5, bu3>>, bu5>::result;
+using lext_t2 =
+    AssertEq<ListExtremum_v<LeFunc, List<bu1, bu5, bu3>>, bu1>::result;
 
 using sum_t1 = AssertEq<Sum_v<List<>>, bu0>::result;
 using sum_t2 = AssertEq<Sum_v<List<bu5>>, bu5>::result;
 using sum_t3 = AssertEq<Sum_v<List<bu1, bu2, bu3>>, bu6>::result;
 using sum_t4 = AssertEq<Sum_v<List<bu10, bu20, bu30>>, bu60>::result;
 
-using red_t1 = AssertEq<Reduce_v<MulFunc, bu1, List<bu2, bu3, bu4>>, bu24>::result;
+using red_t1 =
+    AssertEq<Reduce_v<MulFunc, bu1, List<bu2, bu3, bu4>>, bu24>::result;
 
 using result = Unit;
-

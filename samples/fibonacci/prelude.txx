@@ -24,5 +24,6 @@ struct Fibonacci<bu1>
 template <BigUnsigned_t N>
 struct Fibonacci
 {
-    using result = Add_v<Fibonacci_v<Sub_v<N, bu1>>, Fibonacci_v<Sub_v<N, bu2>>>;
+    using result =
+        Add_v<Fibonacci_v<Sub_v<N, bu1>>, Fibonacci_v<Sub_v<N, bu2>>>;
 };

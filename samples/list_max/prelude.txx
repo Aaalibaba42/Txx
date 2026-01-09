@@ -44,4 +44,3 @@ using Sum_v = FoldL_v<AddFunc, bu0, L>;
 // Generic reduce is just an alias for FoldL
 template <Function_t Op, Any_t Init, List_t L>
 using Reduce_v = FoldL_v<Op, Init, L>;
-

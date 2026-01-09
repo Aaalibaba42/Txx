@@ -38,7 +38,8 @@ namespace list_set_tests
                           List<bu6, bu3, bu4, bu5>>::result;
     using _t12 = AssertEq<Set_v<List<bu1, bu2, bu3, bu4>, bu5, bu3>,
                           List<bu1, bu2, bu3, bu5>>::result;
-    using _t13 = AssertEq<List<bu1, bu2, bu3, bu4>, List<bu1, bu2, bu3, bu4>>::result;
+    using _t13 =
+        AssertEq<List<bu1, bu2, bu3, bu4>, List<bu1, bu2, bu3, bu4>>::result;
     using _t14 = AssertEq<Set_v<List<bu1, bu2, bu3, bu4, bu5>, bu6, bu2>,
                           List<bu1, bu2, bu6, bu4, bu5>>::result;
     using _t15 = AssertEq<List<bu1, bu2, bu3, bu4, bu5>,

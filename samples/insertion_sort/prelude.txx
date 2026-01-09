@@ -11,18 +11,18 @@ struct Insert<Cmp, Elem, List<>>
     using result = List<Elem>;
 };
 
-template <Function_t Cmp, BigUnsigned_t Elem, BigUnsigned_t Head, BigUnsigned_t... Tail>
+template <Function_t Cmp, BigUnsigned_t Elem, BigUnsigned_t Head,
+          BigUnsigned_t... Tail>
 struct Insert<Cmp, Elem, List<Head, Tail...>>
 {
     using later = Prepend_v<Head, Insert_v<Cmp, Elem, List<Tail...>>>;
     using result = Ternary_v<
-    // if
+        // if
         Apply_v<Cmp, Elem, Head>,
-    // then
+        // then
         List<Elem, Head, Tail...>,
-    // else
-        later
-    >;
+        // else
+        later>;
 };
 
 // Sort back-to-front, inserting the element of the head-list to the correct
