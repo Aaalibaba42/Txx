@@ -74,7 +74,9 @@ using r2 = AssertEq<Ge_v<u8_1, u8_2>, Ge_v<bu1, bu2>>::result;
 
 // These are the declaration of the functions that exist in the system:
 #include "functions/base/add.hh"
+#include "functions/base/all.hh"
 #include "functions/base/and.hh"
+#include "functions/base/any.hh"
 #include "functions/base/append.hh"
 #include "functions/base/apply.hh"
 #include "functions/base/canonicalize.hh"
