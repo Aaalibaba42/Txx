@@ -1,4 +1,3 @@
-
 #ifndef _TXX_SKIP_TESTS
 #    pragma message("Launching Tests, define `-D_TXX_SKIP_TESTS` to disable.")
 #    include "test/tests.hh"

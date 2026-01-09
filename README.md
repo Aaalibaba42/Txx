@@ -50,8 +50,8 @@ in `main.hh`.
 For example, the [factorial](./samples/factorial) sample can be compiled with
 the following command:
 ```sh
-42sh$ # -std=c++23 -pedantic: c++ standard to use, pendantic to not use language
-42sh$ #                       extension (you can also activate most warnings)
+42sh$ # -std=c++23 -pedantic: C++ standard to use, pendantic to not use language
+42sh$ #                       extension (you can also enable most warnings)
 42sh$ # -D_TXX_SKIP_TESTS: Tests take (at the time I write this) about 1.5s to
 42sh$ #                    run, better skipping them if you don't need them
 42sh$ # -D_TXX_MAIN: Enable Main function, those last 2 flags might have their
@@ -59,7 +59,8 @@ the following command:
 42sh$ #              development phase, I'd rather have those defaults
 42sh$ # -D_TXX_INPUT: the value of the `Input` type in `body.txx`
 42sh$ # -Itxx: Include path
-42sh$ g++ -std=c++23 -pedantic -D_TXX_SKIP_TESTS -D_TXX_MAIN -D_TXX_INPUT="bu10" -Itxx main.cc
+42sh$ # -o /dev/null: Executable is pointless
+42sh$ g++ -std=c++23 -pedantic -D_TXX_SKIP_TESTS -D_TXX_MAIN -D_TXX_INPUT="bu10" -Itxx main.cc -o /dev/null
 ```
 
 ### Functional
