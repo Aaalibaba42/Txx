@@ -2,6 +2,7 @@
 
 #include "all_any.hh"
 #include "append.hh"
+#include "concat.hh"
 #include "filter.hh"
 #include "foldl.hh"
 #include "foldr.hh"

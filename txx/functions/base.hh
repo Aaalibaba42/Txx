@@ -81,6 +81,7 @@ using r2 = AssertEq<Ge_v<u8_1, u8_2>, Ge_v<bu1, bu2>>::result;
 #include "functions/base/apply.hh"
 #include "functions/base/canonicalize.hh"
 #include "functions/base/combine.hh"
+#include "functions/base/concat.hh"
 #include "functions/base/curry.hh"
 #include "functions/base/dec.hh"
 #include "functions/base/div.hh"
