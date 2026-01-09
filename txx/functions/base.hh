@@ -89,6 +89,7 @@ using r2 = AssertEq<Ge_v<u8_1, u8_2>, Ge_v<bu1, bu2>>::result;
 #include "functions/base/gt.hh"
 #include "functions/base/head.hh"
 #include "functions/base/inc.hh"
+#include "functions/base/is_empty.hh"
 #include "functions/base/is_same.hh"
 #include "functions/base/le.hh"
 #include "functions/base/left_shift.hh"
