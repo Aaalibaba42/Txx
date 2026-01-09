@@ -7,6 +7,7 @@
 #include "is_empty.hh"
 #include "length.hh"
 #include "map.hh"
+#include "nth.hh"
 #include "prepend.hh"
 #include "reverse.hh"
 #include "set.hh"
