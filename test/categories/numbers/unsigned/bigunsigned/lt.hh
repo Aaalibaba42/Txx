@@ -1,30 +1,30 @@
 #pragma once
 
-#include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
 #include "literals/bools.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/bigunsigned/ops/lt.hh"
 
 namespace bigunsigned_lt_tests
 {
-    static_assert(is_same<Lt_v<bu1, bu2>, True>);
-    static_assert(is_same<Lt_v<bu1, bu1>, False>);
-    static_assert(is_same<Lt_v<bu2, bu1>, False>);
-    static_assert(is_same<Lt_v<bu10, bu20>, True>);
-    static_assert(is_same<Lt_v<bu10, bu10>, False>);
-    static_assert(is_same<Lt_v<bu20, bu10>, False>);
-    static_assert(is_same<Lt_v<bu63, bu64>, True>);
-    static_assert(is_same<Lt_v<bu64, bu63>, False>);
-    static_assert(is_same<Lt_v<bu50, bu60>, True>);
-    static_assert(is_same<Lt_v<bu50, bu50>, False>);
-    static_assert(is_same<Lt_v<bu60, bu50>, False>);
-    static_assert(is_same<Lt_v<bu0, bu1>, True>);
-    static_assert(is_same<Lt_v<bu0, bu0>, False>);
-    static_assert(is_same<Lt_v<bu1, bu0>, False>);
-    static_assert(is_same<Lt_v<bu64, bu64>, False>);
-    static_assert(is_same<Lt_v<bu10, bu30>, True>);
-    static_assert(is_same<Lt_v<bu30, bu10>, False>);
-    static_assert(is_same<Lt_v<bu32, bu33>, True>);
-    static_assert(is_same<Lt_v<bu33, bu33>, False>);
-    static_assert(is_same<Lt_v<bu33, bu32>, False>);
+    using _t0 = AssertEq<Lt_v<bu1, bu2>, True>::result;
+    using _t1 = AssertEq<Lt_v<bu1, bu1>, False>::result;
+    using _t2 = AssertEq<Lt_v<bu2, bu1>, False>::result;
+    using _t3 = AssertEq<Lt_v<bu10, bu20>, True>::result;
+    using _t4 = AssertEq<Lt_v<bu10, bu10>, False>::result;
+    using _t5 = AssertEq<Lt_v<bu20, bu10>, False>::result;
+    using _t6 = AssertEq<Lt_v<bu63, bu64>, True>::result;
+    using _t7 = AssertEq<Lt_v<bu64, bu63>, False>::result;
+    using _t8 = AssertEq<Lt_v<bu50, bu60>, True>::result;
+    using _t9 = AssertEq<Lt_v<bu50, bu50>, False>::result;
+    using _t10 = AssertEq<Lt_v<bu60, bu50>, False>::result;
+    using _t11 = AssertEq<Lt_v<bu0, bu1>, True>::result;
+    using _t12 = AssertEq<Lt_v<bu0, bu0>, False>::result;
+    using _t13 = AssertEq<Lt_v<bu1, bu0>, False>::result;
+    using _t14 = AssertEq<Lt_v<bu64, bu64>, False>::result;
+    using _t15 = AssertEq<Lt_v<bu10, bu30>, True>::result;
+    using _t16 = AssertEq<Lt_v<bu30, bu10>, False>::result;
+    using _t17 = AssertEq<Lt_v<bu32, bu33>, True>::result;
+    using _t18 = AssertEq<Lt_v<bu33, bu33>, False>::result;
+    using _t19 = AssertEq<Lt_v<bu33, bu32>, False>::result;
 } // namespace bigunsigned_lt_tests

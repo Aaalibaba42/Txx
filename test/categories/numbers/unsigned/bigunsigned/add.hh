@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/bigunsigned/ops/add.hh"
 
 namespace bigunsigned_add_tests
@@ -37,34 +37,34 @@ namespace bigunsigned_add_tests
     using A48 = Add_v<bu39, bu9>;
     using A50 = Add_v<bu41, bu9>;
 
-    static_assert(is_same<A6, bu6>);
-    static_assert(is_same<A9, bu9>);
-    static_assert(is_same<A11, bu11>);
-    static_assert(is_same<A14, bu14>);
-    static_assert(is_same<A15, bu15>);
-    static_assert(is_same<A10, bu10>);
-    static_assert(is_same<A13, bu13>);
-    static_assert(is_same<A17, bu17>);
-    static_assert(is_same<A19, bu19>);
-    static_assert(is_same<A22, bu22>);
-    static_assert(is_same<A25, bu25>);
-    static_assert(is_same<A28, bu28>);
-    static_assert(is_same<A30, bu30>);
-    static_assert(is_same<A33, bu33>);
-    static_assert(is_same<A35, bu35>);
-    static_assert(is_same<A38, bu38>);
-    static_assert(is_same<A40, bu40>);
-    static_assert(is_same<A42, bu42>);
-    static_assert(is_same<A45, bu45>);
-    static_assert(is_same<A48, bu48>);
-    static_assert(is_same<A50, bu50>);
-    static_assert(is_same<A5, bu5>);
-    static_assert(is_same<A16, bu16>);
-    static_assert(is_same<A8, bu8>);
-    static_assert(is_same<A1, bu1>);
-    static_assert(is_same<A0, bu0>);
-    static_assert(is_same<A15_1, bu15>);
-    static_assert(is_same<A15_2, bu15>);
-    static_assert(is_same<A16_1, bu16>);
-    static_assert(is_same<A16_2, bu16>);
+    using _t0 = AssertEq<A6, bu6>::result;
+    using _t1 = AssertEq<A9, bu9>::result;
+    using _t2 = AssertEq<A11, bu11>::result;
+    using _t3 = AssertEq<A14, bu14>::result;
+    using _t4 = AssertEq<A15, bu15>::result;
+    using _t5 = AssertEq<A10, bu10>::result;
+    using _t6 = AssertEq<A13, bu13>::result;
+    using _t7 = AssertEq<A17, bu17>::result;
+    using _t8 = AssertEq<A19, bu19>::result;
+    using _t9 = AssertEq<A22, bu22>::result;
+    using _t10 = AssertEq<A25, bu25>::result;
+    using _t11 = AssertEq<A28, bu28>::result;
+    using _t12 = AssertEq<A30, bu30>::result;
+    using _t13 = AssertEq<A33, bu33>::result;
+    using _t14 = AssertEq<A35, bu35>::result;
+    using _t15 = AssertEq<A38, bu38>::result;
+    using _t16 = AssertEq<A40, bu40>::result;
+    using _t17 = AssertEq<A42, bu42>::result;
+    using _t18 = AssertEq<A45, bu45>::result;
+    using _t19 = AssertEq<A48, bu48>::result;
+    using _t20 = AssertEq<A50, bu50>::result;
+    using _t21 = AssertEq<A5, bu5>::result;
+    using _t22 = AssertEq<A16, bu16>::result;
+    using _t23 = AssertEq<A8, bu8>::result;
+    using _t24 = AssertEq<A1, bu1>::result;
+    using _t25 = AssertEq<A0, bu0>::result;
+    using _t26 = AssertEq<A15_1, bu15>::result;
+    using _t27 = AssertEq<A15_2, bu15>::result;
+    using _t28 = AssertEq<A16_1, bu16>::result;
+    using _t29 = AssertEq<A16_2, bu16>::result;
 } // namespace bigunsigned_add_tests

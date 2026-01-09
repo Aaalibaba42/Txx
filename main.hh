@@ -3,7 +3,7 @@
 #include "txx.hh"
 
 // Change this to your path/to/prelude.txx
-#include "samples/test_prelude.txx"
+#include "samples/factorial/prelude.txx"
 
 namespace MainImpl
 {
@@ -17,7 +17,7 @@ namespace MainImpl
     struct Main
     {
 // Change this to your path/to/body.txx
-#include "samples/test_body.txx"
+#include "samples/factorial/body.txx"
     };
 } // namespace MainImpl
 

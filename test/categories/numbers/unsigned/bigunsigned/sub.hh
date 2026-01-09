@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/bigunsigned/ops/sub.hh"
 
 namespace bigunsigned_sub_tests
@@ -31,7 +31,7 @@ namespace bigunsigned_sub_tests
     using S22 = Sub_v<bu24, bu2>;
     using S23 = Sub_v<bu25, bu2>;
     using S24 = Sub_v<bu26, bu2>;
-    using S12 = Sub_v<bu27, bu15>;
+    using S12b = Sub_v<bu27, bu15>;
     using S26 = Sub_v<bu28, bu2>;
     using S27 = Sub_v<bu29, bu2>;
     using S28 = Sub_v<bu30, bu2>;
@@ -48,45 +48,45 @@ namespace bigunsigned_sub_tests
     using S39 = Sub_v<bu41, bu2>;
     using S40 = Sub_v<bu42, bu2>;
 
-    static_assert(is_same<S1, bu1>);
-    static_assert(is_same<S0, bu0>);
-    static_assert(is_same<S0_1, bu0>);
-    static_assert(is_same<S6, bu6>);
-    static_assert(is_same<S7, bu7>);
-    static_assert(is_same<S15, bu15>);
-    static_assert(is_same<S14, bu14>);
-    static_assert(is_same<S5, bu5>);
-    static_assert(is_same<S8, bu8>);
-    static_assert(is_same<S9, bu9>);
-    static_assert(is_same<S10, bu10>);
-    static_assert(is_same<S11, bu11>);
-    static_assert(is_same<S12, bu12>);
-    static_assert(is_same<S13, bu13>);
-    static_assert(is_same<S14_1, bu14>);
-    static_assert(is_same<S15_1, bu15>);
-    static_assert(is_same<S16, bu16>);
-    static_assert(is_same<S17, bu17>);
-    static_assert(is_same<S18, bu18>);
-    static_assert(is_same<S19, bu19>);
-    static_assert(is_same<S20, bu20>);
-    static_assert(is_same<S21, bu21>);
-    static_assert(is_same<S22, bu22>);
-    static_assert(is_same<S23, bu23>);
-    static_assert(is_same<S24, bu24>);
-    static_assert(is_same<S12, bu12>);
-    static_assert(is_same<S26, bu26>);
-    static_assert(is_same<S27, bu27>);
-    static_assert(is_same<S28, bu28>);
-    static_assert(is_same<S29, bu29>);
-    static_assert(is_same<S30, bu30>);
-    static_assert(is_same<S31, bu31>);
-    static_assert(is_same<S32, bu32>);
-    static_assert(is_same<S33, bu33>);
-    static_assert(is_same<S34, bu34>);
-    static_assert(is_same<S35, bu35>);
-    static_assert(is_same<S36, bu36>);
-    static_assert(is_same<S37, bu37>);
-    static_assert(is_same<S38, bu38>);
-    static_assert(is_same<S39, bu39>);
-    static_assert(is_same<S40, bu40>);
+    using _t0 = AssertEq<S1, bu1>::result;
+    using _t1 = AssertEq<S0, bu0>::result;
+    using _t2 = AssertEq<S0_1, bu0>::result;
+    using _t3 = AssertEq<S6, bu6>::result;
+    using _t4 = AssertEq<S7, bu7>::result;
+    using _t5 = AssertEq<S15, bu15>::result;
+    using _t6 = AssertEq<S14, bu14>::result;
+    using _t7 = AssertEq<S5, bu5>::result;
+    using _t8 = AssertEq<S8, bu8>::result;
+    using _t9 = AssertEq<S9, bu9>::result;
+    using _t10 = AssertEq<S10, bu10>::result;
+    using _t11 = AssertEq<S11, bu11>::result;
+    using _t12 = AssertEq<S12, bu12>::result;
+    using _t13 = AssertEq<S13, bu13>::result;
+    using _t14 = AssertEq<S14_1, bu14>::result;
+    using _t15 = AssertEq<S15_1, bu15>::result;
+    using _t16 = AssertEq<S16, bu16>::result;
+    using _t17 = AssertEq<S17, bu17>::result;
+    using _t18 = AssertEq<S18, bu18>::result;
+    using _t19 = AssertEq<S19, bu19>::result;
+    using _t20 = AssertEq<S20, bu20>::result;
+    using _t21 = AssertEq<S21, bu21>::result;
+    using _t22 = AssertEq<S22, bu22>::result;
+    using _t23 = AssertEq<S23, bu23>::result;
+    using _t24 = AssertEq<S24, bu24>::result;
+    using _t25 = AssertEq<S12b, bu12>::result;
+    using _t26 = AssertEq<S26, bu26>::result;
+    using _t27 = AssertEq<S27, bu27>::result;
+    using _t28 = AssertEq<S28, bu28>::result;
+    using _t29 = AssertEq<S29, bu29>::result;
+    using _t30 = AssertEq<S30, bu30>::result;
+    using _t31 = AssertEq<S31, bu31>::result;
+    using _t32 = AssertEq<S32, bu32>::result;
+    using _t33 = AssertEq<S33, bu33>::result;
+    using _t34 = AssertEq<S34, bu34>::result;
+    using _t35 = AssertEq<S35, bu35>::result;
+    using _t36 = AssertEq<S36, bu36>::result;
+    using _t37 = AssertEq<S37, bu37>::result;
+    using _t38 = AssertEq<S38, bu38>::result;
+    using _t39 = AssertEq<S39, bu39>::result;
+    using _t40 = AssertEq<S40, bu40>::result;
 } // namespace bigunsigned_sub_tests

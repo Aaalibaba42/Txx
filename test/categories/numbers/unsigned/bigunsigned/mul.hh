@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../utils/is_same.hh"
 #include "literals/bigunsigned.hh"
+#include "meta/assert.hh"
 #include "numbers/unsigned/bigunsigned/ops/mul.hh"
 
 namespace bigunsigned_mul_tests
@@ -38,35 +38,35 @@ namespace bigunsigned_mul_tests
     using M63 = Mul_v<bu7, bu9>;
     using M64 = Mul_v<bu8, bu8>;
 
-    static_assert(is_same<M0, bu0>);
-    static_assert(is_same<M1, bu1>);
-    static_assert(is_same<M0_1, bu0>);
-    static_assert(is_same<M4, bu4>);
-    static_assert(is_same<M6, bu6>);
-    static_assert(is_same<M8, bu8>);
-    static_assert(is_same<M10, bu10>);
-    static_assert(is_same<M12, bu12>);
-    static_assert(is_same<M14, bu14>);
-    static_assert(is_same<M15, bu15>);
-    static_assert(is_same<M16, bu16>);
-    static_assert(is_same<M18, bu18>);
-    static_assert(is_same<M20, bu20>);
-    static_assert(is_same<M21, bu21>);
-    static_assert(is_same<M24, bu24>);
-    static_assert(is_same<M25, bu25>);
-    static_assert(is_same<M27, bu27>);
-    static_assert(is_same<M28, bu28>);
-    static_assert(is_same<M30, bu30>);
-    static_assert(is_same<M32, bu32>);
-    static_assert(is_same<M35, bu35>);
-    static_assert(is_same<M36, bu36>);
-    static_assert(is_same<M40, bu40>);
-    static_assert(is_same<M42, bu42>);
-    static_assert(is_same<M45, bu45>);
-    static_assert(is_same<M48, bu48>);
-    static_assert(is_same<M49, bu49>);
-    static_assert(is_same<M54, bu54>);
-    static_assert(is_same<M56, bu56>);
-    static_assert(is_same<M63, bu63>);
-    static_assert(is_same<M64, bu64>);
+    using _t0 = AssertEq<M0, bu0>::result;
+    using _t1 = AssertEq<M1, bu1>::result;
+    using _t2 = AssertEq<M0_1, bu0>::result;
+    using _t3 = AssertEq<M4, bu4>::result;
+    using _t4 = AssertEq<M6, bu6>::result;
+    using _t5 = AssertEq<M8, bu8>::result;
+    using _t6 = AssertEq<M10, bu10>::result;
+    using _t7 = AssertEq<M12, bu12>::result;
+    using _t8 = AssertEq<M14, bu14>::result;
+    using _t9 = AssertEq<M15, bu15>::result;
+    using _t10 = AssertEq<M16, bu16>::result;
+    using _t11 = AssertEq<M18, bu18>::result;
+    using _t12 = AssertEq<M20, bu20>::result;
+    using _t13 = AssertEq<M21, bu21>::result;
+    using _t14 = AssertEq<M24, bu24>::result;
+    using _t15 = AssertEq<M25, bu25>::result;
+    using _t16 = AssertEq<M27, bu27>::result;
+    using _t17 = AssertEq<M28, bu28>::result;
+    using _t18 = AssertEq<M30, bu30>::result;
+    using _t19 = AssertEq<M32, bu32>::result;
+    using _t20 = AssertEq<M35, bu35>::result;
+    using _t21 = AssertEq<M36, bu36>::result;
+    using _t22 = AssertEq<M40, bu40>::result;
+    using _t23 = AssertEq<M42, bu42>::result;
+    using _t24 = AssertEq<M45, bu45>::result;
+    using _t25 = AssertEq<M48, bu48>::result;
+    using _t26 = AssertEq<M49, bu49>::result;
+    using _t27 = AssertEq<M54, bu54>::result;
+    using _t28 = AssertEq<M56, bu56>::result;
+    using _t29 = AssertEq<M63, bu63>::result;
+    using _t30 = AssertEq<M64, bu64>::result;
 } // namespace bigunsigned_mul_tests
