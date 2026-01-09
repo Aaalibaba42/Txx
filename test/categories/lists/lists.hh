@@ -16,3 +16,4 @@
 #include "set.hh"
 #include "tail.hh"
 #include "take_drop.hh"
+#include "zip.hh"
