@@ -7,7 +7,7 @@
 #include "meta/any.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
-#include "numbers/unsigned/bigunsigned/ops/sub.hh"
+#include "numbers/unsigned/bigunsigned/ops/dec.hh"
 
 namespace NthImpl
 {
@@ -26,6 +26,6 @@ namespace NthImpl
     template <Any_t Head, Any_t... Tail, BigUnsigned_t Idx>
     struct Nth<List<Head, Tail...>, Idx>
     {
-        using result = Nth_v<List<Tail...>, Sub_v<Idx, BigUnsigned<One>>>;
+        using result = Nth_v<List<Tail...>, Dec_v<Idx>>;
     };
 } // namespace NthImpl

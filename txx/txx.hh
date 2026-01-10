@@ -96,6 +96,7 @@
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
 #include "numbers/unsigned/bigunsigned/ops/add.hh"
+#include "numbers/unsigned/bigunsigned/ops/dec.hh"
 #include "numbers/unsigned/bigunsigned/ops/div.hh"
 #include "numbers/unsigned/bigunsigned/ops/eq.hh"
 #include "numbers/unsigned/bigunsigned/ops/ge.hh"

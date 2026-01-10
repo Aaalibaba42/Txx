@@ -1,6 +1,7 @@
 #pragma once
 
 #include "add.hh"
+#include "dec.hh"
 #include "div.hh"
 #include "eq.hh"
 #include "ge.hh"

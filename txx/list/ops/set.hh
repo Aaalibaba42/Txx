@@ -8,7 +8,7 @@
 #include "meta/any.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
-#include "numbers/unsigned/bigunsigned/ops/sub.hh"
+#include "numbers/unsigned/bigunsigned/ops/dec.hh"
 
 namespace SetImpl
 {
@@ -36,6 +36,6 @@ namespace SetImpl
     {
         using result = Prepend_v<
             Head,
-            Set_v<List<Tail...>, Elem, Sub_v<Position, BigUnsigned<One>>>>;
+            Set_v<List<Tail...>, Elem, Dec_v<Position>>>;
     };
 } // namespace SetImpl

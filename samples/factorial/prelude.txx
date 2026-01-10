@@ -17,5 +17,5 @@ struct Factorial<bu0>
 template <BigUnsigned_t Num>
 struct Factorial
 {
-    using result = Mul_v<Num, Factorial_v<Sub_v<Num, bu1>>>;
+    using result = Mul_v<Num, Factorial_v<Dec_v<Num>>>;
 };

@@ -8,7 +8,7 @@
 #include "literals/bits.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
-#include "numbers/unsigned/bigunsigned/ops/sub.hh"
+#include "numbers/unsigned/bigunsigned/ops/dec.hh"
 #include "numbers/unsigned/bigunsigned/utils/canonicalize.hh"
 
 namespace LShiftImpl
@@ -28,9 +28,7 @@ namespace LShiftImpl
     {
         using NewBits = Prepend_v<Zero, ToList_v<Value>>;
         using ShiftedOnce = ToBigUnsigned_v<NewBits>;
-        // TODO Do an optimized decrement operator you lazy fuck, you already
-        // have the full subtractor
-        using Decrement = Sub_v<BigUnsigned<AmountBits...>, BigUnsigned<One>>;
+        using Decrement = Dec_v<BigUnsigned<AmountBits...>>;
         using result = Canonicalize_v<LShift_v<ShiftedOnce, Decrement>>;
     };
 } // namespace LShiftImpl

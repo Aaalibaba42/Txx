@@ -7,7 +7,7 @@
 #include "meta/any.hh"
 #include "numbers/unsigned/bigunsigned/bigunsigned.hh"
 #include "numbers/unsigned/bigunsigned/concept.hh"
-#include "numbers/unsigned/bigunsigned/ops/sub.hh"
+#include "numbers/unsigned/bigunsigned/ops/dec.hh"
 
 namespace DropImpl
 {
@@ -37,6 +37,6 @@ namespace DropImpl
     template <Bit_t B, Bit_t... Bs, Any_t Head, Any_t... Tail>
     struct Drop<BigUnsigned<B, Bs...>, List<Head, Tail...>>
     {
-        using result = Drop_v<Sub_v<BigUnsigned<B, Bs...>, BigUnsigned<One>>, List<Tail...>>;
+        using result = Drop_v<Dec_v<BigUnsigned<B, Bs...>>, List<Tail...>>;
     };
 } // namespace DropImpl
