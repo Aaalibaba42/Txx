@@ -77,3 +77,32 @@ The language currently supports:
   `Const`, `Id`, `On`, and `Ternary` (if-then-else)
 
 For a detailed feature roadmap and TODO list, see [TODO.md](./TODO.md).
+
+Performance
+-----------
+
+Performance was *very obviously* not the point of this project. That said, even
+though it was never a priority, things turn out to be surprisingly usable in
+practice.
+
+The C++ compiler effectively "memoizes" template instantiations: once a
+particular `Foo<Bar, Baz>` has been computed, subsequent uses reuse that result
+rather than recomputing it. This means that many recursive patterns, like
+`Fibonacci_v<bu30>`, don't cause exponential blowup despite the naive recursive
+definition.
+
+Here are some compile-time benchmarks for the Fibonacci sample:
+
+| Input | Fibonacci Value | Compile Time |
+|-------|-----------------|--------------|
+| `bu30` | 832,040 | ~100ms |
+| `bu100` | 3.5 × 10²⁰ | ~500ms |
+| `bu200` | 2.8 × 10⁴¹ | ~3.5s |
+| `bu255` | 2.2 × 10⁵² (53 digits, 177 bits) | ~7s |
+
+The 255th Fibonacci number is computed entirely at compile-time using only the
+type system, no runtime values, no `constexpr`, just template instantiation.
+
+However, if your computation generates a large number of *unique* instantiations
+that cannot be shared, you will hit combinatory explosions. The compiler's
+template cache can't help when every intermediate result is distinct.

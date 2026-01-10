@@ -15,8 +15,7 @@ details may need refinement.
 6. [Adding a New Combinator](#adding-a-new-combinator)
 7. [Writing Tests](#writing-tests)
 8. [Common Pitfalls](#common-pitfalls)
-9. [Performance Considerations](#performance-considerations)
-10. [Debugging Tips](#debugging-tips)
+9. [Debugging Tips](#debugging-tips)
 
 ---
 
@@ -471,24 +470,6 @@ using result = Ternary_v<head_ok, tail_ok, False>;
 
 **Reality**: Every recursive computation needs a full struct with base case and
 recursive case specializations. There's no way around this.
-
----
-
-## Performance Considerations
-
-Performance was *very obviously* not the point of this project. That said, even
-though it was never a priority, things turn out to be surprisingly usable in
-practice.
-
-The C++ compiler effectively "memoizes" template instantiations: once a
-particular `Foo<Bar, Baz>` has been computed, subsequent uses reuse that result
-rather than recomputing it. This means that many recursive patterns—like
-`Fibonacci_v<bu30>`—don't cause exponential blowup despite the naive recursive
-definition.
-
-However, if your computation generates a large number of *unique* instantiations
-that cannot be shared, you will hit combinatory explosions. The compiler's
-template cache can't help when every intermediate result is distinct.
 
 ---
 
