@@ -206,7 +206,7 @@ Low priority, complex to implement correctly.
 - [x] Take
 - [x] Drop
 - [x] Eq
-- [ ] Compare
+- [x] Compare (lexicographic)
 - [ ] Split
 - [ ] Join
 - [ ] Trim / TrimLeft / TrimRight
