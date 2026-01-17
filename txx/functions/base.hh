@@ -120,6 +120,7 @@ using r2 = AssertEq<Ge_v<u8_1, u8_2>, Ge_v<bu1, bu2>>::result;
 #include "functions/base/ternary.hh"
 #include "functions/base/to_bigunsigned.hh"
 #include "functions/base/to_list.hh"
+#include "functions/base/to_string.hh"
 #include "functions/base/to_unsigned8.hh"
 #include "functions/base/xor.hh"
 #include "functions/base/zip.hh"

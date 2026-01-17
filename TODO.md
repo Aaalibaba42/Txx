@@ -192,16 +192,29 @@ Low priority, complex to implement correctly.
 
 ## Strings
 
-Strings as `List<Char>` where `Char` is aliased to `Unsigned8`.
-
-- [ ] Char type alias
-- [ ] String literals
-- [ ] Char comparison
-- [ ] IsDigit / IsAlpha / IsSpace / etc.
+- [x] Reverse
+- [x] Length
+- [x] Concat
+- [x] Head
+- [x] Tail
+- [x] IsEmpty
+- [x] Append
+- [x] Prepend
+- [x] Nth
+- [x] Take
+- [x] Drop
+- [ ] Eq
+- [ ] Compare
+- [ ] Split
+- [ ] Join
+- [ ] Trim / TrimLeft / TrimRight
+- [ ] StartsWith / EndsWith
+- [ ] Contains / IndexOf
+- [ ] Replace
 - [ ] ToUpper / ToLower
-- [ ] String concatenation
-- [ ] String split
-- [ ] String parsing
+- [ ] IsDigit / IsAlpha / IsSpace / IsAlphaNum (for Unsigned8)
+- [ ] ParseInt / IntToString
+- [ ] Lines / Unlines / Words / Unwords
 
 ---
 
