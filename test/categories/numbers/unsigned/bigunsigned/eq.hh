@@ -3,7 +3,7 @@
 #include "literals/bigunsigned.hh"
 #include "literals/bools.hh"
 #include "meta/assert.hh"
-#include "numbers/unsigned/bigunsigned/ops/eq.hh"
+#include "functions/base/eq.hh"
 
 namespace bigunsigned_eq_tests
 {

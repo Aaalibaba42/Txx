@@ -3,7 +3,7 @@
 #include "literals/bools.hh"
 #include "literals/unsigned8.hh"
 #include "meta/assert.hh"
-#include "numbers/unsigned/unsigned8/ops/eq.hh"
+#include "functions/base/eq.hh"
 
 namespace unsigned8_eq_tests
 {

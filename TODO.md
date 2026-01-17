@@ -134,6 +134,7 @@ Low priority, complex to implement correctly.
 - [x] Any (any element satisfies predicate)
 - [x] Zip
 - [x] ZipWith
+- [x] Eq (deep equality)
 - [ ] NoneOf (negation of Any)
 - [ ] Find (first element matching predicate)
 - [ ] FindIndex
@@ -204,7 +205,7 @@ Low priority, complex to implement correctly.
 - [x] Nth
 - [x] Take
 - [x] Drop
-- [ ] Eq
+- [x] Eq
 - [ ] Compare
 - [ ] Split
 - [ ] Join
