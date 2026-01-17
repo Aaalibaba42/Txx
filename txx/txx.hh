@@ -90,6 +90,7 @@
 #include "literals/bigunsigned.hh"
 #include "literals/bits.hh"
 #include "literals/bools.hh"
+#include "literals/chars.hh"
 #include "literals/unit.hh"
 #include "literals/unsigned8.hh"
 #include "meta/any.hh"

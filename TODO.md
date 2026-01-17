@@ -192,6 +192,7 @@ Low priority, complex to implement correctly.
 
 ## Strings
 
+- [x] Char literals (ASCII set: `c_A`, `c_a`, `c_0`, `c_Space`, etc.)
 - [x] Reverse
 - [x] Length
 - [x] Concat
